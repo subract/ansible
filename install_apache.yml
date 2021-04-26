@@ -4,16 +4,11 @@
   become: true
   tasks:
 
-  - name: Update repo index
-    apt:
+  - name: Update index, install apache and php packages
+    package:
+      name: 
+        - "{{ apache_package }}" 
+        - "{{ php_package }}"
+      state: latest
       update_cache: yes
 
-  - name: Install apache2 package
-    apt:
-      name: apache2
-      state: latest
-
-  - name: Add php support for apache
-    apt:
-      name: libapache2-mod-php
-      state: latest
