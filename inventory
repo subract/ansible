@@ -1,12 +1,11 @@
 all:
   vars:
     ansible_python_interpreter: auto
-  
+    user: <redacted>
+  hosts:
+    ansible-test-0
+
   children:
-    testers:
-      vars:
-        apache_package: apache2
-        php_package: libapache2-mod-php
+    docker:
       hosts:    
-        ansible-test-0:
         ansible-test-1:

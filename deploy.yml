@@ -1,0 +1,49 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+  - name: Update index and dist-upgrade
+    apt:
+      update_cache: yes
+      upgrade: dist
+  
+  tasks:
+  - name: Install packages
+    apt:
+      name:
+        - vim
+        - zsh
+        - tldr
+        - kitty-terminfo
+        - tmux
+      state: latest
+  - name: Update tldr
+    shell: "tldr --update"
+  - name: Remove unwanted packages
+    apt:
+      name:
+        - nano
+        - magic-wormhole
+      state: absent
+      autoremove: yes
+  - name: Copy .zshrc
+    copy:
+      src: zsh-grml-config
+      dest: "/home/{{ user }}/"
+      owner: "{{ user }}"
+      group: "{{ user }}" 
+  - name: Set shell to zsh
+    user: 
+      name: "{{ user }}"
+      shell: "/bin/zsh"
+
+
+- hosts: docker
+  tasks:
+  - name: Install Docker
+    apt:
+      name:
+        - docker-ce
+      state: latest
+
