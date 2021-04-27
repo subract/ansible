@@ -27,17 +27,22 @@
         - magic-wormhole
       state: absent
       autoremove: yes
-  - name: Copy .zshrc
-    copy:
-      src: zsh-grml-config
-      dest: "/home/{{ user }}/"
-      owner: "{{ user }}"
-      group: "{{ user }}" 
-  - name: Set shell to zsh
+  - name: Install zsh-grml-config
+    tags: zsh, config
+    get_url:
+      url: https://git.grml.org/f/grml-etc-core/etc/zsh/zshrc
+      dest: /etc/zsh/zshrc
+      mode: 0644
+      owner: root
+      group: root 
+  - name: Set user shell to zsh
+    tags: zsh, config
     user: 
       name: "{{ user }}"
-      shell: "/bin/zsh"
-
+      shell: /bin/zsh
+    user: 
+      name: root
+      shell: /bin/zsh
 
 - hosts: docker
   tasks:
