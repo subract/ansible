@@ -1,9 +1,11 @@
 all:
   vars:
     ansible_python_interpreter: auto
-    user: <redacted>
+    ansible_user: <redacted>
   hosts:
-    ansible-test-0
+    ansible-test-0:
+    ansible-test-2:
+      ansible_user: aven
 
   children:
     docker:

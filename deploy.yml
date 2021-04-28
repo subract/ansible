@@ -17,6 +17,10 @@
         - tldr
         - kitty-terminfo
         - tmux
+        - qemu-guest-agent
+        - curl
+        - git
+        - ufw
       state: latest
   - name: Update tldr
     shell: "tldr --update"
@@ -38,11 +42,14 @@
   - name: Set user shell to zsh
     tags: zsh, config
     user: 
-      name: "{{ user }}"
+      name: "{{ ansible_user }}"
       shell: /bin/zsh
     user: 
       name: root
       shell: /bin/zsh
+
+        #TODO: Namecheap mirrors, SSH config, grub config, .vimrc,
+        #      SSH host keys
 
 - hosts: docker
   tasks:
