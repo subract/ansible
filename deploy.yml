@@ -37,24 +37,28 @@
   - name: Update tldr
     tags: update
     shell: "tldr --update"
+
   - name: Install zsh-grml-config
     tags: zsh, config
     copy:
-      src: zshrc
-      dest: /etc/zsh/zshrc
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
       mode: 0644
       owner: root
       group: root 
-  - name: Set user shell to zsh
+    loop:
+      - { src: "zshrc", dest: "/etc/zsh/zshrc" }
+      - { src: "zshrc-skel", dest: "/etc/skel/.zshrc" }
+      - { src: "zshrc-skel", dest: "/etc/zsh/newuser.zshrc.recommended" }
+      - { src: "zshrc-skel", dest: "/home/{{ ansible_user }}/.zshrc" }
+  - name: Set shells to zsh
     tags: zsh, config
     user: 
-      name: "{{ ansible_user }}"
+      name: "{{ item }}"
       shell: /bin/zsh
-  - name: Set root shell to zsh
-    tags: zsh, config
-    user: 
-      name: root
-      shell: /bin/zsh
+    loop:
+      - "root"
+      - "{{ ansible_user }}"
 
   - name: Set sshd config
     tags: sshd
