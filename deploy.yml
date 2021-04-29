@@ -4,12 +4,13 @@
   become: true
   pre_tasks:
   - name: Update index and dist-upgrade
+    tags: update
     apt:
       update_cache: yes
       upgrade: dist
   
   tasks:
-  - name: Install packages
+  - name: Install packages (all)
     apt:
       name:
         - vim
@@ -17,13 +18,14 @@
         - tldr
         - kitty-terminfo
         - tmux
-        - qemu-guest-agent
         - curl
         - git
         - ufw
       state: latest
-  - name: Update tldr
-    shell: "tldr --update"
+  - name: Install packages (VMs)
+    apt:
+      name: qemu-guest-agent
+      state: latest
   - name: Remove unwanted packages
     apt:
       name:
@@ -31,10 +33,14 @@
         - magic-wormhole
       state: absent
       autoremove: yes
+
+  - name: Update tldr
+    tags: update
+    shell: "tldr --update"
   - name: Install zsh-grml-config
     tags: zsh, config
-    get_url:
-      url: https://git.grml.org/f/grml-etc-core/etc/zsh/zshrc
+    copy:
+      src: zshrc
       dest: /etc/zsh/zshrc
       mode: 0644
       owner: root
@@ -44,11 +50,31 @@
     user: 
       name: "{{ ansible_user }}"
       shell: /bin/zsh
+  - name: Set root shell to zsh
+    tags: zsh, config
     user: 
       name: root
       shell: /bin/zsh
 
-        #TODO: Namecheap mirrors, SSH config, grub config, .vimrc,
+  - name: Set sshd config
+    tags: sshd
+    copy:
+      src: sshd_config
+      dest: /etc/ssh/sshd_config
+      mode: 0644
+      owner: root
+      group: root
+      validate: sshd -t -f %s
+    register: sshd
+  - name: Reload sshd config
+    tags: sshd
+    service:
+      name: sshd
+      state: restarted
+    when: sshd.changed
+
+
+        #TODO: Namecheap mirrors, grub config, .vimrc,
         #      SSH host keys
 
 - hosts: docker
@@ -59,3 +85,4 @@
         - docker-ce
       state: latest
 
+      #TODO: nfs mounts, immutability on mount points

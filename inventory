@@ -6,7 +6,7 @@ all:
     ansible-test-0:
     ansible-test-2:
       ansible_user: aven
-
+  
   children:
     docker:
       hosts:    
