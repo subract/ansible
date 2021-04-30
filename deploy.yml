@@ -3,13 +3,23 @@
 - hosts: all
   become: true
   pre_tasks:
-  - name: Update index and dist-upgrade
+  - name: Update package index
     tags: update
     apt:
       update_cache: yes
+    changed_when: false
+
+  - name: Run dist-upgrade
+    tags: update
+    apt:
       upgrade: dist
-  
+      autoremove: yes
+
   tasks:
+  - name: Verify ansbile user's password is locked
+    user:
+      name: "{{ ansible_user }}"
+      password_lock: yes
   - name: Install packages (all)
     apt:
       name:
@@ -22,21 +32,12 @@
         - git
         - ufw
       state: latest
-  - name: Install packages (VMs)
-    apt:
-      name: qemu-guest-agent
-      state: latest
   - name: Remove unwanted packages
     apt:
       name:
         - nano
-        - magic-wormhole
       state: absent
       autoremove: yes
-
-  - name: Update tldr
-    tags: update
-    shell: "tldr --update"
 
   - name: Install zsh-grml-config
     tags: zsh, config
@@ -50,7 +51,7 @@
       - { src: "zshrc", dest: "/etc/zsh/zshrc" }
       - { src: "zshrc-skel", dest: "/etc/skel/.zshrc" }
       - { src: "zshrc-skel", dest: "/etc/zsh/newuser.zshrc.recommended" }
-      - { src: "zshrc-skel", dest: "/home/{{ ansible_user }}/.zshrc" }
+      - { src: "zshrc-skel", dest: "/home/{{ user }}/.zshrc" }
   - name: Set shells to zsh
     tags: zsh, config
     user: 
@@ -58,7 +59,7 @@
       shell: /bin/zsh
     loop:
       - "root"
-      - "{{ ansible_user }}"
+      - "{{ user }}"
 
   - name: Set sshd config
     tags: sshd
@@ -78,8 +79,8 @@
     when: sshd.changed
 
 
-        #TODO: Namecheap mirrors, grub config, .vimrc,
-        #      SSH host keys
+        #TODO: user password, GRUB config, .vimrc, ufw config
+        #      clone dotfiles git repo and stow, 
 
 - hosts: docker
   tasks:
