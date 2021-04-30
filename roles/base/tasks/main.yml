@@ -1,0 +1,68 @@
+- name: Verify ansible user's password is locked
+  user:
+    name: "{{ ansible_user }}"
+    password_lock: yes
+
+- name: Install packages
+  apt:
+    name:
+      - vim
+      - zsh
+      - tldr
+      - kitty-terminfo
+      - tmux
+      - curl
+      - git
+      - ufw
+    state: latest
+
+- name: Remove unwanted packages
+  apt:
+    name:
+      - nano
+    state: absent
+    autoremove: yes
+
+- name: Install zsh-grml-config
+  tags: zsh, config
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0644
+    owner: root
+    group: root 
+  loop:
+    - { src: "zshrc", dest: "/etc/zsh/zshrc" }
+    - { src: "zshrc-skel", dest: "/etc/skel/.zshrc" }
+    - { src: "zshrc-skel", dest: "/etc/zsh/newuser.zshrc.recommended" }
+    - { src: "zshrc-skel", dest: "/home/{{ user }}/.zshrc" }
+
+- name: Set shells to zsh
+  tags: zsh, config
+  user: 
+    name: "{{ item }}"
+    shell: /bin/zsh
+  loop:
+    - "root"
+    - "{{ user }}"
+
+- name: Set sshd config
+  tags: sshd
+  copy:
+    src: sshd_config
+    dest: /etc/ssh/sshd_config
+    mode: 0644
+    owner: root
+    group: root
+    validate: sshd -t -f %s
+  register: sshd
+
+- name: Reload sshd config
+  tags: sshd
+  service:
+    name: sshd
+    state: restarted
+  when: sshd.changed
+
+#TODO: user password, GRUB config, .vimrc, ufw config
+#      clone dotfiles git repo and stow, 

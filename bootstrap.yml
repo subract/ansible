@@ -4,24 +4,11 @@
   become: true
   vars_prompt:
   - name: password
-    prompt: "password for user"
+    prompt: "desired sudo password"
     unsafe: yes # allows special characters
     private: yes
     encrypt: sha512_crypt
     confirm: yes
-
-  pre_tasks:
-  - name: Update package index
-    tags: update
-    apt:
-      update_cache: yes
-    changed_when: false
-
-  - name: Run dist-upgrade
-    tags: update
-    apt:
-      upgrade: dist
-      autoremove: yes
 
   tasks:
   - name: Create user
@@ -29,7 +16,7 @@
       name: "{{ user }}"
       groups: sudo
     register: new_user
-  - name: Add ssh key for user
+  - name: Set ssh key for user
     authorized_key:
       user: "{{ user }}"
       key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOcIlNwYsyjIhu6Pg/+67BpORsW8RdnJnvs12XvWSV8g Homelab aven"
