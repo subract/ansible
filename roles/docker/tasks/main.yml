@@ -5,6 +5,15 @@
     groups: docker
     append: yes
 
+- name: Set docker env vars/shortcuts
+  tags: docker, config
+  blockinfile:
+    path: "/home/{{ user }}/.zshenv"
+    create: yes
+    block: |
+      export COMPOSE_FILE={{ compose_dir }}docker-compose.yml
+      alias dc="docker-compose --project-directory {{ compose_dir }}"
+
 - name: Install pip3 and nfs-common
   tags: docker, sdk, nfs
   apt:
@@ -47,7 +56,7 @@
 - name: Mount network shares
   tags: config, nfs
   shell: mount -a
-  # when: nfs.changed
+  when: nfs.changed
 
 - name: Install docker and docker-compose Python modules
   tags: docker, sdk
@@ -76,9 +85,9 @@
   copy:
     src: .env
     dest: "{{ compose_dir }}"
-    mode: 0400
+    mode: 0440
     owner: root
-    group: root 
+    group: docker 
 
 # - name: Tear down existing services
 #   tags: docker, compose
@@ -90,5 +99,5 @@
   tags: docker, compose
   community.docker.docker_compose:
     project_src: "{{ compose_dir }}"
+    remove_orphans: yes
   register: output
-  
