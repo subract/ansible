@@ -4,13 +4,24 @@ all:
     ansible_user: ansible
     user: aven
   hosts:
-    ansible-test-1:
+    docker:
     ansible-test-2:
     ansible-test-3:
   
   children:
     docker:
       hosts:    
-        ansible-test-1:
+        docker:
       vars:
         docker_users: aven
+        compose_dir: /opt/doc/
+        # GitLab user
+        git_user: <redacted>
+        # Read-only repo token for GitLab
+        git_token: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          64633730393064656161623861663938376134353265643862393537346236656164666231316239
+          3233306565616164663561313064303232653733366135640a663133303462663439323432353834
+          36396163323034393063303763363239663965373665623434313538383862343665373236303263
+          3631323333316338330a323532633261636132356139326266613232326239336162396333323064
+          36386234646334386333643136666165346364393332353138616338303339663862

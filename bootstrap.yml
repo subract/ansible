@@ -12,18 +12,20 @@
 
   tasks:
   - name: Create user
+    tags: user, groups
     user:
       name: "{{ user }}"
       groups: sudo
     register: new_user
   - name: Set ssh key for user
+    tags: user, ssh
     authorized_key:
       user: "{{ user }}"
       key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOcIlNwYsyjIhu6Pg/+67BpORsW8RdnJnvs12XvWSV8g Homelab aven"
       exclusive: yes
     when: new_user.changed
   - name: Set user password
+    tags: user, pass
     user:
       name: "{{ user }}"
       password: "{{ password }}"
-    when: new_user.changed

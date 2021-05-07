@@ -65,4 +65,4 @@
   when: sshd.changed
 
 #TODO: user password, GRUB config, .vimrc, ufw config
-#      clone dotfiles git repo and stow, 
+#      clone dotfiles git repo and stow, default editor
