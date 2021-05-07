@@ -1,0 +1,28 @@
+all:
+  vars:
+    ansible_python_interpreter: auto
+    ansible_user: ansible
+    user: aven
+
+  hosts:
+    docker:
+    gaming:
+  
+  children:
+    docker_server:
+      hosts:    
+        docker:
+        gaming:
+
+      vars:
+        compose_dir: /opt/doc/
+
+      children:
+        app_server:
+          hosts:
+            docker:
+
+        game_server:
+          hosts:
+            gaming:
+

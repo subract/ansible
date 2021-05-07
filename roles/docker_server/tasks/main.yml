@@ -1,0 +1,29 @@
+- name: Make user member of docker group
+  tags: docker, config
+  user:
+    name: "{{ user }}"
+    groups: docker
+    append: yes
+
+- name: Set docker env vars/shortcuts
+  tags: docker, config
+  blockinfile:
+    path: "/home/{{ user }}/.zshenv"
+    create: yes
+    block: |
+      export COMPOSE_FILE={{ compose_dir }}docker-compose.yml
+      alias dc="docker-compose --project-directory {{ compose_dir }}"
+
+- name: Install pip3 and nfs-common
+  tags: docker, sdk, nfs
+  apt:
+    name: 
+      - python3-pip
+      - nfs-common
+
+- name: Install docker and docker-compose Python modules
+  tags: docker, sdk
+  pip:
+    name: 
+    - docker
+    - docker-compose

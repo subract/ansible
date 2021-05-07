@@ -14,17 +14,24 @@
     apt:
       upgrade: dist
       autoremove: yes
-
-- hosts: all
-  become: true
   roles:
     - base
     
-- hosts: docker
+- hosts: docker_server
   become: true
   roles:
     - geerlingguy.docker
-    - docker
+    - docker_server
+
+- hosts: app_server
+  become: true
+  roles:
+    - app_server
+
+- hosts: game_server
+  become: true
+  roles:
+    - game_server
 
 - hosts: bastion
   become: true
