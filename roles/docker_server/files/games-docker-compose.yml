@@ -1,0 +1,130 @@
+version: '3.7'
+
+services:
+  mc-survival:
+    container_name: mc-survival
+    image: itzg/minecraft-server
+    restart: unless-stopped
+
+    ports:
+      - 25565:25565
+
+    volumes:
+      - '/ssd/app/games/minecraft/mc-survival:/data'
+      # Use this to import a world from a directory
+      # - '/home/<redacted>/worlds:/worlds:ro'
+
+    environment:
+      TZ: 'America/Chicago'
+      EULA: 'True'
+      PVP: 'false'
+      DIFFICULTY: 'normal'
+      SERVER_NAME: 'This Land'
+      OPS: ${MINECRAFT_OP}
+      MEMORY: '3G'
+      MOTD: 'This Land'
+      TYPE: 'FORGE'
+      VERSION: "1.15.2"
+      # Use this to import a world from a directory
+      # WORLD: '/worlds/this_land'
+
+
+  mc-survival-2:
+    container_name: mc-survival-2
+    image: itzg/minecraft-server
+    restart: unless-stopped
+
+    ports:
+      - 25567:25565
+
+    volumes:
+      - '/ssd/app/games/minecraft/mc-survival-201122-1.16.4:/data'
+
+    environment:
+      TZ: 'America/Chicago'
+      EULA: 'True'
+      PVP: 'false'
+      DIFFICULTY: 'normal'
+      SERVER_NAME: 'The Shattered Plains'
+      OPS: ${MINECRAFT_OP}
+      MEMORY: '3G'
+      MOTD: 'The Shattered Plains'
+      TYPE: 'FORGE'
+      VERSION: "1.16.4"
+
+
+  valheim: 
+    container_name: valheim
+    image: lloesche/valheim-server
+    restart: unless-stopped
+    cap_add:
+      - sys_nice
+    volumes: 
+      - /ssd/app/games/valheim/config:/config
+      - /ssd/app/games/valheim/data:/opt/valheim
+    ports: 
+      - "2549:2549/udp"
+      # - "9001:9001/tcp"
+    stop_grace_period: 2m
+    environment:
+      - SERVER_NAME=Alethkar
+      - WORLD_NAME=Alethkar
+      - SERVER_PORT=2549 
+      - SERVER_PASS=${VALHEIM_PASS}
+      - SERVER_PUBLIC=false
+      - BACKUPS_CRON=""
+
+# mc-creative:
+#   container_name: mc-creative
+#   image: itzg/minecraft-server
+#   restart: unless-stopped
+
+
+#   ports:
+#     - 25566:25565
+
+#   volumes:
+#     - '/ssd/app/games/minecraft/mc-creative:/data'
+#     # Use this to import a world from a directory
+#     # - '/home/<redacted>/worlds:/worlds:ro'
+
+#   environment:
+#     TZ: 'America/Chicago'
+#     EULA: 'True'
+#     PVP: 'false'
+#     DIFFICULTY: 'normal'
+#     SERVER_NAME: 'Creative'
+#     OPS: ${MINECRAFT_OP}
+#     MEMORY: '3G'
+#     MOTD: 'Have fun!'
+#     # Use this to import a world from a directory
+#     # WORLD: '/worlds/creative'
+
+# factorio:
+#   container_name: factorio
+#   image: factoriotools/factorio:stable
+#   restart: unless-stopped
+  
+#   ports:
+#     - 34197:34197/udp
+#     - 27015:27015/tcp
+
+#   volumes:
+#     - /ssd/app/games/factorio/krastorio2:/factorio
+
+#   environment:
+#      UPDATE_MODS_ON_START: 'true'
+#      SAVE_NAME: "Persephone-1.1"   
+       
+#  terraria:
+#    container_name: terraria
+#    image: ryshe/terraria:latest
+#    restart: unless-stopped
+
+#    command: -world /world/Raven_Keep.wld
+
+#    ports:
+#      - 7777:7777
+
+#    volumes:
+#      - /opt/terraria:/world

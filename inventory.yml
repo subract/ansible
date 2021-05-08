@@ -12,17 +12,15 @@ all:
     docker_server:
       hosts:    
         docker:
+          nfs_dirs: [/ssd/app, /hdd/app]
+          compose_file: apps-docker-compose.yml
+          env_file: apps.env
         gaming:
+          nfs_dirs: [/ssd/app/games]
+          compose_file: games-docker-compose.yml
+          env_file: games.env
 
       vars:
         compose_dir: /opt/doc/
 
-      children:
-        app_server:
-          hosts:
-            docker:
-
-        game_server:
-          hosts:
-            gaming:
 

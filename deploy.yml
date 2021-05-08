@@ -23,15 +23,15 @@
     - geerlingguy.docker
     - docker_server
 
-- hosts: app_server
-  become: true
-  roles:
-    - app_server
+# - hosts: app_server
+#   become: true
+#   roles:
+#     - app_server
 
-- hosts: game_server
-  become: true
-  roles:
-    - game_server
+# - hosts: game_server
+#   become: true
+#   roles:
+#     - game_server
 
 - hosts: bastion
   become: true
