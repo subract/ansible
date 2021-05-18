@@ -64,7 +64,7 @@
     group: docker 
 
 - name: Copy .env
-  tags: docker, compose
+  tags: docker, env
   copy:
     src: "{{ env_file }}"
     dest: "{{ compose_dir }}.env"
@@ -72,7 +72,7 @@
     owner: root
     group: docker 
 
-- name: Create and start services
+- name: Pull and start services
   tags: docker, compose, update
   community.docker.docker_compose:
     project_src: "{{ compose_dir }}"

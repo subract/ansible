@@ -7,6 +7,7 @@ all:
   hosts:
     docker:
     gaming:
+    work:
   
   children:
     docker_server:
