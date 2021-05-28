@@ -1,8 +1,13 @@
 ---
 
-- hosts: all 
+- hosts: "{{setupHosts}}"
   become: true
+
   vars_prompt:
+  - name: "setupHosts"
+    prompt: "hosts to bootstrap"
+    private: no
+
   - name: password
     prompt: "desired sudo password"
     unsafe: yes # allows special characters
@@ -11,12 +16,24 @@
     confirm: yes
 
   tasks:
+  - name: Create sudo group
+    tags: groups
+    group: 
+      name: sudo
+  
+  - name: Ensure sudo group has privs
+    tags: groups
+    lineinfile:
+      line: "%sudo	ALL=(ALL:ALL) ALL"
+      path: /etc/sudoers
+
   - name: Create user
     tags: user, groups
     user:
       name: "{{ user }}"
       groups: sudo
     register: new_user
+
   - name: Set ssh key for user
     tags: user, ssh
     authorized_key:
@@ -24,6 +41,7 @@
       key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOcIlNwYsyjIhu6Pg/+67BpORsW8RdnJnvs12XvWSV8g Homelab aven"
       exclusive: yes
     when: new_user.changed
+
   - name: Set user password
     tags: user, pass
     user:

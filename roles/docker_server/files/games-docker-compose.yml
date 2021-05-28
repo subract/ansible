@@ -3,7 +3,7 @@ version: '3.7'
 services:
   mc-survival:
     container_name: mc-survival
-    image: itzg/minecraft-server
+    image: itzg/minecraft-server:java8
     restart: unless-stopped
 
     ports:
@@ -31,7 +31,7 @@ services:
 
   mc-survival-2:
     container_name: mc-survival-2
-    image: itzg/minecraft-server
+    image: itzg/minecraft-server:java8
     restart: unless-stopped
 
     ports:

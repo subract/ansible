@@ -4,7 +4,7 @@
     password_lock: yes
 
 - name: Install packages
-  apt:
+  package:
     name:
       - vim
       - zsh
@@ -17,11 +17,10 @@
     state: latest
 
 - name: Remove unwanted packages
-  apt:
+  package:
     name:
       - nano
     state: absent
-    autoremove: yes
 
 - name: Install zsh-grml-config
   tags: zsh, config

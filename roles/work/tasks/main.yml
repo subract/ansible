@@ -1,6 +1,0 @@
-- name: Install openconnect
-  tags: install
-  apt:
-    name: 
-      - openconnect
-

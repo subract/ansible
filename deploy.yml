@@ -1,39 +1,60 @@
 ---
+# Do OS-specific pre-tasks before anything else...
 
-- hosts: all
+- hosts: debian
   become: true
   pre_tasks:
   - name: Update package index
-    tags: update
+    tags: update, upgrade
     changed_when: false
     apt:
       update_cache: yes
 
   - name: Run dist-upgrade
-    tags: update
+    tags: upgrade
     apt:
       upgrade: dist
       autoremove: yes
+
+- hosts: arch
+  become: true
+  pre_tasks:
+  - name: Update package index
+    tags: update, upgrade
+    changed_when: false
+    community.general.pacman:
+      update_cache: yes
+  - name: Run system upgrade
+    tags: upgrade
+    community.general.pacman:
+      upgrade: yes
+  
+# ...then run base config on all machines...
+
+- hosts: all
+  become: true
   roles:
     - base
-    
+
+# ...and finally, do role-specific tasks
+
 - hosts: docker_server
   become: true
   roles:
     - geerlingguy.docker
     - docker_server
 
-# - hosts: app_server
-#   become: true
-#   roles:
-#     - app_server
-
-# - hosts: game_server
-#   become: true
-#   roles:
-#     - game_server
-
-- hosts: bastion
+- hosts: work_server
   become: true
   roles:
-    - bastion
+    - work_server
+
+- hosts: arch
+  become: true
+  roles:
+    - arch
+
+# - hosts: bastion
+#   become: true
+#   roles:
+#     - bastion

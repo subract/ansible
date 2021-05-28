@@ -1,0 +1,14 @@
+- name: Install Plasma, openconnect, and Nextcloud
+  tags: install
+  apt:
+    name: 
+      - openconnect
+      - nextcloud-desktop
+      - kde-plasma-desktop
+      - spice-vdagent
+
+- name: Add work ssh key
+  tags: user, ssh
+  authorized_key:
+    user: "{{ user }}"
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM/Edqm1AE/gvO5Ls9BVx5v9xl92mlZBiYGeHsj60X6D aven@work"
