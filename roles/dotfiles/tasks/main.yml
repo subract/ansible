@@ -1,0 +1,15 @@
+- name: Clone dotfiles
+  tags: config, dots
+  git:
+    repo: https://gl.<redacted>/<redacted>/dotfiles.git
+    dest: "/home/{{ user }}/.dotfiles"
+
+- name: Symlink dots
+  tags: config, dots
+  file:
+    src:  "/home/{{ user }}/.dotfiles/{{ item.src }}"
+    dest: "/home/{{ user }}/{{ item.dst }}"
+    state: link
+    force: yes
+  with_items:
+    - { src: "vimrc", dst: ".vimrc" }

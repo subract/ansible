@@ -53,6 +53,7 @@
   become: true
   roles:
     - arch
+    - dotfiles
 
 # - hosts: bastion
 #   become: true

@@ -1,0 +1,131 @@
+- name: Configure pacman
+  tags: config
+  copy:
+    src: pacman.conf
+    dest: /etc/pacman.conf
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Install window management packages
+  tags: pkg
+  package:
+    name:
+      - xorg-server
+      - xorg-xrandr
+      - xorg-xrdb
+      - lightdm
+      - lightdm-gtk-greeter
+      - i3-wm  
+      - i3blocks  
+      - i3lock  
+      - i3status
+      # - autotiling
+      - dmenu
+      - xterm
+      # For VM only
+      - xf86-video-qxl
+      - spice-vdagent
+
+
+- name: Enable lightdm service
+  tags: pkg
+  service:
+    name: lightdm
+    enabled: yes
+    state: started
+
+- name: Install desktop software packages
+  tags: pkg
+  package:
+    name:
+      # User apps
+      - audacity # audio editor
+      - code # de-Microsofted VS Code fork
+      - digikam # photo manager
+      - discord # social client
+      - firefox # web browser
+      - gimp # image editor
+      - libreoffice-fresh # office software
+      - musescore # sheet music editor
+      - nextcloud-client # file synchronization
+      - nitrogen # background manager
+      - obs-studio # screen recorder
+      # - protonvpn-cli-ng # ProtonVPN CLI
+      - libqalculate # CLI calculator
+      - redshift # blue light reducer
+      - signal-desktop # messenger
+      # - spotify # music
+      # - standardnotes-desktop # notes
+      - steam # games
+      - thunar # file browser
+      - thunar-archive-plugin # archive support
+      - thunar-volman # removable media management
+      - tldr # concise, useful manpages
+      - tmux # terminal multiplexer
+      - transmission-gtk # torrent client
+      # - typora # markdown editor/exporter
+      - veracrypt # file encryption
+      - vim # vim
+      - vim-ansible # ansible highlighting
+      - virt-viewer # SPICE client
+      - vlc # media player
+      # - vmware-horizon-client # remote resktop client
+      # - vmware-horizon-smartcard # smartcar support
+      - youtube-dl # youtube downloader
+
+      # System utilites
+      - ansible # config manager
+      - ark # archive manager
+      - baobab # disk usage analyser
+      - cowsay # cowsay
+      - eog # image viewer
+      - fd # find, but better
+      - iftop # network monitor
+      - networkmanager # network manager
+      - nmap # network mapper
+      - nvidia # proprietary drivers
+      - nvidia-settings # nvidia x server settings
+      - nvtop # GPU monitor
+      - kitty # terminal emulator
+      # - magic-wormhole # file transfer
+      - neofetch # OS info
+      - pv # progredd viewer
+      - reflector # pacman mirror manager
+      - rkhunter # rootkit hunter
+      - rsync # copy files in style
+      - seahorse # keyring viewer
+      - testdisk # data recovery
+      - traceroute # traceroute
+      - tree # directory viewer
+      - unzip # unzips
+      - wireshark-qt # protocol analyzer
+      - zip # zips
+
+      # Helpers and styling
+      - breeze-icons # icon theme
+      # - brother-hll2350dw # print drivers
+      - ccid # smart card driver
+      - dunst # notification daemon
+      - freetype2 # font rendering
+      - gnome-keyring # keyring
+      - nss-mdns # mdns name resolution
+      - opensc # smart card libraries
+      - pasystray # PulseAudio tray icon
+      - pavucontrol # PulseAudio volume control
+      - pulseaudio # The man himself
+      - ttf-fira-code # nice font
+      - tumbler # thumbnails
+
+
+- name: Configure lightdm-gtk-greeter
+  tags: pkg, config
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0644
+    owner: root
+    group: root 
+  loop:
+    - { src: "lightdm-gtk-greeter.conf", dest: "/etc/lightdm/lightdm-gtk-greeter.conf" }
+    - { src: "greeter.png", dest: "/etc/lightdm/greeter.png" }

@@ -9,6 +9,8 @@ all:
     gaming:
     work:
     arch-dev:
+    # localhost:
+    #   ansible_connection: local
   
   children:
     debian:
