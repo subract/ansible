@@ -43,6 +43,7 @@
   roles:
     - geerlingguy.docker
     - docker_server
+    - dotfiles
 
 - hosts: work_server
   become: true
