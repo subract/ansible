@@ -1,20 +1,12 @@
-- name: Clone dotfiles
+- name: Copy selected dots
   tags: config, dots
-  git:
-    repo: https://gl.<redacted>/<redacted>/dotfiles.git
-    dest: "/home/{{ user }}/.dotfiles"
-
-- name: Symlink dots
-  tags: config, dots
-  file:
-    src:  "/home/{{ user }}/.dotfiles/{{ item.src }}"
+  copy:
+    src:  "{{ item.src }}"
     dest: "/home/{{ user }}/{{ item.dst }}"
-    state: link
     force: yes
   with_items:
     - { src: "vim/vimrc", dst: ".vimrc" }
-    - { src: "i3", dst: ".config/i3" }
-    - { src: "i3status", dst: ".config/i3status" }
-    - { src: "kitty", dst: ".config/kitty" }
+    # - { src: "i3", dst: ".config/i3" }
+    # - { src: "i3status", dst: ".config/i3status" }
+    # - { src: "kitty", dst: ".config/kitty" }
     - { src: "zsh/zshrc.local", dst: ".zshrc.local" }
-
