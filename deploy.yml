@@ -43,6 +43,11 @@
     - geerlingguy.docker
     - docker_server
     - dotfiles_copy
+    
+- hosts: docker
+  become: true
+  roles: 
+    - mariadb
 
 - hosts: work_server
   become: true
