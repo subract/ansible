@@ -58,7 +58,7 @@
   become: true
   roles:
     - arch
-    - dotfiles_clone
+    - dotfiles_copy
 
 # - hosts: bastion
 #   become: true

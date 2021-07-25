@@ -10,3 +10,12 @@
     # - { src: "i3status", dst: ".config/i3status" }
     # - { src: "kitty", dst: ".config/kitty" }
     - { src: "zsh/zshrc.local", dst: ".zshrc.local" }
+
+- name: Copy selected dots to root
+  tags: config, dots
+  copy:
+    src:  "{{ item.src }}"
+    dest: "/root/{{ item.dst }}"
+    force: yes
+  with_items:
+    - { src: "vim/vimrc", dst: ".vimrc" }
