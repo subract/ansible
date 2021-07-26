@@ -13,6 +13,9 @@
     block: |
       export COMPOSE_FILE={{ compose_dir }}docker-compose.yml
       alias dc="docker-compose --project-directory {{ compose_dir }}"
+      alias dcls="docker container ls"
+      alias dcl="docker logs"
+      alias dclf="docker logs --follow"
 
 - name: Install pip3 and nfs-common
   tags: docker, sdk, nfs
