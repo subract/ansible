@@ -41,6 +41,7 @@
   become: true
   roles:
     - geerlingguy.docker
+    - nfs_client
     - docker_server
     - dotfiles_copy
     
@@ -58,6 +59,12 @@
   become: true
   roles:
     - arch
+    - dotfiles_copy
+
+- hosts: seedling
+  become: true
+  roles:
+    - nfs_client
     - dotfiles_copy
 
 # - hosts: bastion

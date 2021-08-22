@@ -14,6 +14,8 @@ all:
   
   children:
     debian:
+      hosts:
+
       children:
         work_server:
           hosts:
@@ -41,8 +43,11 @@ all:
               nfs_dirs: [/ssd/app/games]
               compose_file: games-docker-compose.yml
               env_file: games.env
-        
 
+            seedling:
+              nfs_dirs: [/ssd/app/deluge]
+              compose_file: seedling-docker-compose.yml
+              env_file: seedling.env
 
     arch:
       hosts:
