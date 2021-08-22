@@ -2,9 +2,16 @@ Port 22
 
 UsePAM yes
 ChallengeResponseAuthentication no
+KerberosAuthentication no
+GSSAPIAuthentication no
 PermitRootLogin no
-X11Forwarding no
 PasswordAuthentication no
+PermitEmptyPasswords no
+MaxAuthTries 3
+
+X11Forwarding no
+PermitUserEnvironment no
 
 PrintMotd no
+DebianBanner no
 Subsystem sftp /usr/lib/openssh/sftp-server

@@ -67,7 +67,8 @@
     - nfs_client
     - dotfiles_copy
 
-# - hosts: bastion
-#   become: true
-#   roles:
-#     - bastion
+- hosts: bastion
+  become: true
+  roles:
+    - dotfiles_copy
+    - robertdebock.fail2ban
