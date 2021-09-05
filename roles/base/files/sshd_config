@@ -13,5 +13,4 @@ X11Forwarding no
 PermitUserEnvironment no
 
 PrintMotd no
-DebianBanner no
 Subsystem sftp /usr/lib/openssh/sftp-server

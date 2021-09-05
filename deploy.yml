@@ -55,10 +55,15 @@
   roles:
     - work_server
 
-- hosts: arch
+- hosts: arch-dev
   become: true
   roles:
-    - arch
+    - arch-desktop
+    - dotfiles_copy
+
+- hosts: jj
+  become: true
+  roles:
     - dotfiles_copy
 
 - hosts: seedling

@@ -90,7 +90,7 @@
       - kitty # terminal emulator
       # - magic-wormhole # file transfer
       - neofetch # OS info
-      - pv # progredd viewer
+      - pv # progress viewer
       - reflector # pacman mirror manager
       - rkhunter # rootkit hunter
       - rsync # copy files in style
