@@ -65,6 +65,7 @@
   become: true
   roles:
     - dotfiles_copy
+    - more_users
 
 - hosts: seedling
   become: true

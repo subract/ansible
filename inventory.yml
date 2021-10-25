@@ -7,20 +7,22 @@ all:
   hosts:
     docker:
     gaming:
-    work:
-    arch-dev:
+    # work:
+    # arch-dev:
     # localhost:
     #   ansible_connection: local
   
   children:
     debian:
+      vars:
+        sftp_path: '/usr/lib/openssh/sftp-server'
       hosts:
         bastion:
 
       children:
-        work_server:
-          hosts:
-            work:
+      #   work_server:
+      #     hosts:
+      #       work:
         
         docker_server:
           vars:
@@ -51,7 +53,15 @@ all:
               env_file: seedling.env
 
     arch:
+      vars:
+        sftp_path: '/usr/lib/ssh/sftp-server'
       hosts:
-        arch-dev:
+    #     arch-dev:
         jj:
+          users:
+          - name: "jj"
+            key: |
+                <redacted>
+                <redacted>
+
 
