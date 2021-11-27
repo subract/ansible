@@ -34,6 +34,7 @@
   become: true
   roles:
     - base
+    - xterm-js
 
 # ...and finally, do role-specific tasks
 
