@@ -3,6 +3,7 @@
 
 - hosts: debian
   become: true
+  gather_facts: true
   pre_tasks:
   - name: Update package index
     tags: update, upgrade
@@ -17,6 +18,7 @@
 
 - hosts: arch
   become: true
+  gather_facts: false
   pre_tasks:
   - name: Update package index
     tags: update, upgrade
@@ -32,6 +34,7 @@
 
 - hosts: all
   become: true
+  gather_facts: false
   roles:
     - base
     - xterm-js
@@ -48,34 +51,40 @@
     
 - hosts: docker
   become: true
+  gather_facts: false
   roles: 
     - mariadb
 
 - hosts: work_server
   become: true
+  gather_facts: false
   roles:
     - work_server
 
 - hosts: arch-dev
   become: true
+  gather_facts: false
   roles:
     - arch-desktop
     - dotfiles_copy
 
 - hosts: jj
   become: true
+  gather_facts: false
   roles:
     - dotfiles_copy
     - more_users
 
 - hosts: seedling
   become: true
+  gather_facts: false
   roles:
     - nfs_client
     - dotfiles_copy
 
 - hosts: bastion
   become: true
+  gather_facts: false
   roles:
     - dotfiles_copy
     - robertdebock.fail2ban

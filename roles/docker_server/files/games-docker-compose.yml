@@ -1,32 +1,32 @@
 version: '3.7'
 
 services:
-  mc-survival:
-    container_name: mc-survival
-    image: itzg/minecraft-server:java8
-    restart: unless-stopped
+  # mc-survival:
+  #   container_name: mc-survival
+  #   image: itzg/minecraft-server:java8
+  #   restart: unless-stopped
 
-    ports:
-      - 25565:25565
+  #   ports:
+  #     - 25565:25565
 
-    volumes:
-      - '/ssd/app/games/minecraft/mc-survival:/data'
-      # Use this to import a world from a directory
-      # - '/home/<redacted>/worlds:/worlds:ro'
+  #   volumes:
+  #     - '/ssd/app/games/minecraft/mc-survival:/data'
+  #     # Use this to import a world from a directory
+  #     # - '/home/<redacted>/worlds:/worlds:ro'
 
-    environment:
-      TZ: 'America/Chicago'
-      EULA: 'True'
-      PVP: 'false'
-      DIFFICULTY: 'normal'
-      SERVER_NAME: 'This Land'
-      OPS: ${MINECRAFT_OP}
-      MEMORY: '3G'
-      MOTD: 'This Land'
-      TYPE: 'FORGE'
-      VERSION: "1.15.2"
-      # Use this to import a world from a directory
-      # WORLD: '/worlds/this_land'
+  #   environment:
+  #     TZ: 'America/Chicago'
+  #     EULA: 'True'
+  #     PVP: 'false'
+  #     DIFFICULTY: 'normal'
+  #     SERVER_NAME: 'This Land'
+  #     OPS: ${MINECRAFT_OP}
+  #     MEMORY: '3G'
+  #     MOTD: 'This Land'
+  #     TYPE: 'FORGE'
+  #     VERSION: "1.15.2"
+  #     # Use this to import a world from a directory
+  #     # WORLD: '/worlds/this_land'
 
 
   mc-survival-2:
@@ -51,6 +51,29 @@ services:
       MOTD: 'The Shattered Plains'
       TYPE: 'FORGE'
       VERSION: "1.16.4"
+
+  mc-survival-3:
+    container_name: mc-survival-3
+    image: itzg/minecraft-server:java17
+    restart: unless-stopped
+
+    ports:
+      - 25568:25565
+
+    volumes:
+      - '/ssd/app/games/minecraft/mc-survival-211205-1.18.0:/data'
+
+    environment:
+      TZ: 'America/Chicago'
+      EULA: 'True'
+      PVP: 'false'
+      DIFFICULTY: 'normal'
+      SERVER_NAME: 'Haven Grotto'
+      OPS: ${MINECRAFT_OP}
+      MEMORY: '3G'
+      MOTD: 'Haven Grotto'
+      TYPE: 'FORGE'
+      VERSION: "1.18.1"
 
 
   # valheim: 
