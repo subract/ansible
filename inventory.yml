@@ -7,6 +7,7 @@ all:
   hosts:
     docker:
     gaming:
+    jj:
     # work:
     # arch-dev:
     # localhost:
@@ -18,6 +19,13 @@ all:
         sftp_path: '/usr/lib/openssh/sftp-server'
       hosts:
         bastion:
+        jj:
+          users:
+          - name: "jj"
+            key: |
+                <redacted>
+                <redacted>
+                ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIgIQrclUyOI2zVkjMTuEpmRyleE4xJ8lEtrlvfrNNeC24eIJNBBjAsZ/5nFNMZ4Dl3YXnXUVKXnXTu6krzMf/4=
 
       children:
       #   work_server:
@@ -30,7 +38,7 @@ all:
           hosts:   
 
             docker:
-              nfs_dirs: [/ssd/app, /hdd/app]
+              nfs_dirs: [/ssd/app, /hdd/enc/app]
               compose_file: apps-docker-compose.yml
               env_file: apps.env
               healthcheck_id: !vault |
@@ -52,16 +60,12 @@ all:
               compose_file: seedling-docker-compose.yml
               env_file: seedling.env
 
-    arch:
-      vars:
-        sftp_path: '/usr/lib/ssh/sftp-server'
-      hosts:
+    # arch:
+    #   vars:
+    #     sftp_path: '/usr/lib/ssh/sftp-server'
+    #   hosts:
     #     arch-dev:
-        jj:
-          users:
-          - name: "jj"
-            key: |
-                <redacted>
-                <redacted>
+
+
 
 
