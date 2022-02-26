@@ -14,6 +14,14 @@
   command: "j4-make-config -r -a {{ workstation_class }} purple"
   when: dotfiles.changed
 
+- name: Create user systemd directory
+  tags: config, dots
+  become: yes
+  become_user: "{{ user }}"
+  file:
+    path: "~/.config/systemd/user/default.target.wants"
+    state: directory
+
 - name: Symlink dots
   tags: config, dots
   become: yes
@@ -28,5 +36,16 @@
     - { src: "i3", dst: ".config/i3" }
     - { src: "i3status", dst: ".config/i3status" }
     - { src: "kitty", dst: ".config/kitty" }
+    - { src: "redshift", dst: ".config/redshift" }
     - { src: "zsh/zshrc.local", dst: ".zshrc.local" }
+    # The following creates and enables an SSH agent
+    - { 
+        src: "ssh-agent/ssh-agent.service", 
+        dst: ".config/systemd/user/default.target.wants/ssh-agent.service" 
+      }
+    - { 
+        src: "ssh-agent/ssh-agent.service", 
+        dst: ".config/systemd/user/ssh-agent.service" 
+      }
+    - { src: "ssh-agent/.pam_environment", dst: ".pam_environment" }
 
