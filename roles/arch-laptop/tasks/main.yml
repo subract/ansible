@@ -1,0 +1,5 @@
+- name: Install laptop software packages
+  tags: pkg
+  package:
+    name:
+    - brightnessctl

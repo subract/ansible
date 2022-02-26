@@ -8,6 +8,7 @@ all:
     docker:
     gaming:
     jj:
+    fornax:
     # work:
     # arch-dev:
     # localhost:
@@ -60,11 +61,12 @@ all:
               compose_file: seedling-docker-compose.yml
               env_file: seedling.env
 
-    # arch:
-    #   vars:
-    #     sftp_path: '/usr/lib/ssh/sftp-server'
-    #   hosts:
-    #     arch-dev:
+    arch:
+      vars:
+        sftp_path: '/usr/lib/ssh/sftp-server'
+      hosts:
+        fornax:
+          workstation_class: "laptop"
 
 
 
