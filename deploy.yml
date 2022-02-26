@@ -65,7 +65,7 @@
   become: true
   gather_facts: false
   roles:
-    - arch-desktop
+    - arch-workstation
     - dotfiles_copy
 
 - hosts: jj
@@ -82,10 +82,10 @@
     - nfs_client
     - dotfiles_copy
 
-# - hosts: bastion
-#   become: true
-#   gather_facts: false
-#   roles:
-#     - dotfiles_copy
-#     - robertdebock.fail2ban
-#     - jnv.mosh
+- hosts: fornax
+  become: true
+  gather_facts: false
+  roles:
+    - arch-workstation
+    - arch-laptop
+    - dotfiles_clone

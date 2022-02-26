@@ -1,11 +1,23 @@
 - name: Clone dotfiles
   tags: config, dots
+  become: yes
+  become_user: "{{ user }}"
   git:
     repo: https://gl.<redacted>/<redacted>/dotfiles.git
     dest: "/home/{{ user }}/.dotfiles"
+  register: dotfiles
+
+- name: Generate i3 config
+  tags: config, dots
+  become: yes
+  become_user: "{{ user }}"
+  command: "j4-make-config -r -a {{ workstation_class }} purple"
+  when: dotfiles.changed
 
 - name: Symlink dots
   tags: config, dots
+  become: yes
+  become_user: "{{ user }}"
   file:
     src:  "/home/{{ user }}/.dotfiles/{{ item.src }}"
     dest: "/home/{{ user }}/{{ item.dst }}"

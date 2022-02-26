@@ -59,7 +59,6 @@
     project_src: "{{ compose_dir }}"
     pull: yes
     remove_orphans: yes
-  register: output
 
 - name: Prune everything
   tags: docker, compose, update
