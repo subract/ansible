@@ -18,7 +18,7 @@
       - lightdm-gtk-greeter
       - i3-wm  
       - i3blocks  
-      - i3lock  
+      - i3lock
       - i3status
       - dmenu
       - xterm
@@ -93,21 +93,24 @@
       - tree # directory viewer
       - unzip # unzips
       - wireshark-qt # protocol analyzer
+      - xev # view key events
       - zip # zips
 
       # Helpers and styling
       - breeze-icons # icon theme
       - ccid # smart card driver
       - dunst # notification daemon
+      - file-roller # archive support for thunar
       - freetype2 # font rendering
       - gnome-keyring # keyring
+      - gvfs # removable storage mounting
       - nss-mdns # mdns name resolution
       - opensc # smart card libraries
       - pasystray # PulseAudio tray icon
       - pavucontrol # PulseAudio volume control
       - pulseaudio # The man himself
       - ttf-fira-code # nice font
-      - tumbler # thumbnails
+      - tumbler # thumbnails for thunar
 
 - name: Install AUR packages
   tags: pkg, aur
@@ -124,6 +127,7 @@
       - spotify # music
       - typora-free # markdown editor/exporter
       - autotiling # i3 window tiling
+      - i3lock-multimonitor # mutimonitor support for i3lock
     state: present
 
 - name: Configure lightdm-gtk-greeter

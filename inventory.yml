@@ -23,10 +23,7 @@ all:
         jj:
           users:
           - name: "jj"
-            key: |
-                <redacted>
-                <redacted>
-                ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIgIQrclUyOI2zVkjMTuEpmRyleE4xJ8lEtrlvfrNNeC24eIJNBBjAsZ/5nFNMZ4Dl3YXnXUVKXnXTu6krzMf/4=
+            key: <redacted>
 
       children:
       #   work_server:
