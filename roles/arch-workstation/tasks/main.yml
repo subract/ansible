@@ -22,6 +22,7 @@
       - i3status
       - dmenu
       - xterm
+      - xss-lock
       # For VM only
       # - xf86-video-qxl
       # - spice-vdagent
@@ -73,13 +74,14 @@
       - ark # archive manager
       - baobab # disk usage analyser
       - cowsay # cowsay
+      - dnsutils # dig
       - eog # image viewer
       - fd # find, but better
       - iftop # network monitor
       - networkmanager # network manager
       - nmap # network mapper
       - nvidia # proprietary drivers
-      - nvidia-settings # nvidia x server settings
+      - nvidia-settings # X server settings
       - nvtop # GPU monitor
       - kitty # terminal emulator
       - neofetch # OS info
@@ -93,7 +95,7 @@
       - tree # directory viewer
       - unzip # unzips
       - wireshark-qt # protocol analyzer
-      - xev # view key events
+      - xorg-xev # view key events
       - zip # zips
 
       # Helpers and styling
@@ -104,6 +106,7 @@
       - freetype2 # font rendering
       - gnome-keyring # keyring
       - gvfs # removable storage mounting
+      - network-manager-applet # tray icon, ProtonVPN dependency
       - nss-mdns # mdns name resolution
       - opensc # smart card libraries
       - pasystray # PulseAudio tray icon

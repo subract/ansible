@@ -37,7 +37,6 @@
   gather_facts: false
   roles:
     - base
-    - xterm-js
 
 # ...and finally, do role-specific tasks
 
@@ -48,18 +47,21 @@
     - nfs_client
     - docker_server
     - dotfiles_copy
+    - xterm-js
     
 - hosts: docker
   become: true
   gather_facts: false
   roles: 
     - mariadb
+    - xterm-js
 
 - hosts: work_server
   become: true
   gather_facts: false
   roles:
     - work_server
+    - xterm-js
 
 - hosts: arch-dev
   become: true
@@ -67,6 +69,7 @@
   roles:
     - arch-workstation
     - dotfiles_copy
+    - xterm-js
 
 - hosts: jj
   become: true
@@ -74,6 +77,7 @@
   roles:
     - dotfiles_copy
     - more_users
+    - xterm-js
 
 - hosts: seedling
   become: true
@@ -81,6 +85,7 @@
   roles:
     - nfs_client
     - dotfiles_copy
+    - xterm-js
 
 - hosts: fornax
   become: true
