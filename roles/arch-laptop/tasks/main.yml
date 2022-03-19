@@ -7,14 +7,14 @@
     - bluez-utils # includes cli management
 
 - name: Enable Bluetooth service
-  tags: pkg
+  tags: config
   service:
     name: bluetooth
     enabled: yes
     state: started
 
 - name: Power Bluetooth adapter on startup
-  tags: pkg
+  tags: config
   blockinfile:
     path: /etc/bluetooth/main.conf
     block: |
