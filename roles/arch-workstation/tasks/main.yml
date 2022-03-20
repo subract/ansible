@@ -73,10 +73,14 @@
       - ansible # config manager
       - ark # archive manager
       - baobab # disk usage analyser
+      - bat # better cat
       - cowsay # cowsay
       - dnsutils # dig
+      - duf # better df
       - eog # image viewer
-      - fd # find, but better
+      - exiftool # metadata parser
+      - fd # better find
+      - hexyl # better xxd
       - iftop # network monitor
       - networkmanager # network manager
       - nmap # network mapper
