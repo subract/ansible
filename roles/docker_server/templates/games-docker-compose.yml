@@ -12,7 +12,7 @@ services:
   #   volumes:
   #     - '/ssd/app/games/minecraft/mc-survival:/data'
   #     # Use this to import a world from a directory
-  #     # - '/home/<redacted>/worlds:/worlds:ro'
+  #     # - '/home/<user>/worlds:/worlds:ro'
 
   #   environment:
   #     TZ: 'America/Chicago'
@@ -75,6 +75,17 @@ services:
       TYPE: 'FORGE'
       VERSION: "1.18.2"
 
+  ror2:
+    container_name: ror2
+    image: avivace/ror2server:latest
+    restart: unless-stopped
+
+    ports:
+      - 27015:27015/udp
+
+    environment:
+      R2_psw: ${ROR2_PASS}
+
 
   # valheim: 
   #   container_name: valheim
@@ -109,7 +120,7 @@ services:
 #   volumes:
 #     - '/ssd/app/games/minecraft/mc-creative:/data'
 #     # Use this to import a world from a directory
-#     # - '/home/<redacted>/worlds:/worlds:ro'
+#     # - '/home/<user>/worlds:/worlds:ro'
 
 #   environment:
 #     TZ: 'America/Chicago'
