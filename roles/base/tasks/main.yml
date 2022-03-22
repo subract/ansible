@@ -14,10 +14,6 @@
       - curl
       - git
       - ufw
-      - duf # better df
-      - bat # better cat
-      - hexyl # better xxd
-      - fd # better find
     state: latest
 
 - name: Remove unwanted packages

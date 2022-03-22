@@ -1,0 +1,292 @@
+version: "3.7"
+
+networks:
+  web:
+  mqtt:
+  db:
+
+services:
+  traefik:
+    container_name: traefik
+    image: traefik:latest
+    restart: unless-stopped
+    command: --api.insecure=true --providers.docker
+
+    ports:
+      - 80:80
+      - 443:443
+
+    environment:
+      - CF_API_EMAIL=${CF_API_EMAIL}
+      - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
+      - CF_ZONE_API_TOKEN=${CF_ZONE_API_TOKEN}
+
+    networks:
+      - web
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /ssd/app/traefik/traefik.yml:/traefik.yml
+      - /ssd/app/traefik/dynamic_conf.yml:/dynamic_conf.yml
+      - /ssd/app/traefik/acme.json:/acme.json
+      - /etc/localtime:/etc/localtime:ro
+
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.api.rule=Host(`tr.{{ domain }}`)
+      - traefik.http.routers.api.entrypoints=https
+      - traefik.http.routers.api.tls.certresolver=default
+      - traefik.http.routers.api.service=api@internal
+      - traefik.http.routers.api.middlewares=auth
+      - traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_USERS}
+
+  nextcloud:
+    container_name: nextcloud
+    image: linuxserver/nextcloud:latest
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+
+    volumes:
+      - /hdd/enc/app/nextcloud/config:/config
+      - /hdd/enc/app/nextcloud/data:/data
+
+    environment:
+      - PUID=1001
+      - PGID=1001
+
+    networks:
+      - web
+      - db
+
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.nc.rule=Host(`nc.{{ domain }}`)
+      - traefik.http.routers.nc.entrypoints=https
+      - traefik.http.routers.nc.tls.certresolver=default
+      - traefik.serversTransport.forwardingTimeouts.dialTimeout=0s
+      - traefik.http.services.nc.loadbalancer.server.port=80
+
+  mariadb:
+    container_name: mariadb
+    # held back per https://help.nextcloud.com/t/update-to-next-cloud-21-0-2-has-get-an-error/117028/15
+    image: mariadb:10.5
+    restart: unless-stopped
+
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+
+    volumes:
+      - /ssd/app/mariadb:/var/lib/mysql
+
+    networks:
+      - db
+
+    labels:
+      - traefik.enable=false
+
+  gitea:
+    container_name: gitea
+    image: gitea/gitea:latest
+    restart: unless-stopped
+
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - GITEA__SERVICE__DISABLE_REGISTRATION=true
+      - GITEA__MIGRATIONS__ALLOW_LOCALNETWORKS=true
+
+    volumes:
+      - /ssd/app/gitea:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+
+    networks:
+      - web
+
+    ports:
+      - "1108:22"
+
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.gt.rule=Host(`gt.{{ domain }}`)
+      - traefik.http.routers.gt.entrypoints=https
+      - traefik.http.routers.gt.tls.certresolver=default
+      - traefik.http.services.gt.loadbalancer.server.port=80
+
+  gitlab:
+    container_name: gitlab
+    image: 'gitlab/gitlab-ce:latest'
+    restart: unless-stopped
+    hostname: 'gl.{{ domain }}'
+    environment:
+      GITLAB_OMNIBUS_CONFIG:
+        external_url 'http://gl.{{ domain }}';
+        gitlab_rails['gitlab_shell_ssh_port'] = 4084
+        # Add any other gitlab.rb configuration here, each on its own line
+
+    networks:
+      - web
+
+    ports:
+      - "4084:22"
+
+    volumes:
+      - /ssd/app/gitlab/config:/etc/gitlab
+      - /ssd/app/gitlab/log:/var/log/gitlab
+      - /ssd/app/gitlab/data:/var/opt/gitlab
+      - /ssd/app/gitlab/backup:/backup
+
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.gl.rule=Host(`gl.{{ domain }}`)
+      - traefik.http.routers.gl.entrypoints=https
+      - traefik.http.routers.gl.tls.certresolver=default
+      - traefik.http.services.gl.loadbalancer.server.port=80
+
+
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto
+    restart: unless-stopped
+
+    networks:
+      - mqtt
+
+    volumes:
+      - /ssd/app/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+
+    labels:
+      - traefik.enable=false
+
+  zigbee2mqtt:
+    container_name: zigbee2mqtt
+    image: koenkk/zigbee2mqtt
+    restart: unless-stopped
+
+    volumes:
+      - /ssd/app/zigbee2mqtt:/app/data
+
+    devices:
+      - /dev/ttyUSB0
+
+    networks:
+      - mqtt
+
+    environment:
+      - TZ=America/Chicago
+
+    labels:
+      - traefik.enable=false
+
+  homeassistant:
+    container_name: homeassistant
+    image: homeassistant/home-assistant:latest
+    restart: unless-stopped
+
+    volumes:
+      - /ssd/app/homeassistant:/config
+      - /etc/localtime:/etc/localtime:ro
+
+    networks:
+      - web
+      - mqtt
+      - db
+
+    ports:
+      - 1400:1400
+      - 21064:21064 # HomeKit
+
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.ha.rule=Host(`ha.{{ domain }}`)
+      - traefik.http.routers.ha.entrypoints=https
+      - traefik.http.routers.ha.tls.certresolver=default
+      - traefik.http.services.ha.loadbalancer.server.port=8123
+
+  # # Needed for HomeKit support in HomeAssistant
+  # mdns-repeater:
+  #   container_name: mdns_repeater
+  #   image: angelnu/mdns_repeater
+  #   restart: unless-stopped
+
+  #   network_mode: host
+  #   environment:
+  #   - hostNIC=ens18
+  #   - dockerNIC=br-513ca494949f # this NIC is the one HomeAssistant is set to
+  #   # allow integrations to use
+
+  nodered:
+    container_name: nodered
+    image: nodered/node-red
+    restart: unless-stopped
+    user: root
+
+    volumes:
+      - /ssd/app/nodered:/data
+      - /etc/localtime:/etc/localtime:ro
+
+    networks:
+      - web
+      - mqtt
+
+    environment:
+      - TZ=America/Chicago
+
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.nr.rule=Host(`nr.{{ domain }}`)
+      - traefik.http.routers.nr.entrypoints=https
+      - traefik.http.routers.nr.tls.certresolver=default
+      - traefik.http.services.nr.loadbalancer.server.port=1880
+
+
+  cyberchef:
+    container_name: cyberchef
+    image: mpepping/cyberchef
+    restart: unless-stopped
+
+    networks:
+      - web
+
+    environment:
+      - TZ=America/Chicago
+
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.cc.rule=Host(`cc.{{ domain }}`)
+      - traefik.http.routers.cc.entrypoints=https
+      - traefik.http.routers.cc.tls.certresolver=default
+      - traefik.http.services.cc.loadbalancer.server.port=8000
+  
+  unifi:
+    container_name: unifi
+    image: 'linuxserver/unifi-controller'
+    restart: unless-stopped
+    hostname: 'ui.{{ domain }}'
+
+    networks:
+      - web
+
+    volumes:
+      - /ssd/app/unifi/:/config
+
+    ports:
+      - 3478:3478/udp
+      - 10001:10001/udp
+      - 8080:8080
+      - 8443:8443
+      - 8081:8081
+      - 8880:8880
+      - 6789:6789
+    
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.ui.rule=Host(`ui.{{ domain }}`)
+      - traefik.http.routers.ui.entrypoints=https
+      - traefik.http.routers.ui.tls.certresolver=default
+      - traefik.http.services.ui.loadbalancer.server.port=8443
+      - traefik.http.services.ui.loadbalancer.server.scheme=https
+
+
+{{ private_apps }}

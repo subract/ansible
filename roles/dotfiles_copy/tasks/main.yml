@@ -1,7 +1,11 @@
+#TODO: Select dots to copy based on installed packages
+
 - name: Copy selected dots
   tags: config, dots
   copy:
-    src:  "{{ item.src }}"
+    # Depends on dotfiles being located at ~/.dotfiles, which is where the 
+    # dotfiles_clone task places them
+    src:  "~/.dotfiles/{{ item.src }}"
     dest: "/home/{{ user }}/{{ item.dst }}"
     force: yes
   with_items:
@@ -9,7 +13,7 @@
     # - { src: "i3", dst: ".config/i3" }
     # - { src: "i3status", dst: ".config/i3status" }
     # - { src: "kitty", dst: ".config/kitty" }
-    - { src: "zsh/zshrc.local", dst: ".zshrc.local" }
+    # - { src: "zsh/zshrc.local", dst: ".zshrc.local" }
 
 - name: Copy selected dots to root
   tags: config, dots
