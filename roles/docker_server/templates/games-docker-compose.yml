@@ -1,37 +1,11 @@
 version: '3.7'
 
 services:
-  # mc-survival:
-  #   container_name: mc-survival
-  #   image: itzg/minecraft-server:java8
-  #   restart: unless-stopped
-
-  #   ports:
-  #     - 25565:25565
-
-  #   volumes:
-  #     - '/ssd/app/games/minecraft/mc-survival:/data'
-  #     # Use this to import a world from a directory
-  #     # - '/home/<user>/worlds:/worlds:ro'
-
-  #   environment:
-  #     TZ: 'America/Chicago'
-  #     EULA: 'True'
-  #     PVP: 'false'
-  #     DIFFICULTY: 'normal'
-  #     SERVER_NAME: 'This Land'
-  #     OPS: ${MINECRAFT_OP}
-  #     MEMORY: '3G'
-  #     MOTD: 'This Land'
-  #     TYPE: 'FORGE'
-  #     VERSION: "1.15.2"
-  #     # Use this to import a world from a directory
-  #     # WORLD: '/worlds/this_land'
-
-
   mc-survival-2:
     container_name: mc-survival-2
-    image: itzg/minecraft-server:java8
+    # mods require java 8
+    # autopause has issues on alpine with java8 image
+    image: itzg/minecraft-server:java8-openj9
     restart: unless-stopped
 
     ports:
@@ -51,6 +25,10 @@ services:
       MOTD: 'The Shattered Plains'
       TYPE: 'FORGE'
       VERSION: "1.16.4"
+      ENABLE_AUTOPAUSE: "TRUE"
+      AUTOPAUSE_TIMEOUT_EST: 60
+      AUTOPAUSE_TIMEOUT_INIT: 60
+      DISABLE_HEALTHCHECK: "True"
 
   mc-survival-3:
     container_name: mc-survival-3
@@ -74,6 +52,10 @@ services:
       MOTD: 'Haven Grotto'
       TYPE: 'FORGE'
       VERSION: "1.18.2"
+      ENABLE_AUTOPAUSE: "TRUE"
+      AUTOPAUSE_TIMEOUT_EST: 60
+      AUTOPAUSE_TIMEOUT_INIT: 60
+      DISABLE_HEALTHCHECK: "True"
 
   ror2:
     container_name: ror2
@@ -85,6 +67,33 @@ services:
 
     environment:
       R2_psw: ${ROR2_PASS}
+
+  # mc-survival:
+  #   container_name: mc-survival
+  #   image: itzg/minecraft-server:java8
+  #   restart: unless-stopped
+
+  #   ports:
+  #     - 25565:25565
+
+  #   volumes:
+  #     - '/ssd/app/games/minecraft/mc-survivalb:/data'
+  #     # Use this to import a world from a directory
+  #     # - '/home/<user>/worlds:/worlds:ro'
+
+  #   environment:
+  #     TZ: 'America/Chicago'
+  #     EULA: 'True'
+  #     PVP: 'false'
+  #     DIFFICULTY: 'normal'
+  #     SERVER_NAME: 'This Land'
+  #     OPS: ${MINECRAFT_OP}
+  #     MEMORY: '3G'
+  #     MOTD: 'This Land'
+  #     TYPE: 'FORGE'
+  #     VERSION: "1.15.2"
+  #     # Use this to import a world from a directory
+  #     # WORLD: '/worlds/this_land'
 
 
   # valheim: 
