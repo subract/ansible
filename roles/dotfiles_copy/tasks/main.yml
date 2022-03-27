@@ -3,9 +3,9 @@
 - name: Copy selected dots
   tags: config, dots
   copy:
-    # Depends on dotfiles being located at ~/.dotfiles, which is where the 
-    # dotfiles_clone task places them
-    src:  "dotfiles/{{ item.src }}"
+    # Depends on dotfiles being symlinked at the `files` directory
+    # ln -s ~/.dotfiles roles/dotfiles_copy/files
+    src:  "{{ item.src }}"
     dest: "/home/{{ user }}/{{ item.dst }}"
     force: yes
   with_items:
