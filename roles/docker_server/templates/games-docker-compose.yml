@@ -1,5 +1,6 @@
 version: '3.7'
 
+
 services:
   mc-survival-2:
     container_name: mc-survival-2
@@ -25,10 +26,7 @@ services:
       MOTD: 'The Shattered Plains'
       TYPE: 'FORGE'
       VERSION: "1.16.4"
-      # ENABLE_AUTOPAUSE: "TRUE"
-      # AUTOPAUSE_TIMEOUT_EST: 60
-      # AUTOPAUSE_TIMEOUT_INIT: 60
-      # DISABLE_HEALTHCHECK: "True"
+
 
   mc-survival-3:
     container_name: mc-survival-3
@@ -52,10 +50,7 @@ services:
       MOTD: 'Haven Grotto'
       TYPE: 'FORGE'
       VERSION: "1.18.2"
-      # ENABLE_AUTOPAUSE: "TRUE"
-      # AUTOPAUSE_TIMEOUT_EST: 60
-      # AUTOPAUSE_TIMEOUT_INIT: 60
-      # DISABLE_HEALTHCHECK: "True"
+
 
   ror2:
     container_name: ror2
@@ -67,6 +62,7 @@ services:
 
     environment:
       R2_PSW: ${ROR2_PASS}
+
 
   factorio:
     container_name: factorio
