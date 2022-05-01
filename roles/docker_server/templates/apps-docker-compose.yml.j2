@@ -1,9 +1,11 @@
 version: "3.7"
 
+
 networks:
   web:
   mqtt:
   db:
+
 
 services:
   traefik:
@@ -40,6 +42,7 @@ services:
       - traefik.http.routers.api.middlewares=auth
       - traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_USERS}
 
+
   nextcloud:
     container_name: nextcloud
     image: linuxserver/nextcloud:latest
@@ -67,6 +70,7 @@ services:
       - traefik.serversTransport.forwardingTimeouts.dialTimeout=0s
       - traefik.http.services.nc.loadbalancer.server.port=80
 
+
   mariadb:
     container_name: mariadb
     # held back per https://help.nextcloud.com/t/update-to-next-cloud-21-0-2-has-get-an-error/117028/15
@@ -84,6 +88,7 @@ services:
 
     labels:
       - traefik.enable=false
+
 
   gitea:
     container_name: gitea
@@ -115,6 +120,7 @@ services:
       - traefik.http.routers.gt.tls.certresolver=default
       - traefik.http.services.gt.loadbalancer.server.port=80
 
+
   mosquitto:
     container_name: mosquitto
     image: eclipse-mosquitto
@@ -128,6 +134,7 @@ services:
 
     labels:
       - traefik.enable=false
+
 
   zigbee2mqtt:
     container_name: zigbee2mqtt
@@ -148,6 +155,7 @@ services:
 
     labels:
       - traefik.enable=false
+
 
   homeassistant:
     container_name: homeassistant
@@ -174,6 +182,7 @@ services:
       - traefik.http.routers.ha.tls.certresolver=default
       - traefik.http.services.ha.loadbalancer.server.port=8123
 
+
   # # Needed for HomeKit support in HomeAssistant
   # mdns-repeater:
   #   container_name: mdns_repeater
@@ -185,6 +194,7 @@ services:
   #   - hostNIC=ens18
   #   - dockerNIC=br-513ca494949f # this NIC is the one HomeAssistant is set to
   #   # allow integrations to use
+
 
   nodered:
     container_name: nodered
