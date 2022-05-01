@@ -76,9 +76,11 @@
       - bat # better cat
       - cowsay # cowsay
       - dnsutils # dig
+      - docker # containers
+      - docker-compose # container management
       - duf # better df
       - eog # image viewer
-      - exiftool # metadata parser
+      - perl-image-exiftool # metadata parser
       - fd # better find
       - hexyl # better xxd
       - iftop # network monitor
@@ -94,6 +96,7 @@
       - rkhunter # rootkit hunter
       - rsync # copy files in style
       - seahorse # keyring viewer
+      - tcpdump # peep some packets
       - testdisk # data recovery
       - traceroute # traceroute
       - tree # directory viewer
