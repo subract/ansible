@@ -1,10 +1,3 @@
-- name: Make user member of docker group
-  tags: docker, config
-  user:
-    name: "{{ user }}"
-    groups: docker
-    append: yes
-
 - name: Set docker env vars/shortcuts
   tags: docker, config
   blockinfile:
@@ -17,46 +10,25 @@
       alias dcl="docker logs"
       alias dclf="docker logs --follow"
 
-- name: Install pip3
-  tags: docker, sdk
-  apt:
-    name: python3-pip
-
-- name: Install docker and docker-compose Python modules
-  tags: docker, sdk
-  pip:
-    name: 
-    - docker
-    - docker-compose
-
 - name: Create compose directory
   tags: docker, compose
   file:
     path: "{{ compose_dir }}"
     state: directory
 
-# - name: Copy docker-compose.yml
-#   tags: docker, compose
-#   copy:
-#     src: "{{ compose_file }}"
-#     dest: "{{ compose_dir }}docker-compose.yml"
-#     mode: 0664
-#     owner: root
-#     group: docker 
-
 - name: Copy docker-compose.yml
   tags: docker, compose
   template:
-    src: "{{ compose_file }}"
+    src: "{{ inventory_hostname }}-compose.yml"
     dest: "{{ compose_dir }}docker-compose.yml"
-    mode: 0664
+    mode: 0660
     owner: root
     group: docker
 
 - name: Copy .env
   tags: docker, env
   copy:
-    src: "{{ env_file }}"
+    src: "{{ inventory_hostname }}.env"
     dest: "{{ compose_dir }}.env"
     mode: 0440
     owner: root

@@ -1,0 +1,3 @@
+---
+# NFS directories mounted on file server
+nfs_dirs: [/ssd/app/deluge]

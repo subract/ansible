@@ -1,3 +1,8 @@
+- name: Set distro-specific variables
+  include_vars: '{{ item }}'
+  with_first_found:
+    - '{{ ansible_os_family }}.yml'
+
 - name: Verify ansible user's password is locked
   user:
     name: "{{ ansible_user }}"
@@ -63,6 +68,3 @@
     name: sshd
     state: restarted
   when: sshd.changed
-
-#TODO: user password, GRUB config, .vimrc, ufw config
-#      clone dotfiles git repo and stow, default editor

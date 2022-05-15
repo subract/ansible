@@ -12,7 +12,7 @@ docker exec nextcloud sudo -u abc php /config/www/nextcloud/occ maintenance:mode
 # Overwrite existing file, because zfs will keep local versions, and Backblaze will keep versions for 30 days
 docker exec mariadb sh -c 'exec mysqldump --all-databases -uroot -p"$MYSQL_ROOT_PASSWORD"' | gzip > /ssd/app/mariadb/dumps/mariadb.sql.gz &&
 
-# Leave Nextcloud maintenance mode
+# Disable Nextcloud maintenance mode
 docker exec nextcloud sudo -u abc php /config/www/nextcloud/occ maintenance:mode --off
 
 # Explicitly fail if any command failed

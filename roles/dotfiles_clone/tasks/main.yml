@@ -5,14 +5,7 @@
   git:
     repo: https://gt.{{ domain }}/subract/dotfiles.git
     dest: "/home/{{ user }}/.dotfiles"
-  register: dotfiles
 
-- name: Generate i3 config
-  tags: config, dots
-  become: yes
-  become_user: "{{ user }}"
-  command: "j4-make-config -r -a {{ workstation_class }} purple"
-  when: dotfiles.changed
 
 - name: Create user systemd directory
   tags: config, dots

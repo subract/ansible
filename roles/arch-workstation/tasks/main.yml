@@ -19,7 +19,7 @@
       - i3-wm  
       - i3blocks  
       - i3lock
-      - i3status
+      - polybar # customizable statusbar
       - dmenu
       - xterm
       - xss-lock
@@ -80,8 +80,8 @@
       - docker-compose # container management
       - duf # better df
       - eog # image viewer
-      - perl-image-exiftool # metadata parser
       - fd # better find
+      - git # git
       - hexyl # better xxd
       - iftop # network monitor
       - networkmanager # network manager
@@ -91,6 +91,7 @@
       - nvtop # GPU monitor
       - kitty # terminal emulator
       - neofetch # OS info
+      - perl-image-exiftool # metadata parser
       - pv # progress viewer
       - reflector # pacman mirror manager
       - rkhunter # rootkit hunter
@@ -106,6 +107,7 @@
       - zip # zips
 
       # Helpers and styling
+      - base-devel # needed for AUR
       - breeze-icons # icon theme
       - ccid # smart card driver
       - dunst # notification daemon
@@ -118,21 +120,28 @@
       - opensc # smart card libraries
       - pasystray # PulseAudio tray icon
       - pavucontrol # PulseAudio volume control
-      - pulseaudio # The man himself
+      - pulseaudio # the man himself
       - ttf-fira-code # nice font
       - tumbler # thumbnails for thunar
+
+- name: Install yay
+  tags: pkg, aur
+  become: false
+  kewlfft.aur.aur:
+    name:
+      - yay # AUR manager
 
 - name: Install AUR packages
   tags: pkg, aur
   become: false
   kewlfft.aur.aur:
     name:
-      - j4-make-config-git # i3 config helper
       - brother-hll2350dw # print drivers 
       - magic-wormhole # file transfer
       - vmware-horizon-client # remote desktop client
       - vmware-horizon-smartcard # smartcard support
       - protonvpn # ProtonVPN CLI and GUI
+      - protonmail-bridge # allows local use of ProtonMail
       - standardnotes-desktop # notes
       - spotify # music
       - typora-free # markdown editor/exporter

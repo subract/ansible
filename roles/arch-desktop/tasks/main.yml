@@ -1,4 +1,4 @@
-- name: Configure lightdm for monitor setup
+- name: Configure lightdm for dual monitor setup
   tags: config
   blockinfile:
     path: /etc/lightdm/lightdm.conf

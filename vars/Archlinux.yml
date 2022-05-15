@@ -1,0 +1,3 @@
+---
+# SFTP path for sshd config
+sftp_path: '/usr/lib/ssh/sftp-server'

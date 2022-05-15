@@ -1,7 +1,7 @@
 - name: Copy backup script
   tags: backup
   template:
-    src:  "backup_mariadb.j2"
+    src:  "backup_mariadb.sh"
     dest: "/root/.backup_mariadb.sh"
     owner: root
     group: root
