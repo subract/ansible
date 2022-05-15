@@ -1,32 +1,32 @@
 ---
-# Do OS-specific pre-tasks before anything else...
+# Do update pre-tasks before anything else...
 
-- hosts: debian
+- hosts: all
   become: true
   gather_facts: true
+  ignore_unreachable: true
   pre_tasks:
-  - name: Update package index
+  - name: Update apt index
     tags: update, upgrade
+    when: ansible_os_family == "Debian"
     changed_when: false
     apt:
       update_cache: yes
-  - name: Run dist-upgrade
+  - name: Run apt dist upgrade
     tags: upgrade
+    when: ansible_os_family == "Debian"
     apt:
       upgrade: dist
       autoremove: yes
-
-- hosts: arch
-  become: true
-  gather_facts: false
-  pre_tasks:
-  - name: Update package index
+  - name: Update pacman index
     tags: update, upgrade
     changed_when: false
+    when: ansible_os_family == "Archlinux"
     community.general.pacman:
       update_cache: yes
-  - name: Run system upgrade
+  - name: Run pacman upgrade
     tags: upgrade
+    when: ansible_os_family == "Archlinux"
     community.general.pacman:
       upgrade: yes
   
@@ -35,61 +35,54 @@
 - hosts: all
   become: true
   gather_facts: false
+  ignore_unreachable: true
   roles:
     - base
 
 # ...and finally, do role-specific tasks
 
-- hosts: docker_server
+- hosts: vm
   become: true
+  ignore_unreachable: true
+  roles:
+    - xterm-js
+
+- hosts: docker
+  become: true
+  ignore_unreachable: true
   roles:
     - geerlingguy.docker
     - nfs_client
-    - docker_server
+    - docker
     - dotfiles_copy
-    - xterm-js
     
-- hosts: docker
+- hosts: apps
   become: true
   gather_facts: false
+  ignore_unreachable: true
   roles: 
-    - mariadb
-    - xterm-js
-
-- hosts: work_server
-  become: true
-  gather_facts: false
-  roles:
-    - work_server
-    - xterm-js
-
-- hosts: arch-dev
-  become: true
-  gather_facts: false
-  roles:
-    - arch-workstation
-    - dotfiles_copy
-    - xterm-js
+    - mariadb_backup
 
 - hosts: jj
   become: true
   gather_facts: false
+  ignore_unreachable: true
   roles:
     - dotfiles_copy
     - more_users
-    - xterm-js
 
-- hosts: seedling
+- hosts: arch-dev
   become: true
   gather_facts: false
+  ignore_unreachable: true
   roles:
-    - nfs_client
-    - dotfiles_copy
-    - xterm-js
+    - arch-workstation
+    - dotfiles_clone
 
 - hosts: fornax
   become: true
   gather_facts: false
+  ignore_unreachable: true
   roles:
     - arch-workstation
     - arch-laptop
