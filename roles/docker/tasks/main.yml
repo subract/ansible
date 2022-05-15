@@ -34,18 +34,20 @@
     owner: root
     group: docker 
 
-- name: Pull and start services
-  tags: docker, compose, update
-  community.docker.docker_compose:
-    project_src: "{{ compose_dir }}"
-    pull: yes
-    remove_orphans: yes
+- name: Pull docker services
+  tags: docker, compose
+  command:
+    chdir: "{{ compose_dir }}"
+    cmd: docker-compose pull 
 
-- name: Prune everything
-  tags: docker, compose, update
-  community.docker.docker_prune:
-    containers: yes
-    images: yes
-    networks: yes
-    volumes: yes
-    builder_cache: yes
+- name: Start docker services
+  tags: docker, compose
+  command:
+    chdir: "{{ compose_dir }}"
+    cmd: docker-compose up -d
+
+- name: Prune docker services
+  tags: docker, compose
+  command:
+    chdir: "{{ compose_dir }}"
+    cmd: docker system prune -f
