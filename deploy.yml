@@ -34,7 +34,6 @@
 
 - hosts: all
   become: true
-  gather_facts: false
   ignore_unreachable: true
   roles:
     - base
@@ -43,12 +42,14 @@
 
 - hosts: vm
   become: true
+  gather_facts: false
   ignore_unreachable: true
   roles:
     - xterm-js
 
 - hosts: docker
   become: true
+  gather_facts: false
   ignore_unreachable: true
   roles:
     - geerlingguy.docker
