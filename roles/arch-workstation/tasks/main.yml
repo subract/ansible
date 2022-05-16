@@ -8,7 +8,7 @@
     group: root
 
 - name: Install window management packages
-  tags: pkg
+  tags: pkg, update
   package:
     name:
       - xorg-server
@@ -28,15 +28,22 @@
       # - spice-vdagent
 
 
-- name: Enable lightdm service
+- name: Enable lightdm
   tags: pkg
   service:
     name: lightdm
     enabled: yes
     state: started
 
-- name: Install workstation software packages
+- name: Enable timesyncd
   tags: pkg
+  service:
+    name: systemd-timesyncd
+    enabled: yes
+    state: started
+
+- name: Install workstation software packages
+  tags: pkg, update
   package:
     name:
       # User apps
@@ -125,14 +132,14 @@
       - tumbler # thumbnails for thunar
 
 - name: Install yay
-  tags: pkg, aur
+  tags: pkg, aur, update
   become: false
   kewlfft.aur.aur:
     name:
       - yay # AUR manager
 
 - name: Install AUR packages
-  tags: pkg, aur
+  tags: pkg, aur, update
   become: false
   kewlfft.aur.aur:
     name:
@@ -160,3 +167,30 @@
   loop:
     - { src: "lightdm-gtk-greeter.conf", dest: "/etc/lightdm/lightdm-gtk-greeter.conf" }
     - { src: "greeter.png", dest: "/etc/lightdm/greeter.png" }
+
+- name: Configure mouse input
+  tags: config
+  copy:
+    src: mouse.conf
+    dest: /etc/X11/xorg.conf.d/99-libinput-custom.conf
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Configure fonts
+  tags: config
+  copy:
+    src: fonts.conf
+    dest: /etc/fonts/local.conf
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Create audio output switcher script
+  tags: config, script
+  copy:
+    src: switch_audio_out.sh
+    dest: /usr/local/bin/switch_audio_out
+    mode: 0755
+    owner: root
+    group: root
