@@ -56,7 +56,15 @@
     - nfs_client
     - docker
     - dotfiles_copy
-    
+
+- hosts: workstations
+  become: true
+  gather_facts: false
+  ignore_unreachable: true
+  roles:
+    - arch-workstation
+    - dotfiles_clone
+
 - hosts: apps
   become: true
   gather_facts: false
@@ -72,13 +80,12 @@
     - dotfiles_copy
     - more_users
 
-- hosts: arch-dev
+- hosts: titania
   become: true
   gather_facts: false
   ignore_unreachable: true
   roles:
-    - arch-workstation
-    - dotfiles_clone
+    - arch-desktop
 
 - hosts: fornax
   become: true
