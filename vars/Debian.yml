@@ -1,3 +1,3 @@
 ---
 # SFTP path for sshd config
-sftp_path: '/usr/lib/openssh/sftp-server'
+sftp_path: /usr/lib/openssh/sftp-server

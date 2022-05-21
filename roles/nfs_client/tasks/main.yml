@@ -1,3 +1,4 @@
+---
 - name: Install nfs-common
   tags: nfs
   apt:
@@ -8,6 +9,9 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
+    owner: root
+    group: root
+    mode: 0770
   loop: "{{ nfs_dirs }}"
   register: mountpoints
 
@@ -24,6 +28,7 @@
   lineinfile:
     path: /etc/fstab
     regexp: "{{ item }}"
-    line: 10.0.0.5:{{ item }}	{{ item }}	nfs	auto	0	0
+    # /etc/fstab traditionally has tabs, so skip no-tab linting rule
+    line: "10.0.0.5:{{ item }}\t{{ item }}\tnfs\tauto\t0\t0" # noqa no-tabs
   loop: "{{ nfs_dirs }}"
   register: nfs

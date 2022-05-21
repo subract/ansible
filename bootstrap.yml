@@ -1,49 +1,48 @@
 ---
-
 - hosts: "{{setupHosts}}"
   become: true
 
   vars_prompt:
-  - name: "setupHosts"
-    prompt: "hosts to bootstrap"
-    private: no
+    - name: setupHosts
+      prompt: hosts to bootstrap
+      private: false
 
-  - name: password
-    prompt: "desired sudo password"
-    unsafe: yes # allows special characters
-    private: yes
-    encrypt: sha512_crypt
-    confirm: yes
+    - name: password
+      prompt: desired sudo password
+      unsafe: true # allows special characters
+      private: true
+      encrypt: sha512_crypt
+      confirm: true
 
   tasks:
-  - name: Create sudo group
-    tags: groups
-    group: 
-      name: sudo
-  
-  - name: Ensure sudo group has privs
-    tags: groups
-    lineinfile:
-      line: "%sudo	ALL=(ALL:ALL) ALL"
-      path: /etc/sudoers
+    - name: Create sudo group
+      tags: groups
+      group:
+        name: sudo
 
-  - name: Create user
-    tags: user, groups
-    user:
-      name: "{{ user }}"
-      groups: sudo
-    register: new_user
+    - name: Ensure sudo group has privs
+      tags: groups
+      lineinfile:
+        line: "%sudo\tALL=(ALL:ALL) ALL"
+        path: /etc/sudoers
 
-  - name: Set ssh key for user
-    tags: user, ssh
-    authorized_key:
-      user: "{{ user }}"
-      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOcIlNwYsyjIhu6Pg/+67BpORsW8RdnJnvs12XvWSV8g Homelab aven"
-      exclusive: yes
-    when: new_user.changed
+    - name: Create user
+      tags: user, groups
+      user:
+        name: "{{ user }}"
+        groups: sudo
+      register: new_user
 
-  - name: Set user password
-    tags: user, pass
-    user:
-      name: "{{ user }}"
-      password: "{{ password }}"
+    - name: Set ssh key for user
+      tags: user, ssh
+      authorized_key:
+        user: "{{ user }}"
+        key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOcIlNwYsyjIhu6Pg/+67BpORsW8RdnJnvs12XvWSV8g Homelab aven
+        exclusive: true
+      when: new_user.changed
+
+    - name: Set user password
+      tags: user, pass
+      user:
+        name: "{{ user }}"
+        password: "{{ password }}"

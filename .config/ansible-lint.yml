@@ -1,0 +1,5 @@
+---
+skip_list:
+  - fqcn-builtins # Shorter names look much cleaner
+  - no-handler # Handlers are useful, but split up the code flow too much when
+               # their extra features aren't needed

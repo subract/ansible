@@ -1,12 +1,13 @@
+---
 - name: Set distro-specific variables
-  include_vars: '{{ item }}'
+  include_vars: "{{ item }}"
   with_first_found:
-    - '{{ ansible_os_family }}.yml'
+    - "{{ ansible_os_family }}.yml"
 
 - name: Verify ansible user's password is locked
   user:
     name: "{{ ansible_user }}"
-    password_lock: yes
+    password_lock: true
 
 - name: Install packages
   package:
@@ -19,7 +20,7 @@
       - curl
       - git
       - ufw
-    state: latest
+    state: present
 
 - name: Remove unwanted packages
   package:
@@ -34,21 +35,21 @@
     dest: "{{ item.dest }}"
     mode: 0644
     owner: root
-    group: root 
+    group: root
   loop:
-    - { src: "zshrc", dest: "/etc/zsh/zshrc" }
-    - { src: "zshrc-skel", dest: "/etc/skel/.zshrc" }
-    - { src: "zshrc-skel", dest: "/etc/zsh/newuser.zshrc.recommended" }
-    - { src: "zshrc-skel", dest: "/home/{{ user }}/.zshrc" }
+    - { src: zshrc, dest: /etc/zsh/zshrc }
+    - { src: zshrc-skel, dest: /etc/skel/.zshrc }
+    - { src: zshrc-skel, dest: /etc/zsh/newuser.zshrc.recommended }
+    - { src: zshrc-skel, dest: "/home/{{ user }}/.zshrc" }
 
 
 - name: Set shells to zsh
   tags: zsh, config
-  user: 
+  user:
     name: "{{ item }}"
     shell: /bin/zsh
   loop:
-    - "root"
+    - root
     - "{{ user }}"
 
 - name: Set sshd config

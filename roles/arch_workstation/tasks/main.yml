@@ -1,3 +1,4 @@
+---
 - name: Configure pacman
   tags: config
   copy:
@@ -16,8 +17,8 @@
       - xorg-xrdb
       - lightdm
       - lightdm-gtk-greeter
-      - i3-wm  
-      - i3blocks  
+      - i3-wm
+      - i3blocks
       - i3lock
       - polybar # customizable statusbar
       - dmenu
@@ -27,19 +28,18 @@
       # - xf86-video-qxl
       # - spice-vdagent
 
-
 - name: Enable lightdm
   tags: pkg
   service:
     name: lightdm
-    enabled: yes
+    enabled: true
     state: started
 
 - name: Enable timesyncd
   tags: pkg
   service:
     name: systemd-timesyncd
-    enabled: yes
+    enabled: true
     state: started
 
 - name: Install workstation software packages
@@ -66,6 +66,7 @@
       - thunar # file browser
       - thunar-archive-plugin # archive support
       - thunar-volman # removable media management
+      - thunderbird # email
       - tldr # concise, useful manpages
       - tmux # terminal multiplexer
       - transmission-gtk # torrent client
@@ -143,17 +144,17 @@
   become: false
   kewlfft.aur.aur:
     name:
-      - brother-hll2350dw # print drivers 
+      - autotiling # i3 window tiling
+      - brother-hll2350dw # print drivers
+      - i3lock-multimonitor # mutimonitor support for i3lock
       - magic-wormhole # file transfer
+      - protonmail-bridge # allows local use of ProtonMail
+      - protonvpn # ProtonVPN CLI and GUI
+      - spotify # music
+      - standardnotes-desktop # notes
+      - typora-free # markdown editor/exporter
       - vmware-horizon-client # remote desktop client
       - vmware-horizon-smartcard # smartcard support
-      - protonvpn # ProtonVPN CLI and GUI
-      - protonmail-bridge # allows local use of ProtonMail
-      - standardnotes-desktop # notes
-      - spotify # music
-      - typora-free # markdown editor/exporter
-      - autotiling # i3 window tiling
-      - i3lock-multimonitor # mutimonitor support for i3lock
     state: present
 
 - name: Configure lightdm-gtk-greeter
@@ -163,10 +164,10 @@
     dest: "{{ item.dest }}"
     mode: 0644
     owner: root
-    group: root 
+    group: root
   loop:
-    - { src: "lightdm-gtk-greeter.conf", dest: "/etc/lightdm/lightdm-gtk-greeter.conf" }
-    - { src: "greeter.png", dest: "/etc/lightdm/greeter.png" }
+    - { src: lightdm-gtk-greeter.conf, dest: /etc/lightdm/lightdm-gtk-greeter.conf }
+    - { src: greeter.png, dest: /etc/lightdm/greeter.png }
 
 - name: Configure mouse input
   tags: config
@@ -194,3 +195,12 @@
     mode: 0755
     owner: root
     group: root
+
+- name: Configure git
+  tags: git, config
+  copy:
+    src: .gitconfig
+    dest: /home/{{ user }}/.gitconfig
+    mode: 0644
+    owner: "{{ user }}"
+    group: "{{ user }}"
