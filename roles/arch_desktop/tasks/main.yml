@@ -1,8 +1,9 @@
+---
 - name: Configure lightdm for dual monitor setup
   tags: config
   blockinfile:
     path: /etc/lightdm/lightdm.conf
-    block: |
+    block: |-
       [SeatDefaults]
       display-setup-script=xrandr --output DP-4 --mode 2560x1440 --rate 165 --pos 0x400 --primary --output DP-2 --mode 3840x2160 --rate 60 --pos 2560x0
       session-setup-script=xrandr --output DP-4 --mode 2560x1440 --rate 165 --pos 0x400 --primary --output DP-2 --mode 3840x2160 --rate 60 --pos 2560x0

@@ -1,8 +1,12 @@
+---
 - name: Set docker env vars/shortcuts
   tags: docker, config
   blockinfile:
-    path: "/home/{{ user }}/.zshenv"
-    create: yes
+    path: /home/{{ user }}/.zshenv
+    create: true
+    mode: 0600
+    owner: "{{ user }}"
+    group: "{{ user }}"
     block: |
       export COMPOSE_FILE={{ compose_dir }}docker-compose.yml
       alias dc="docker-compose --project-directory {{ compose_dir }}"
@@ -15,6 +19,9 @@
   file:
     path: "{{ compose_dir }}"
     state: directory
+    mode: 0770
+    owner: root
+    group: docker
 
 - name: Copy docker-compose.yml
   tags: docker, compose
@@ -32,22 +39,28 @@
     dest: "{{ compose_dir }}.env"
     mode: 0440
     owner: root
-    group: docker 
+    group: docker
 
 - name: Pull docker services
   tags: docker, compose
   command:
     chdir: "{{ compose_dir }}"
-    cmd: docker-compose pull 
+    cmd: docker-compose pull
+  register: result
+  # these "changed_when" conditions aren't quite working yet
+  changed_when: "'Pull complete' in result.stdout"
 
 - name: Start docker services
   tags: docker, compose
   command:
     chdir: "{{ compose_dir }}"
     cmd: docker-compose up -d
+  register: result
+  changed_when: "'Started' in result.stdout"
 
 - name: Prune docker services
   tags: docker, compose
   command:
     chdir: "{{ compose_dir }}"
     cmd: docker system prune -f
+  changed_when: false

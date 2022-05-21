@@ -1,44 +1,48 @@
-- name: Clone dotfiles
-  tags: config, dots
-  become: yes
-  become_user: "{{ user }}"
-  git:
-    repo: https://gt.{{ domain }}/subract/dotfiles.git
-    dest: "/home/{{ user }}/.dotfiles"
+---
+# TODO: Figure out SSH agent forwarding to enable Ansible to clone repos via
+# their SSH URLs
+# See https://stackoverflow.com/questions/24124140/ssh-agent-forwarding-with-ansible
 
-
+# - name: enable SSH forwarding for sudo
+#   tags: config, dots
+#   lineinfile:
+#     dest: /etc/sudoers
+#     insertafter: '^#?\s*Defaults\s+env_keep\b'
+#     line: 'Defaults    env_keep += "SSH_AUTH_SOCK"'
+# - name: Clone dotfiles
+#   tags: config, dots
+#   become: yes
+#   become_user: "{{ user }}"
+#   debugger: on_failed
+#   git:
+#     repo: ssh://git@gt.{{ domain }}:1108/subract/dotfiles.git
+#     dest: "/home/{{ user }}/.dotfiles"
 - name: Create user systemd directory
   tags: config, dots
-  become: yes
-  become_user: "{{ user }}"
   file:
-    path: "~/.config/systemd/user/default.target.wants"
+    path: ~/.config/systemd/user/default.target.wants
     state: directory
+    mode: 0600
+    owner: "{{ user }}"
+    group: "{{ user }}"
 
 - name: Symlink dots
   tags: config, dots
-  become: yes
+  become: true
   become_user: "{{ user }}"
   file:
-    src:  "/home/{{ user }}/.dotfiles/{{ item.src }}"
-    dest: "/home/{{ user }}/{{ item.dst }}"
+    src: /home/{{ user }}/.dotfiles/{{ item.src }}
+    dest: /home/{{ user }}/{{ item.dst }}
     state: link
-    force: yes
+    force: true
   with_items:
-    - { src: "vim/vimrc", dst: ".vimrc" }
-    - { src: "i3", dst: ".config/i3" }
-    - { src: "i3status", dst: ".config/i3status" }
-    - { src: "kitty", dst: ".config/kitty" }
-    - { src: "redshift", dst: ".config/redshift" }
-    - { src: "zsh/zshrc.local", dst: ".zshrc.local" }
+    - { src: vim/vimrc, dst: .vimrc }
+    - { src: i3, dst: .config/i3 }
+    - { src: polybar, dst: .config/polybar }
+    - { src: kitty, dst: .config/kitty }
+    - { src: redshift, dst: .config/redshift }
+    - { src: zsh/zshrc.local, dst: .zshrc.local }
     # The following creates and enables an SSH agent
-    - { 
-        src: "ssh-agent/ssh-agent.service", 
-        dst: ".config/systemd/user/default.target.wants/ssh-agent.service" 
-      }
-    - { 
-        src: "ssh-agent/ssh-agent.service", 
-        dst: ".config/systemd/user/ssh-agent.service" 
-      }
-    - { src: "ssh-agent/.pam_environment", dst: ".pam_environment" }
-
+    - { src: ssh-agent/ssh-agent.service, dst: .config/systemd/user/default.target.wants/ssh-agent.service }
+    - { src: ssh-agent/ssh-agent.service, dst: .config/systemd/user/ssh-agent.service }
+    - { src: ssh-agent/.pam_environment, dst: .pam_environment }

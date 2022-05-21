@@ -6,30 +6,30 @@
   gather_facts: true
   ignore_unreachable: true
   pre_tasks:
-  - name: Update apt index
-    tags: update, upgrade
-    when: ansible_os_family == "Debian"
-    changed_when: false
-    apt:
-      update_cache: yes
-  - name: Run apt dist upgrade
-    tags: upgrade
-    when: ansible_os_family == "Debian"
-    apt:
-      upgrade: dist
-      autoremove: yes
-  - name: Update pacman index
-    tags: update, upgrade
-    changed_when: false
-    when: ansible_os_family == "Archlinux"
-    community.general.pacman:
-      update_cache: yes
-  - name: Run pacman upgrade
-    tags: upgrade
-    when: ansible_os_family == "Archlinux"
-    community.general.pacman:
-      upgrade: yes
-  
+    - name: Update apt index
+      tags: update, upgrade
+      when: ansible_os_family == "Debian"
+      changed_when: false
+      apt:
+        update_cache: true
+    - name: Run apt dist upgrade
+      tags: upgrade
+      when: ansible_os_family == "Debian"
+      apt:
+        upgrade: dist
+        autoremove: true
+    - name: Update pacman index
+      tags: update, upgrade
+      changed_when: false
+      when: ansible_os_family == "Archlinux"
+      community.general.pacman:
+        update_cache: true
+    - name: Run pacman upgrade
+      tags: upgrade
+      when: ansible_os_family == "Archlinux"
+      community.general.pacman:
+        upgrade: true
+
 # ...then run base config on all machines...
 
 - hosts: all
@@ -45,7 +45,7 @@
   gather_facts: false
   ignore_unreachable: true
   roles:
-    - xterm-js
+    - xterm_js
 
 - hosts: docker
   become: true
@@ -62,14 +62,14 @@
   gather_facts: false
   ignore_unreachable: true
   roles:
-    - arch-workstation
+    - arch_workstation
     - dotfiles_clone
 
 - hosts: apps
   become: true
   gather_facts: false
   ignore_unreachable: true
-  roles: 
+  roles:
     - mariadb_backup
 
 - hosts: jj
@@ -85,13 +85,14 @@
   gather_facts: false
   ignore_unreachable: true
   roles:
-    - arch-desktop
+    - arch_desktop
+    - arch_secureboot
 
 - hosts: fornax
   become: true
   gather_facts: false
   ignore_unreachable: true
   roles:
-    - arch-workstation
-    - arch-laptop
+    - arch_workstation
+    - arch_laptop
     - dotfiles_clone
