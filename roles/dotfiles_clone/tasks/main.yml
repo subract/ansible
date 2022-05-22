@@ -1,28 +1,40 @@
 ---
-# TODO: Figure out SSH agent forwarding to enable Ansible to clone repos via
-# their SSH URLs
-# See https://stackoverflow.com/questions/24124140/ssh-agent-forwarding-with-ansible
+- name: Enable SSH agent forwarding with sudo
+  tags: config, dots
+  lineinfile:
+    dest: /etc/sudoers
+    insertafter: ^#?\s*Defaults\s+env_keep\b
+    line: Defaults    env_keep += "SSH_AUTH_SOCK"
 
-# - name: enable SSH forwarding for sudo
-#   tags: config, dots
-#   lineinfile:
-#     dest: /etc/sudoers
-#     insertafter: '^#?\s*Defaults\s+env_keep\b'
-#     line: 'Defaults    env_keep += "SSH_AUTH_SOCK"'
-# - name: Clone dotfiles
-#   tags: config, dots
-#   become: yes
-#   become_user: "{{ user }}"
-#   debugger: on_failed
-#   git:
-#     repo: ssh://git@gt.{{ domain }}:1108/subract/dotfiles.git
-#     dest: "/home/{{ user }}/.dotfiles"
+# Needed so that our user can access the SSH agent, using credentials passed
+# from the ansible control host to authenticate to the git repo
+- name: Change SSH agent socket owner to {{ user }}
+  tags: dotclone
+  changed_when: false # no way to distinguish changed/unchanged
+  command:
+    cmd: bash -c 'chown -R {{ user }} /tmp/ssh-XXXX*'
+
+- name: Clone dotfiles
+  tags: config, dots, dotclone
+  become: true
+  become_user: "{{ user }}"
+  git:
+    repo: ssh://git@gt.{{ domain }}:1108/subract/dotfiles.git
+    dest: /home/{{ user }}/.dotfiles
+    version: origin
+
+- name: Rever SSH agent socket owner
+  tags: dotclone
+  changed_when: false # no way to distinguish changed/unchanged
+  command:
+    cmd: bash -c 'chown -R root /tmp/ssh-XXXX*'
+
 - name: Create user systemd directory
   tags: config, dots
   file:
     path: ~/.config/systemd/user/default.target.wants
     state: directory
-    mode: 0600
+    mode: 0660
     owner: "{{ user }}"
     group: "{{ user }}"
 
