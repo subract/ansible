@@ -150,6 +150,7 @@
       - magic-wormhole # file transfer
       - protonmail-bridge # allows local use of ProtonMail
       - protonvpn # ProtonVPN CLI and GUI
+      - refind-theme-regular-git # theme for refind
       - spotify # music
       - standardnotes-desktop # notes
       - typora-free # markdown editor/exporter
