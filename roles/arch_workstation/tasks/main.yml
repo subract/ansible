@@ -205,3 +205,43 @@
     mode: 0644
     owner: "{{ user }}"
     group: "{{ user }}"
+
+- name: Configure refind
+  tags: refind, config
+  blockinfile:
+    path: /boot/EFI/refind/refind.conf
+    block: |-
+      # Don't wear out NVRAM
+      use_nvram false
+      # Use native resolution, if supported by EFI
+      resolution max
+      # Makes Windows boot look a little nicer
+      use_graphics_for windows
+      # Automatically boot last OS after timeout
+      timeout 10
+
+      # refind-theme-regular settings
+      icons_dir themes/refind-theme-regular/icons/384-144
+      big_icon_size 384
+      small_icon_size 144
+      banner themes/refind-theme-regular/icons/384-144/bg_dark.png
+      selection_big themes/refind-theme-regular/icons/384-144/selection_dark-big.png
+      selection_small themes/refind-theme-regular/icons/384-144/selection_dark-small.png
+      font themes/refind-theme-regular/fonts/source-code-pro-extralight-14.png
+
+# This is the most elegant way I've found to get refind to use the correct icons
+# for my OSes: replacing the default autodetected icons with my desired ones.
+- name: Configure refind icons
+  tags: refind, config
+  copy:
+    remote_src: true
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0644
+    owner: root
+    group: root
+  loop:
+    - src: /boot/EFI/refind/themes/refind-theme-regular/icons/384-144/os_arch.png
+      dest: /boot/EFI/refind/themes/refind-theme-regular/icons/384-144/os_linux.png
+    - src: /boot/EFI/refind/themes/refind-theme-regular/icons/384-144/os_win11.png
+      dest: /boot/EFI/refind/themes/refind-theme-regular/icons/384-144/os_win8.png
