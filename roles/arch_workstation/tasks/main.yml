@@ -245,3 +245,18 @@
       dest: /boot/EFI/refind/themes/refind-theme-regular/icons/384-144/os_linux.png
     - src: /boot/EFI/refind/themes/refind-theme-regular/icons/384-144/os_win11.png
       dest: /boot/EFI/refind/themes/refind-theme-regular/icons/384-144/os_win8.png
+
+- name: Create Horizon remote desktop dir
+  tags: horizon, config
+  file:
+    dest: /usr/lib/vmware/view/pkcs11
+    state: directory
+    mode: 0755
+
+- name: Configure Horizon remote desktop
+  tags: horizon, config
+  file:
+    src: /usr/lib64/pkcs11/opensc-pkcs11.so
+    dest: /usr/lib/vmware/view/pkcs11/libopenscpkcs11.so
+    state: link
+    mode: 0644
