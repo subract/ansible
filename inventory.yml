@@ -18,6 +18,9 @@ all:
         fornax:
         arch-dev:
         titania:
+    hypervisors:
+      hosts:
+        draco:
   vars:
     ansible_python_interpreter: auto_silent
     ansible_user: ansible
