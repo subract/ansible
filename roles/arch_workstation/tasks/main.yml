@@ -260,3 +260,10 @@
     dest: /usr/lib/vmware/view/pkcs11/libopenscpkcs11.so
     state: link
     mode: 0644
+
+- name: Enable pcscd service
+  tags: config
+  service:
+    name: pcscd
+    enabled: true
+    state: started

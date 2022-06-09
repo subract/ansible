@@ -9,7 +9,7 @@
 # Needed so that our user can access the SSH agent, using credentials passed
 # from the ansible control host to authenticate to the git repo
 - name: Change SSH agent socket owner to {{ user }}
-  tags: dotclone
+  tags: config, dots, dotclone
   changed_when: false # no way to distinguish changed/unchanged
   command:
     cmd: bash -c 'chown -R {{ user }} /tmp/ssh-XXXX*'
@@ -21,7 +21,6 @@
   git:
     repo: ssh://git@gt.{{ domain }}:1108/subract/dotfiles.git
     dest: /home/{{ user }}/.dotfiles
-    version: origin
 
 - name: Rever SSH agent socket owner
   tags: dotclone

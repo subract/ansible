@@ -40,6 +40,14 @@
 
 # ...and finally, do role-specific tasks
 
+- hosts: draco
+  become: true
+  gather_facts: false
+  ignore_unreachable: false
+  roles:
+    - zfs
+    - nfs_server
+
 - hosts: vm
   become: true
   gather_facts: false

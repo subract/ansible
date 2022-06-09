@@ -1,6 +1,6 @@
 ---
 # NFS directories mounted on file server
-nfs_dirs: [/ssd/app, /hdd/enc/app]
+nfs_dirs: [/ssd/app, /hdd/enc/app/nextcloud]
 # Healthchecks.io status monitor ID
 healthcheck_id: !vault |
   $ANSIBLE_VAULT;1.1;AES256
