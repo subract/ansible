@@ -29,6 +29,6 @@
     path: /etc/fstab
     regexp: "{{ item }}"
     # /etc/fstab traditionally has tabs, so skip no-tab linting rule
-    line: "10.0.0.5:{{ item }}\t{{ item }}\tnfs\tauto\t0\t0" # noqa no-tabs
+    line: "10.0.0.2:{{ item }}\t{{ item }}\tnfs\tauto\t0\t0" # noqa no-tabs
   loop: "{{ nfs_dirs }}"
   register: nfs
