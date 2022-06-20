@@ -92,6 +92,7 @@
       - git # git
       - hexyl # better xxd
       - iftop # network monitor
+      - maim # screenshot utility
       - networkmanager # network manager
       - nmap # network mapper
       - nvidia # proprietary drivers
@@ -131,6 +132,7 @@
       - pulseaudio # the man himself
       - ttf-fira-code # nice font
       - tumbler # thumbnails for thunar
+      - xclip # interact with clipboard from terminal
 
 - name: Install yay
   tags: pkg, aur, update

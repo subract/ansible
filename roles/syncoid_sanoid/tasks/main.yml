@@ -1,0 +1,40 @@
+---
+- name: Install sanoid and syncoid
+  tags: pkg, syncoid, sanoid
+  package:
+    name:
+      - sanoid
+
+- name: Create sanoid config dir
+  tags: config, sanoid
+  file:
+    path: /etc/sanoid
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Configure sanoid
+  tags: config, sanoid
+  copy:
+    src: sanoid.conf
+    dest: /etc/sanoid/sanoid.conf
+    mode: 0644
+
+- name: Add ssd replication cron job
+  tags: config, syncoid
+  ansible.builtin.cron:
+    name: Sync ssd to hdd/enc/backup
+    minute: "2"
+    hour: "2"
+    job: /usr/sbin/syncoid -r --skip-parent --no-sync-snap ssd hdd/enc/backup
+
+- name: Add remote backup cron job
+  tags: config, syncoid
+  ansible.builtin.cron:
+    name: Sync hdd to remote server
+    minute: "0"
+    hour: "4"
+    job: >
+      /usr/sbin/syncoid -r --no-sync-snap --skip-parent  --exclude {{ remote_exclude_dir }} --sendoptions=w --sshport 1984 --sshkey /root/.ssh/id_rsa  hdd/enc
+      aven@{{ backup_host }}:hdd/enc

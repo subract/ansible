@@ -47,6 +47,7 @@
   roles:
     - zfs
     - nfs_server
+    - syncoid_sanoid
 
 - hosts: vm
   become: true
