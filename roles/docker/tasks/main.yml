@@ -54,7 +54,7 @@
   tags: docker, compose
   command:
     chdir: "{{ compose_dir }}"
-    cmd: docker-compose up -d
+    cmd: docker-compose up -d --remove-orphans
   register: result
   changed_when: "'Started' in result.stdout"
 

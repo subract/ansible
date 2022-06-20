@@ -51,19 +51,6 @@ services:
       TYPE: 'FORGE'
       VERSION: "1.18.2"
 
-
-  ror2:
-    container_name: ror2
-    image: avivace/ror2server:latest
-    restart: unless-stopped
-
-    ports:
-      - 27015:27015/udp
-
-    environment:
-      R2_PSW: ${ROR2_PASS}
-
-
   factorio:
     container_name: factorio
     image: factoriotools/factorio:stable
