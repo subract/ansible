@@ -13,6 +13,12 @@ all:
         apps:
         gaming:
         seedling:
+        lyra:
+    nfs_clients:
+      hosts:
+        apps:
+        gaming:
+        seedling:
     workstations:
       hosts:
         fornax:
@@ -25,7 +31,7 @@ all:
     ansible_python_interpreter: auto_silent
     ansible_user: ansible
     user: aven
-    domain: !vault |
+    domain: !vault |-
       $ANSIBLE_VAULT;1.1;AES256
       35386165613136366338633137663034616632653739306164616365373037386432353635613136
       6239383762656462646436623664386636663139343835620a616333616332626461623462393061
