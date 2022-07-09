@@ -62,9 +62,15 @@
   ignore_unreachable: true
   roles:
     - geerlingguy.docker
-    - nfs_client
     - docker
     - dotfiles_copy
+
+- hosts: nfs_clients
+  become: true
+  gather_facts: false
+  ignore_unreachable: true
+  roles:
+    - nfs_client
 
 - hosts: workstations
   become: true
@@ -88,6 +94,7 @@
   roles:
     - dotfiles_copy
     - more_users
+    - rsyslog
 
 - hosts: titania
   become: true

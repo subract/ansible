@@ -1,6 +1,8 @@
 ---
 roles:
   - name: geerlingguy.docker
+  - name: robertdebock.bootstrap
+  - name: robertdebock.rsyslog
 
 collections:
   - name: kewlfft.aur

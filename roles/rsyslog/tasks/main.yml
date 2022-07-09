@@ -1,0 +1,8 @@
+---
+- name: Enable remote logging
+  tags: config, loggint
+  lineinfile:
+    path: /etc/rsyslog.conf
+    regexp: "@@10\\.0\\."
+    line: authpriv.* @@10.0.0.5:514;RSYSLOG_SyslogProtocol23Format
+  register: rsyslog
