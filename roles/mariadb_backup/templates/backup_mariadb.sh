@@ -1,6 +1,6 @@
 #!/bin/bash
 
-url=https://hc-ping.com/{{ healthcheck_id }}
+url=https://hc-ping.com/{{ healthcheck_id_mariadb }}
 
 # Kick the healthchecks.io monitor
 curl -fsS --retry 3 $url/start > /dev/null

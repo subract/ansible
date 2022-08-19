@@ -48,6 +48,7 @@
     - zfs
     - nfs_server
     - syncoid_sanoid
+    - backblaze
 
 - hosts: vm
   become: true

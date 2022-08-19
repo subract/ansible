@@ -93,6 +93,7 @@
       - hexyl # better xxd
       - iftop # network monitor
       - maim # screenshot utility
+      - man-db # need men
       - networkmanager # network manager
       - nmap # network mapper
       - nvidia # proprietary drivers
@@ -148,6 +149,8 @@
     name:
       - autotiling # i3 window tiling
       - brother-hll2350dw # print drivers
+      - bfg # clean git repos
+      - git-secrets # dirty word monitoring
       - i3lock-multimonitor # mutimonitor support for i3lock
       - magic-wormhole # file transfer
       - protonmail-bridge # allows local use of ProtonMail

@@ -81,7 +81,7 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
 
     volumes:
-      - /ssd/app/mariadb:/var/lib/mysql
+      - /ssd/app/mariadb/data:/var/lib/mysql
 
     networks:
       - db
