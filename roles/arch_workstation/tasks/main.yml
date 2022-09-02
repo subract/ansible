@@ -79,6 +79,7 @@
 
       # System utilities
       - ansible # config manager
+      - appimagelauncher # appimage launcher
       - ark # archive manager
       - baobab # disk usage analyser
       - bat # better cat
