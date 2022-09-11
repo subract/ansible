@@ -64,6 +64,6 @@ services:
       - /ssd/app/games/factorio/loriini:/factorio
 
     environment:
-      UPDATE_MODS_ON_START: 'true'
+      UPDATE_MODS_ON_START: 'false'
       SAVE_NAME: "Loriini"
 

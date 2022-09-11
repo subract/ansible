@@ -22,7 +22,7 @@
     repo: ssh://git@gt.{{ domain }}:1108/subract/dotfiles.git
     dest: /home/{{ user }}/.dotfiles
 
-- name: Rever SSH agent socket owner
+- name: Revert SSH agent socket owner
   tags: dotclone
   changed_when: false # no way to distinguish changed/unchanged
   command:
@@ -47,14 +47,26 @@
     state: link
     force: true
   with_items:
-    - { src: vim/vimrc, dst: .vimrc }
+    - { src: bat, dst: .config/bat }
+    - { src: dunst, dst: .config/dunst }
+    - { src: gtk-3.0, dst: .config/gtk-3.0 }
     - { src: i3, dst: .config/i3 }
-    - { src: polybar, dst: .config/polybar }
+    - { src: icons, dst: .icons }
     - { src: kitty, dst: .config/kitty }
+    - { src: polybar, dst: .config/polybar }
     - { src: redshift, dst: .config/redshift }
+    - { src: vim/vimrc, dst: .vimrc }
     - { src: xfce4, dst: .config/xfce4 }
     - { src: zsh/zshrc.local, dst: .zshrc.local }
     # The following creates and enables an SSH agent
     - { src: ssh-agent/ssh-agent.service, dst: .config/systemd/user/default.target.wants/ssh-agent.service }
     - { src: ssh-agent/ssh-agent.service, dst: .config/systemd/user/ssh-agent.service }
     - { src: ssh-agent/.pam_environment, dst: .pam_environment }
+
+- name: Rebuild bat theme cache
+  tags: config, dots
+  changed_when: false
+  become: true
+  become_user: "{{ user }}"
+  command:
+    cmd: bat cache --build
