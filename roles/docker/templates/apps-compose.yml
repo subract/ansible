@@ -265,21 +265,39 @@ services:
       - traefik.http.routers.op.tls.certresolver=default
       - traefik.http.services.op.loadbalancer.server.port=80
 
-  freeipa:
-    container_name: freeipa
-    image: freeipa/freeipa-server:almalinux-9
+  etherpad:
+    container_name: etherpad
+    image: etherpad/etherpad
     restart: unless-stopped
 
-    # volumes:
-    
+    volumes:
+      - /ssd/app/etherpad:/opt/etherpad-lite/var
+
     networks:
       - web
 
     labels:
       - traefik.enable=true
-      - traefik.http.routers.fi.rule=Host(`fi.{{ domain }}`)
-      - traefik.http.routers.fi.entrypoints=https
-      - traefik.http.routers.fi.tls.certresolver=default
-      - traefik.http.services.fi.loadbalancer.server.port=80
+      - traefik.http.routers.ep.rule=Host(`ep.{{ domain }}`)
+      - traefik.http.routers.ep.entrypoints=https
+      - traefik.http.routers.ep.tls.certresolver=default
+      - traefik.http.services.ep.loadbalancer.server.port=9001
+
+  # freeipa:
+  #   container_name: freeipa
+  #   image: freeipa/freeipa-server:almalinux-9
+  #   restart: unless-stopped
+
+  #   # volumes:
+    
+  #   networks:
+  #     - web
+
+  #   labels:
+  #     - traefik.enable=true
+  #     - traefik.http.routers.fi.rule=Host(`fi.{{ domain }}`)
+  #     - traefik.http.routers.fi.entrypoints=https
+  #     - traefik.http.routers.fi.tls.certresolver=default
+  #     - traefik.http.services.fi.loadbalancer.server.port=80
 
 {{ private_apps }}
