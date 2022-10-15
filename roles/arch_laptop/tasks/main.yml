@@ -4,20 +4,3 @@
   package:
     name:
       - brightnessctl # control screen/kbd backlights
-      - bluez # bluetooth
-      - bluez-utils # includes cli management
-
-- name: Enable Bluetooth service
-  tags: config
-  service:
-    name: bluetooth
-    enabled: true
-    state: started
-
-- name: Power Bluetooth adapter on startup
-  tags: config
-  blockinfile:
-    path: /etc/bluetooth/main.conf
-    block: |-
-      [Policy]
-      AutoEnable=true

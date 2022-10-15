@@ -120,6 +120,8 @@
 
       # Helpers and styling
       - base-devel # needed for AUR
+      - bluez # bluetooth
+      - bluez-utils # includes cli management
       - breeze-icons # icon theme
       - ccid # smart card driver
       - dunst # notification daemon
@@ -132,7 +134,7 @@
       - opensc # smart card libraries
       - pasystray # PulseAudio tray icon
       - pavucontrol # PulseAudio volume control
-      - pulseaudio # the man himself
+      - pipewire # modern sound
       - ttf-fira-code # nice font
       - tumbler # thumbnails for thunar
       - xclip # interact with clipboard from terminal
@@ -277,3 +279,18 @@
     name: pcscd
     enabled: true
     state: started
+
+- name: Enable Bluetooth service
+  tags: config
+  service:
+    name: bluetooth
+    enabled: true
+    state: started
+
+- name: Power Bluetooth adapter on startup
+  tags: config
+  blockinfile:
+    path: /etc/bluetooth/main.conf
+    block: |-
+      [Policy]
+      AutoEnable=true

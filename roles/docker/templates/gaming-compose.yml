@@ -2,32 +2,6 @@ version: '3.7'
 
 
 services:
-  mc-survival-2:
-    container_name: mc-survival-2
-    # mods require java 8
-    # autopause has issues on alpine with java8 image
-    image: itzg/minecraft-server:java8-openj9
-    restart: unless-stopped
-
-    ports:
-      - 25567:25565
-
-    volumes:
-      - '/ssd/app/games/minecraft/mc-survival-201122-1.16.4:/data'
-
-    environment:
-      TZ: 'America/Chicago'
-      EULA: 'True'
-      PVP: 'false'
-      DIFFICULTY: 'normal'
-      SERVER_NAME: 'The Shattered Plains'
-      OPS: ${MINECRAFT_OP}
-      MEMORY: '3G'
-      MOTD: 'The Shattered Plains'
-      TYPE: 'FORGE'
-      VERSION: "1.16.4"
-
-
   mc-survival-3:
     container_name: mc-survival-3
     image: itzg/minecraft-server:java17
@@ -49,7 +23,31 @@ services:
       MEMORY: '3G'
       MOTD: 'Haven Grotto'
       TYPE: 'FORGE'
-      VERSION: "1.18.2"
+      VERSION: '1.18.2'
+
+  mc-survival-4:
+    container_name: mc-survival-4
+    image: itzg/minecraft-server:java17
+    restart: unless-stopped
+
+    ports:
+      - 25569:25565
+
+    volumes:
+      - '/ssd/app/games/minecraft/mc-survival-221003-1.19.2:/data'
+
+    environment:
+      TZ: 'America/Chicago'
+      EULA: 'True'
+      PVP: 'false'
+      DIFFICULTY: 'normal'
+      SERVER_NAME: 'Boulder Keep'
+      OPS: ${MINECRAFT_OP}
+      MEMORY: '3G'
+      MOTD: 'Boulder Keep'
+      TYPE: 'FORGE'
+      VERSION: '1.19.2'
+      VIEW_DISTANCE: '24'
 
   factorio:
     container_name: factorio

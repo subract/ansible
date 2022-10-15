@@ -183,7 +183,7 @@ services:
       - traefik.http.services.ha.loadbalancer.server.port=8123
 
 
-  # # Needed for HomeKit support in HomeAssistant
+  # Needed for HomeKit support in HomeAssistant
   # mdns-repeater:
   #   container_name: mdns_repeater
   #   image: angelnu/mdns_repeater
@@ -192,7 +192,7 @@ services:
   #   network_mode: host
   #   environment:
   #   - hostNIC=ens18
-  #   - dockerNIC=br-513ca494949f # this NIC is the one HomeAssistant is set to
+  #   - dockerNIC=br-82a5c3af6925 # this NIC is the one HomeAssistant is set to
   #   # allow integrations to use
 
 
@@ -239,5 +239,47 @@ services:
       - traefik.http.routers.cc.tls.certresolver=default
       - traefik.http.services.cc.loadbalancer.server.port=8000
 
+
+  octoprint:
+    container_name: octoprint
+    image: octoprint/octoprint
+    restart: unless-stopped
+
+    devices:
+     - /dev/ttyACM0:/dev/ttyACM0
+     - /dev/video0:/dev/video0
+    
+    volumes:
+    - /ssd/app/octoprint:/octoprint
+
+    networks:
+      - web
+
+    environment:
+      - ENABLE_MJPG_STREAMER=true
+
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.op.rule=Host(`op.{{ domain }}`)
+      - traefik.http.routers.op.entrypoints=https
+      - traefik.http.routers.op.tls.certresolver=default
+      - traefik.http.services.op.loadbalancer.server.port=80
+
+  freeipa:
+    container_name: freeipa
+    image: freeipa/freeipa-server:almalinux-9
+    restart: unless-stopped
+
+    # volumes:
+    
+    networks:
+      - web
+
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.fi.rule=Host(`fi.{{ domain }}`)
+      - traefik.http.routers.fi.entrypoints=https
+      - traefik.http.routers.fi.tls.certresolver=default
+      - traefik.http.services.fi.loadbalancer.server.port=80
 
 {{ private_apps }}
