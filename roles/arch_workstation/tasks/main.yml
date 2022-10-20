@@ -58,6 +58,7 @@
       - musescore # sheet music editor
       - nextcloud-client # file synchronization
       - nitrogen # background manager
+      - obsidian # notes
       - obs-studio # screen recorder
       - libqalculate # CLI calculator
       - redshift # blue light reducer
@@ -90,6 +91,7 @@
       - duf # better df
       - eog # image viewer
       - fd # better find
+      - fzf # fuzzy find
       - git # git
       - git-lfs # large file support
       - hexyl # better xxd
@@ -159,6 +161,7 @@
       - git-secrets # dirty word monitoring
       - i3lock-multimonitor # mutimonitor support for i3lock
       - magic-wormhole # file transfer
+      - multimc5 # Minecraft launcher
       - protonmail-bridge # allows local use of ProtonMail
       - protonvpn # ProtonVPN CLI and GUI
       - refind-theme-regular-git # theme for refind
