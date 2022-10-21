@@ -110,6 +110,4 @@
   gather_facts: false
   ignore_unreachable: true
   roles:
-    - arch_workstation
     - arch_laptop
-    - dotfiles_clone
