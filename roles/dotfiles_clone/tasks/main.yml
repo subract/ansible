@@ -61,7 +61,7 @@
     # The following creates and enables an SSH agent
     - { src: ssh-agent/ssh-agent.service, dst: .config/systemd/user/default.target.wants/ssh-agent.service }
     - { src: ssh-agent/ssh-agent.service, dst: .config/systemd/user/ssh-agent.service }
-    - { src: ssh-agent/.pam_environment, dst: .pam_environment }
+    - { src: ssh-agent/pam_env.conf, dst: /etc/security/pam_env.conf }
 
 - name: Rebuild bat theme cache
   tags: config, dots

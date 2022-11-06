@@ -73,8 +73,7 @@ services:
 
   mariadb:
     container_name: mariadb
-    # held back per https://help.nextcloud.com/t/update-to-next-cloud-21-0-2-has-get-an-error/117028/15
-    image: mariadb:10.5
+    image: mariadb:latest
     restart: unless-stopped
 
     environment:
@@ -148,13 +147,18 @@ services:
       - /dev/ttyUSB0
 
     networks:
+      - web
       - mqtt
 
     environment:
       - TZ=America/Chicago
 
     labels:
-      - traefik.enable=false
+      - traefik.enable=true
+      - traefik.http.routers.zb.rule=Host(`zb.{{ domain }}`)
+      - traefik.http.routers.zb.entrypoints=https
+      - traefik.http.routers.zb.tls.certresolver=default
+      - traefik.http.services.zb.loadbalancer.server.port=8080
 
 
   homeassistant:

@@ -120,6 +120,7 @@
       - zip # zips
 
       # Helpers and styling
+      - ansible-lint # ansible linting
       - base-devel # needed for AUR
       - bluez # bluetooth
       - bluez-utils # includes cli management
@@ -131,6 +132,7 @@
       - gnome-keyring # keyring
       - gvfs # removable storage mounting
       - network-manager-applet # tray icon, ProtonVPN dependency
+      - noto-fonts-emoji # emojis
       - nss-mdns # mdns name resolution
       - opensc # smart card libraries
       - pasystray # PulseAudio tray icon
@@ -165,7 +167,7 @@
       - protonvpn # ProtonVPN CLI and GUI
       - refind-theme-regular-git # theme for refind
       - spotify # music
-      - standardnotes-desktop # notes
+      - standardnotes-bin # notes
       - typora-free # markdown editor/exporter
       - vmware-horizon-client # remote desktop client
       - vmware-horizon-smartcard # smartcard support
@@ -224,6 +226,7 @@
   tags: refind, config
   blockinfile:
     path: /boot/EFI/refind/refind.conf
+    create: true
     block: |-
       # Don't wear out NVRAM
       use_nvram false
