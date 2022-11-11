@@ -65,3 +65,27 @@ services:
       UPDATE_MODS_ON_START: 'false'
       SAVE_NAME: "Loriini"
 
+  postgres:
+    container_name: postgres
+    image: postgres:13.4-alpine
+    environment:
+      - POSTGRES_USER=hedgedoc
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=hedgedoc
+    restart: unless-stopped
+
+  hedgedoc:
+    image: lscr.io/linuxserver/hedgedoc:latest
+    container_name: hedgedoc
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - CMD_DOMAIN=hd.{{domain}}
+      - CMD_URL_ADDPORT=true #optional
+      - CMD_PROTOCOL_USESSL=false #optional
+      - CMD_PORT=3000 #optional
+      - CMD_ALLOW_ORIGIN=['hd.{{domain}}'] #optional
+    ports:
+      - 3000:3000
+    restart: unless-stopped

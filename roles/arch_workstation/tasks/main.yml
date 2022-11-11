@@ -97,6 +97,7 @@
       - iftop # network monitor
       - maim # screenshot utility
       - man-db # need men
+      - gnu-netcat # netcat
       - networkmanager # network manager
       - nmap # network mapper
       - nvidia # proprietary drivers
@@ -138,8 +139,10 @@
       - pasystray # PulseAudio tray icon
       - pavucontrol # PulseAudio volume control
       - pipewire # modern sound
+      - pipewire-pulse # replace PuleAudio
       - ttf-fira-code # nice font
       - tumbler # thumbnails for thunar
+      - wireplumber # audio session manager
       - xclip # interact with clipboard from terminal
 
 - name: Install yay
@@ -227,6 +230,7 @@
   blockinfile:
     path: /boot/EFI/refind/refind.conf
     create: true
+    mode: 0600
     block: |-
       # Don't wear out NVRAM
       use_nvram false
