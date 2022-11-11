@@ -49,6 +49,7 @@
     - nfs_server
     - syncoid_sanoid
     - backblaze
+    - more_users
 
 - hosts: vm
   become: true
@@ -72,6 +73,7 @@
   ignore_unreachable: true
   roles:
     - nfs_client
+    - more_users
 
 - hosts: workstations
   become: true

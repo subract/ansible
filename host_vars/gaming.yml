@@ -1,3 +1,14 @@
 ---
 # NFS directories mounted on file server
 nfs_dirs: [/ssd/app/games, /ssd/dmz/app]
+# Users/groups for nfs server
+custom_groups:
+  - name: dmz-doc
+    gid: 2010
+custom_users:
+  - name: dmz-doc
+    create_home: false
+    uid: 2010
+    groups: dmz-doc
+  - name: aven
+    groups: dmz-doc

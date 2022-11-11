@@ -1,7 +1,8 @@
 ---
-users:
+custom_users:
   - name: jj
-  # SSH keys
+    groups: [sudo]
+    # SSH keys
     key: !vault |-
       $ANSIBLE_VAULT;1.1;AES256
       33373537386339643233333835633266613832323532353339313064353534663864376431333461
