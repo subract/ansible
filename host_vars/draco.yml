@@ -40,4 +40,4 @@ custom_users:
     uid: 2010
     groups: dmz-doc
   - name: aven
-    groups: [dmz-doc, apps-doc]
+    groups: [dmz-doc, apps-doc, sudo]

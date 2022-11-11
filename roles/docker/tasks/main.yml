@@ -33,7 +33,7 @@
     group: docker
 
 - name: Copy .env
-  tags: docker, env
+  tags: docker, compose, env
   copy:
     src: "{{ inventory_hostname }}.env"
     dest: "{{ compose_dir }}.env"
