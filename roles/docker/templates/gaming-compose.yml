@@ -182,11 +182,23 @@ services:
 
     labels:
       traefik.enable: true
+
+      # Create service named "kc-service" attached to port 8080
+      traefik.http.services.kc-service.loadbalancer.server.port: 8080
+
+      # Create a basic router for Keycloak
       traefik.http.routers.kc.rule: Host(`kc.{{ domain }}`)
+      traefik.http.routers.kc.service: kc-service
       traefik.http.routers.kc.entrypoints: https
       traefik.http.routers.kc.tls.certresolver: default
-      traefik.http.services.kc.loadbalancer.server.port: 8080
-      # traefik.http.routers.kc-admin.rule: (Host(`kc.{{ domain }}`) && PathPrefix(`/admin/`))
-      # traefik.http.routers.kc-admin.entrypoints: https
-      # traefik.http.middlewares.kc-admin-ipwhitelist.ipwhitelist.sourcerange: "10.0.0.0"
-      # traefik.http.routers.kc-admin.middlewares: kc-admin-ipwhitelist
+          
+      # Create an additional router for the admin interface
+      # Example here: https://www.reddit.com/r/Traefik/comments/hpsrx9/is_it_possible_to_configure_whitelist_for/
+      traefik.http.routers.kc-admin.rule: (Host(`kc.{{ domain }}`) && PathPrefix(`/admin`,`/metrics`,`/health`))
+      traefik.http.routers.kc-admin.service: kc-service
+      traefik.http.routers.kc-admin.entrypoints: https
+      traefik.http.routers.kc-admin.tls.certresolver: default
+          
+      # Apply an IP-based whitelist to the admin router, preventing internet access
+      traefik.http.routers.kc-admin.middlewares: kc-admin-ipwhitelist
+      traefik.http.middlewares.kc-admin-ipwhitelist.ipwhitelist.sourcerange: "10.0.0.0/8"
