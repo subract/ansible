@@ -4,20 +4,20 @@ all:
     vm:
       hosts:
         apps:
-        gaming:
+        dmz-apps:
         seedling:
         jj:
         arch-dev:
     docker:
       hosts:
         apps:
-        gaming:
+        dmz-apps:
         seedling:
         lyra:
     nfs_clients:
       hosts:
         apps:
-        gaming:
+        dmz-apps:
         seedling:
     workstations:
       hosts:
