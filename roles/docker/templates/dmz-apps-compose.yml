@@ -108,6 +108,34 @@ services:
     labels:
       traefik.enable: false
 
+
+  # Enables Traefik to talk to Keycloak for forward authentication
+  # https://brianturchyn.net/traefik-forwardauth-support-with-keycloak/
+  forward_auth:
+    container_name: forward_auth
+    image: mesosphere/traefik-forward-auth:latest
+    networks:
+      - web
+
+    environment:
+      SECRET: ${FORWARD_AUTH_SECRET}
+      PROVIDER_URI: https://kc.{{ domain }}/realms/dmz
+      CLIENT_ID: traefik
+      CLIENT_SECRET: ${FORWARD_AUTH_CLIENT_SECRET}
+
+    labels:
+      traefik.enable: true
+      traefik.docker.network: doc_web
+      traefik.http.services.forward_auth.loadbalancer.server.port: 4181
+      traefik.http.routers.forward_auth.entrypoints: https
+      traefik.http.routers.forward_auth.tls.certresolver: default
+      traefik.http.routers.forward_auth.rule: Path(`/_oauth`)
+      traefik.http.routers.forward_auth.middlewares: traefik-forward-auth
+      traefik.http.middlewares.traefik-forward-auth.forwardauth.address: http://forward_auth:4181
+      traefik.http.middlewares.traefik-forward-auth.forwardauth.authResponseHeaders: X-Forwarded-User
+      traefik.http.middlewares.traefik-forward-auth.forwardauth.trustForwardHeader: true
+
+  # Google Docs for markdown documents
   hedgedoc:
     image: lscr.io/linuxserver/hedgedoc:latest
     container_name: hedgedoc
@@ -149,6 +177,8 @@ services:
       traefik.http.routers.hd.entrypoints: https
       traefik.http.routers.hd.tls.certresolver: default
       traefik.http.services.hd.loadbalancer.server.port: 3000
+      # Require keycloak sign-in to access any pages
+      traefik.http.routers.hd.middlewares: traefik-forward-auth
 
   mariadb:
     container_name: mariadb
