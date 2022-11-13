@@ -119,10 +119,23 @@ services:
       TZ: America/Chicago
       CMD_DOMAIN: hd.{{domain}}
       CMD_PROTOCOL_USESSL: true
-      CMD_ALLOW_ORIGIN: "[hd.{{domain}}]" #optional
-      CMD_ALLOW_ANONYMOUS: false
-      CMD_DEFAULT_PERMISSION: limited
-      CMD_ALLOW_EMAIL_REGISTER: false
+      CMD_ALLOW_ORIGIN: "[hd.{{domain}}]"
+      CMD_ALLOW_ANONYMOUS: false # no guest usage
+      CMD_DEFAULT_PERMISSION: limited # default new notes to only viewable by logged-in users
+      CMD_EMAIL: false # don't allow signing in with email/password - only Keycloak
+
+      # Keycloak SSO configuration
+      CMD_OAUTH2_USER_PROFILE_URL: https://kc.{{ domain }}/realms/dmz/protocol/openid-connect/userinfo
+      CMD_OAUTH2_USER_PROFILE_USERNAME_ATTR: preferred_username
+      CMD_OAUTH2_USER_PROFILE_DISPLAY_NAME_ATTR: name
+      CMD_OAUTH2_USER_PROFILE_EMAIL_ATTR: email
+      CMD_OAUTH2_TOKEN_URL: https://kc.{{ domain }}/realms/dmz/protocol/openid-connect/token
+      CMD_OAUTH2_AUTHORIZATION_URL: https://kc.{{ domain }}/realms/dmz/protocol/openid-connect/auth
+      CMD_OAUTH2_CLIENT_ID: hedgedoc # from Keycloak
+      CMD_OAUTH2_CLIENT_SECRET: ${HEDGEDOC_OAUTH2_CLIENT_SECRET} # from Keycloak
+      CMD_OAUTH2_PROVIDERNAME: {{ domain }} # display name
+      # Per here https://shivering-isles.com/fixing-hedgedoc-profile-info-keycloak-20
+      CMD_OAUTH2_SCOPE: "openid email profile"
 
     volumes:
       - /ssd/dmz/app/hedgedoc:/config
