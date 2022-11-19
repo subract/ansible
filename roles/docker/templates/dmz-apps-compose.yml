@@ -114,6 +114,12 @@ services:
   forward_auth:
     container_name: forward_auth
     image: mesosphere/traefik-forward-auth:latest
+    restart: unless-stopped
+
+    depends_on:
+      - traefik
+      - keycloak
+
     networks:
       - web
 
@@ -140,6 +146,9 @@ services:
     image: lscr.io/linuxserver/hedgedoc:latest
     container_name: hedgedoc
     restart: unless-stopped
+
+    depends_on:
+      - traefik
 
     environment:
       PUID: 2010
@@ -202,7 +211,12 @@ services:
     container_name: keycloak
     image: quay.io/keycloak/keycloak:latest
     restart: unless-stopped
-    command: start
+    command: start --log=console,gelf --log-gelf-host=10.0.0.5 --log-gelf-port=12201
+
+    # Since Keycloak can send its own logs to our log server, we don't need it
+    # to also send logs there via Docker's default GELF facility
+    logging:
+      driver: json-file
 
     depends_on:
       - mariadb
@@ -210,14 +224,15 @@ services:
     environment:
       KC_HOSTNAME: kc.{{ domain }} 
       KC_PROXY: edge
-      KEYCLOAK_ADMIN: aven
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       KC_DB: mariadb
       KC_DB_URL_HOST: mariadb
       KC_DB_URL_PORT: 3306
       KC_DB_URL_DATABASE: keycloak
       KC_DB_USERNAME: keycloak
       KC_DB_PASSWORD: ${KC_DB_PASSWORD}
+      # Not needed after initial setup
+      # KEYCLOAK_ADMIN: 
+      # KEYCLOAK_ADMIN_PASSWORD:
 
     networks:
       - web

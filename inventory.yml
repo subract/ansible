@@ -8,12 +8,14 @@ all:
         seedling:
         jj:
         arch-dev:
+        smtp:
     docker:
       hosts:
         apps:
         dmz-apps:
         seedling:
         lyra:
+        # smtp:
     nfs_clients:
       hosts:
         apps:

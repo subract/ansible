@@ -7,10 +7,10 @@
 - name: Create mountpoints
   tags: config, nfs
   ansible.builtin.file:
-    path: "{{ item }}"
+    path: "{{ item.path }}"
     state: directory
-    owner: root
-    group: root
+    owner: "{{ item.user }}"
+    group: "{{ item.group }}"
     mode: 0770
   loop: "{{ nfs_dirs }}"
   register: mountpoints
@@ -18,7 +18,7 @@
 - name: Make mountpoints immutable
   tags: config, nfs
   ansible.builtin.file:
-    path: "{{ item }}"
+    path: "{{ item.path }}"
     attributes: +i
   loop: "{{ nfs_dirs }}"
   when: mountpoints.changed
@@ -27,8 +27,8 @@
   tags: config, nfs
   lineinfile:
     path: /etc/fstab
-    regexp: "{{ item }}"
+    regexp: "{{ item.path }}"
     # /etc/fstab traditionally has tabs, so skip no-tab linting rule
-    line: "10.0.0.2:{{ item }}\t{{ item }}\tnfs\tauto\t0\t0" # noqa no-tabs
+    line: "10.0.0.2:{{ item.path }}\t{{ item.path }}\tnfs\tauto\t0\t0" # noqa no-tabs
   loop: "{{ nfs_dirs }}"
   register: nfs
