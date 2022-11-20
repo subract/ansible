@@ -90,6 +90,15 @@
   roles:
     - mariadb_backup
 
+- hosts: dmz-apps
+  become: true
+  gather_facts: false
+  ignore_unreachable: true
+  roles:
+    - role: remote_logs
+      vars:
+        gelf_docker: true
+
 - hosts: jj
   become: true
   gather_facts: false
@@ -97,7 +106,10 @@
   roles:
     - dotfiles_copy
     - more_users
-    - rsyslog
+    - role: remote_logs
+      vars:
+        rsyslog_auth: true
+        gelf_docker: false
 
 - hosts: titania
   become: true
