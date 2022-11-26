@@ -8,11 +8,13 @@
       display-setup-script=xrandr --output DP-4 --mode 2560x1440 --rate 165 --pos 0x400 --primary --output DP-2 --mode 3840x2160 --rate 60 --pos 2560x0
       session-setup-script=xrandr --output DP-4 --mode 2560x1440 --rate 165 --pos 0x400 --primary --output DP-2 --mode 3840x2160 --rate 60 --pos 2560x0
 
-
 - name: Configure cursor size
   tags: config
+  become: true
+  become_user: "{{ user }}"
   blockinfile:
     path: /home/{{ user }}/.Xresources
     create: true
+    mode: 0660
     block: |-
       Xcursor.size: 16

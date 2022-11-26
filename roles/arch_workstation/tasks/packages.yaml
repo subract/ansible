@@ -11,13 +11,13 @@
       - firefox # web browser
       - gimp # image editor
       - keepassxc # password manager
+      - libqalculate # CLI calculator
       - libreoffice-fresh # office software
       - musescore # sheet music editor
       - nextcloud-client # file synchronization
       - nitrogen # background manager
-      - obsidian # notes
       - obs-studio # screen recorder
-      - libqalculate # CLI calculator
+      - obsidian # notes
       - redshift # blue light reducer
       - signal-desktop # messenger
       - steam # games
@@ -49,18 +49,18 @@
       - fzf # fuzzy find
       - git # git
       - git-lfs # large file support
+      - gnu-netcat # netcat
       - hexyl # better xxd
       - iftop # network monitor
+      - kitty # terminal emulator
       - maim # screenshot utility
       - man-db # need men
-      - gnu-netcat # netcat
+      - neofetch # OS info
       - networkmanager # network manager
       - nmap # network mapper
       - nvidia # proprietary drivers
       - nvidia-settings # X server settings
       - nvtop # GPU monitor
-      - kitty # terminal emulator
-      - neofetch # OS info
       - perl-image-exiftool # metadata parser
       - pv # progress viewer
       - reflector # pacman mirror manager
@@ -116,19 +116,18 @@
     name:
       - appimagelauncher # launcher for appimages
       - autotiling # i3 window tiling
-      - brother-hll2350dw # print drivers
       - bfg # clean git repos
+      - brother-hll2350dw # print drivers
       - catppuccin-gtk-theme-macchiato # gtk theme
       - git-secrets # dirty word monitoring
-      - i3lock-multimonitor # mutimonitor support for i3lock
+      - i3lock-color # stylable lockscreen
+      - i3lock-fancy-rapid # nice blurry lockscreens, fast
       - magic-wormhole # file transfer
       - multimc5 # Minecraft launcher
       - protonmail-bridge # allows local use of ProtonMail
       - protonvpn # ProtonVPN CLI and GUI
-      - refind-theme-regular-git # theme for refind
       # - spotify # music
-      # - standardnotes-bin # notes
-      # - typora-free # markdown editor/exporter
+      - refind-theme-regular-git # theme for refind
       - vmware-horizon-client # remote desktop client
       - vmware-horizon-smartcard # smartcard support
       - xcursor-simp1e-catpuccin-macchiato # cursor theme

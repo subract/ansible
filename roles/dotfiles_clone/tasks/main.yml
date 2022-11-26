@@ -23,7 +23,7 @@
     dest: /home/{{ user }}/.dotfiles
 
 - name: Revert SSH agent socket owner
-  tags: dotclone
+  tags: config, dots,dotclone
   changed_when: false # no way to distinguish changed/unchanged
   command:
     cmd: bash -c 'chown -R root /tmp/ssh-XXXX*'

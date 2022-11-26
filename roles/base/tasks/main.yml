@@ -4,10 +4,13 @@
   with_first_found:
     - "{{ ansible_os_family }}.yml"
 
-- name: Verify ansible user's password is locked
+- name: Verify ansible and root passwords are locked
   user:
-    name: "{{ ansible_user }}"
+    name: "{{ item }}"
     password_lock: true
+  loop:
+    - "{{ ansible_user }}"
+    - root
 
 - name: Install packages
   package:
@@ -15,7 +18,6 @@
       - vim
       - zsh
       - tldr
-      - kitty-terminfo
       - tmux
       - curl
       - git
@@ -41,7 +43,6 @@
     - { src: zshrc-skel, dest: /etc/skel/.zshrc }
     - { src: zshrc-skel, dest: /etc/zsh/newuser.zshrc.recommended }
     - { src: zshrc-skel, dest: "/home/{{ user }}/.zshrc" }
-
 
 - name: Set shells to zsh
   tags: zsh, config
