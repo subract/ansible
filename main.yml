@@ -81,6 +81,7 @@
   ignore_unreachable: true
   roles:
     - arch_workstation
+    - ssh_agent
     - dotfiles_clone
 
 - hosts: apps

@@ -1,4 +1,6 @@
 ---
+# Needed so that our user can access the SSH agent, using credentials passed
+# from the ansible control host to authenticate to the git repo
 - name: Enable SSH agent forwarding with sudo
   tags: config, dots
   lineinfile:
@@ -6,8 +8,6 @@
     insertafter: ^#?\s*Defaults\s+env_keep\b
     line: Defaults    env_keep += "SSH_AUTH_SOCK"
 
-# Needed so that our user can access the SSH agent, using credentials passed
-# from the ansible control host to authenticate to the git repo
 - name: Change SSH agent socket owner to {{ user }}
   tags: config, dots, dotclone
   changed_when: false # no way to distinguish changed/unchanged
@@ -27,15 +27,6 @@
   changed_when: false # no way to distinguish changed/unchanged
   command:
     cmd: bash -c 'chown -R root /tmp/ssh-XXXX*'
-
-- name: Create user systemd directory
-  tags: config, dots
-  file:
-    path: /home/{{ user }}/.config/systemd/user/default.target.wants
-    state: directory
-    mode: 0700
-    owner: "{{ user }}"
-    group: "{{ user }}"
 
 - name: Symlink dots
   tags: config, dots
@@ -58,18 +49,6 @@
     - { src: vim/vimrc, dst: .vimrc }
     - { src: xfce4, dst: .config/xfce4 }
     - { src: zsh/zshrc.local, dst: .zshrc.local }
-    # The following creates and enables an SSH agent
-    - { src: ssh-agent/ssh-agent.service, dst: .config/systemd/user/default.target.wants/ssh-agent.service }
-    - { src: ssh-agent/ssh-agent.service, dst: .config/systemd/user/ssh-agent.service }
-
-- name: Symlink pam_env
-  tags: config, dots
-  copy:
-    src: /home/{{ user }}/.dotfiles/ssh-agent/pam_env.conf
-    dest: /etc/security/pam_env.conf
-    mode: 0600
-    force: true
-    remote_src: true
 
 - name: Rebuild bat theme cache
   tags: config, dots
