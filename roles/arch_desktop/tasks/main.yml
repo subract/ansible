@@ -13,5 +13,6 @@
   tags: config
   blockinfile:
     path: /home/{{ user }}/.Xresources
+    create: true
     block: |-
       Xcursor.size: 16

@@ -31,9 +31,9 @@
 - name: Create user systemd directory
   tags: config, dots
   file:
-    path: ~/.config/systemd/user/default.target.wants
+    path: /home/{{ user }}/.config/systemd/user/default.target.wants
     state: directory
-    mode: 0660
+    mode: 0700
     owner: "{{ user }}"
     group: "{{ user }}"
 
@@ -61,7 +61,15 @@
     # The following creates and enables an SSH agent
     - { src: ssh-agent/ssh-agent.service, dst: .config/systemd/user/default.target.wants/ssh-agent.service }
     - { src: ssh-agent/ssh-agent.service, dst: .config/systemd/user/ssh-agent.service }
-    - { src: ssh-agent/pam_env.conf, dst: /etc/security/pam_env.conf }
+
+- name: Symlink pam_env
+  tags: config, dots
+  copy:
+    src: /home/{{ user }}/.dotfiles/ssh-agent/pam_env.conf
+    dest: /etc/security/pam_env.conf
+    mode: 0600
+    force: true
+    remote_src: true
 
 - name: Rebuild bat theme cache
   tags: config, dots
