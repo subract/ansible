@@ -10,6 +10,7 @@
       - discord # social client
       - firefox # web browser
       - gimp # image editor
+      - hugo # static site generator
       - keepassxc # password manager
       - libqalculate # CLI calculator
       - libreoffice-fresh # office software
@@ -119,9 +120,10 @@
       - bfg # clean git repos
       - brother-hll2350dw # print drivers
       - catppuccin-gtk-theme-macchiato # gtk theme
+      - downgrade # downgrade packages
       - git-secrets # dirty word monitoring
       - i3lock-color # stylable lockscreen
-      - i3lock-fancy-rapid # nice blurry lockscreens, fast
+      - i3lock-fancy-rapid-git # nice blurry lockscreens, fast
       - magic-wormhole # file transfer
       - multimc5 # Minecraft launcher
       - protonmail-bridge # allows local use of ProtonMail

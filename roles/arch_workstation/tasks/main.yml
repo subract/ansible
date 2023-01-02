@@ -19,7 +19,6 @@
       - lightdm-gtk-greeter
       - i3-wm
       - i3blocks
-      - i3lock
       - polybar # customizable statusbar
       - dmenu
       - xterm
