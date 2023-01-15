@@ -5,6 +5,7 @@
     name:
       # User apps
       - audacity # audio editor
+      - blender # 3D modeling
       - code # de-Microsofted VS Code fork
       - digikam # photo manager
       - discord # social client
