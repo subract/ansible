@@ -50,6 +50,7 @@
     - syncoid_sanoid
     - backblaze
     - more_users
+    - remote_decrypt
 
 - hosts: vm
   become: true

@@ -1,0 +1,31 @@
+---
+- name: Install dropbear-initramfs
+  tags: pkg, update
+  package:
+    name: dropbear-initramfs
+
+- name: Configure dropbear-initramfs options
+  tags: config
+  lineinfile:
+    path: /etc/dropbear-initramfs/config
+    regexp: "DROPBEAR_OPTIONS="
+    line: 'DROPBEAR_OPTIONS="-I 180 -j -k -p  46727  -s"'
+  notify: Update initramfs
+
+# - name: Configure static IP address
+#   tags: config
+#   lineinfile:
+#     path: /etc/initramfs-tools/initramfs.conf
+#     regexp: 
+#   notify: Update initramfs
+
+
+- name: Configure dropbear-initramfs SSH key
+  tags: config
+  lineinfile:
+    path: /etc/dropbear-initramfs/authorized_keys
+    regexp: Homelab
+    line: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOcIlNwYsyjIhu6Pg/+67BpORsW8RdnJnvs12XvWSV8g Homelab aven
+    create: true
+    mode: 0600
+  notify: Update initramfs

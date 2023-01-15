@@ -1,0 +1,6 @@
+---
+
+- name: Update initramfs
+  tags: config
+  command:
+    cmd: update-initramfs -u
