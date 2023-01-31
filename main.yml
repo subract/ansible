@@ -51,6 +51,7 @@
     - backblaze
     - more_users
     - remote_decrypt
+    - simoncaron.pve_addons
 
 - hosts: vm
   become: true

@@ -27,19 +27,20 @@
       # - xf86-video-qxl
       # - spice-vdagent
 
-- name: Enable lightdm
+- name: Enable services
   tags: pkg
   service:
-    name: lightdm
+    name: "{{ item }}"
     enabled: true
     state: started
-
-- name: Enable timesyncd
-  tags: pkg
-  service:
-    name: systemd-timesyncd
-    enabled: true
-    state: started
+  loop:
+    - lightdm
+    - systemd-timesyncd
+    - cups
+    - avahi-daemon
+    - pcscd
+    - bluetooth
+    - reflector
 
 - name: Install packages
   include_tasks: packages.yaml
@@ -148,20 +149,6 @@
     dest: /usr/lib/vmware/view/pkcs11/libopenscpkcs11.so
     state: link
     mode: 0644
-
-- name: Enable pcscd service
-  tags: config
-  service:
-    name: pcscd
-    enabled: true
-    state: started
-
-- name: Enable Bluetooth service
-  tags: config
-  service:
-    name: bluetooth
-    enabled: true
-    state: started
 
 - name: Power Bluetooth adapter on startup
   tags: config

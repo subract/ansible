@@ -9,6 +9,7 @@
       - code # de-Microsofted VS Code fork
       - digikam # photo manager
       - discord # social client
+      - evince # pdf viewer
       - firefox # web browser
       - gimp # image editor
       - hugo # static site generator
@@ -84,9 +85,11 @@
       - base-devel # needed for AUR
       - bluez # bluetooth
       - bluez-utils # includes cli management
+      - breeze # dark theme
       - breeze-icons # icon theme
       - ccid # smart card driver
       - dunst # notification daemon
+      - ffmpegthumbnailer # video thumbnails
       - file-roller # archive support for thunar
       - freetype2 # font rendering
       - gnome-keyring # keyring
