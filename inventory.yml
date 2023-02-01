@@ -14,7 +14,6 @@ all:
         apps:
         dmz-apps:
         seedling:
-        lyra:
         # smtp:
     nfs_clients:
       hosts:
@@ -29,6 +28,7 @@ all:
     hypervisors:
       hosts:
         draco:
+        lyra:
   vars:
     ansible_python_interpreter: auto_silent
     ansible_user: ansible

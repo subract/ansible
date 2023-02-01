@@ -1,0 +1,27 @@
+---
+pve_group: pve01
+
+pve_groups:
+  - name: ops
+    comment: Operations Team
+
+pve_users:
+  - name: aven@pam
+    email: aven@localhost
+    groups: [ "ops" ]
+
+pve_acls:
+  - path: /
+    roles: [ "Administrator" ]
+    groups: [ "ops" ]
+
+
+# pve_storages:
+#   - name: localdir
+#     type: dir
+#     content: [ "images", "iso", "backup" ]
+#     path: /plop
+#     maxfiles: 4
+
+interfaces_template: "interfaces-{{ pve_group }}.j2"
+resolv_template: "resolv-{{ pve_group }}.conf.j2"

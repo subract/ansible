@@ -51,6 +51,57 @@
     - backblaze
     - more_users
     - remote_decrypt
+
+- hosts: lyra
+  become: True
+  serial: 1
+  tasks:
+    - name: Install bridge-utils
+      apt:
+        name: bridge-utils
+
+    - name: Configure /etc/network/interfaces
+      template:
+        src: "{{ interfaces_template }}"
+        dest: /etc/network/interfaces
+      register: _configure_interfaces
+
+    - name: Configure /etc/resolv.conf
+      template:
+        src: "{{ resolv_template }}"
+        dest: /etc/resolv.conf
+      register: _configure_interfaces
+
+    # - block:
+    #   - name: Reboot for networking changes
+    #     shell: "sleep 5 && shutdown -r now 'Networking changes found, rebooting'"
+    #     async: 1
+    #     poll: 0
+
+    #   - name: Wait for server to come back online
+    #     wait_for_connection:
+    #       delay: 15
+    #   when: _configure_interfaces is changed
+
+- hosts: lyra
+  become: true
+  gather_facts: false
+  ignore_unreachable: false
+  roles:
+    - role: geerlingguy.ntp
+      vars:
+        ntp_manage_config: true
+        ntp_timezone: America/Chicago
+    - role: lae.proxmox
+      vars:
+        - pve_group: all
+        - pve_reboot_on_kernel_update: false
+
+- hosts: hypervisors
+  become: true
+  gather_facts: false
+  ignore_unreachable: false
+  roles:
     - simoncaron.pve_addons
 
 - hosts: vm
