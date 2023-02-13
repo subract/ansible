@@ -33,6 +33,7 @@ all:
     ansible_python_interpreter: auto_silent
     ansible_user: ansible
     user: aven
+    ssh_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOcIlNwYsyjIhu6Pg/+67BpORsW8RdnJnvs12XvWSV8g Homelab aven
     domain: !vault |-
       $ANSIBLE_VAULT;1.1;AES256
       35386165613136366338633137663034616632653739306164616365373037386432353635613136

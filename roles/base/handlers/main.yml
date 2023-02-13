@@ -1,0 +1,6 @@
+---
+- name: Reload sshd config
+  tags: sshd
+  service:
+    name: sshd
+    state: restarted

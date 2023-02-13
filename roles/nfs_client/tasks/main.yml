@@ -13,15 +13,7 @@
     group: "{{ item.group }}"
     mode: 0770
   loop: "{{ nfs_dirs }}"
-  register: mountpoints
-
-- name: Make mountpoints immutable
-  tags: config, nfs
-  ansible.builtin.file:
-    path: "{{ item.path }}"
-    attributes: +i
-  loop: "{{ nfs_dirs }}"
-  when: mountpoints.changed
+  notify: Make mountpoints immutable
 
 - name: Map NFS shares
   tags: config, nfs
@@ -31,4 +23,3 @@
     # /etc/fstab traditionally has tabs, so skip no-tab linting rule
     line: "10.0.0.2:{{ item.path }}\t{{ item.path }}\tnfs\tauto\t0\t0" # noqa no-tabs
   loop: "{{ nfs_dirs }}"
-  register: nfs

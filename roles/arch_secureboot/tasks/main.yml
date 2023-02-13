@@ -5,10 +5,4 @@
   kewlfft.aur.aur:
     name: preloader-signed
     state: present
-  register: preloader
-
-- name: Configure refind to use preloader-signed
-  tags: secureboot
-  command:
-    cmd: refind-install --preloader /usr/share/preloader-signed/PreLoader.efi --yes
-  when: preloader.changed
+  notify: Configure refind to use preloader-signed

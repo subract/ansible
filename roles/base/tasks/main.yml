@@ -62,11 +62,4 @@
     owner: root
     group: root
     validate: sshd -t -f %s
-  register: sshd
-
-- name: Reload sshd config
-  tags: sshd
-  service:
-    name: sshd
-    state: restarted
-  when: sshd.changed
+  notify: Reload sshd config

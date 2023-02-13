@@ -6,15 +6,8 @@
 
 - name: Create NFS exports
   tags: config, nfs
-  register: nfs
   copy:
     src: ansible.exports
     dest: /etc/exports.d/ansible.exports
     mode: 0600
-
-- name: Restart nfs-server
-  tags: config, nfs
-  service:
-    name: nfs-server
-    state: restarted
-  when: nfs.changed
+  notify: Restart nfs-server

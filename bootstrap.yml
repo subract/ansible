@@ -23,7 +23,7 @@
     - name: Ensure sudo group has privs
       tags: groups
       lineinfile:
-        line: "%sudo\tALL=(ALL:ALL) ALL" # noqa no-tabs
+        line: "%sudo\\tALL=(ALL:ALL) ALL"
         path: /etc/sudoers
 
     - name: Create user
@@ -31,15 +31,13 @@
       user:
         name: "{{ user }}"
         groups: sudo
-      register: new_user
 
     - name: Set ssh key for user
       tags: user, ssh
       authorized_key:
         user: "{{ user }}"
-        key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOcIlNwYsyjIhu6Pg/+67BpORsW8RdnJnvs12XvWSV8g Homelab aven
+        key: "{{ ssh_key }}"
         exclusive: true
-      when: new_user.changed
 
     - name: Set user password
       tags: user, pass

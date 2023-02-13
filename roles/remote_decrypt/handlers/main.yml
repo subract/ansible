@@ -1,5 +1,4 @@
 ---
-
 - name: Update initramfs
   tags: config
   command:
