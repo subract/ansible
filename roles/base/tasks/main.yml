@@ -35,7 +35,7 @@
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    mode: 0644
+    mode: "0644"
     owner: root
     group: root
   loop:
@@ -58,7 +58,7 @@
   template:
     src: sshd_config.j2
     dest: /etc/ssh/sshd_config
-    mode: 0644
+    mode: "0644"
     owner: root
     group: root
     validate: sshd -t -f %s

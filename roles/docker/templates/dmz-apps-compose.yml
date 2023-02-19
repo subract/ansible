@@ -20,7 +20,7 @@ services:
       - /ssd/app/games/minecraft/mc-survival-211205-1.18.0:/data
 
     environment:
-      TZ: America/Chicago
+      TZ: {{ timezone }}
       EULA: True
       PVP: false
       DIFFICULTY: normal
@@ -49,7 +49,7 @@ services:
       - /ssd/app/games/minecraft/mc-survival-221003-1.19.2:/data
 
     environment:
-      TZ: America/Chicago
+      TZ: {{ timezone }}
       EULA: True
       PVP: false
       DIFFICULTY: normal
@@ -177,7 +177,7 @@ services:
     environment:
       PUID: 2010
       PGID: 2010
-      TZ: America/Chicago
+      TZ: {{ timezone }}
       CMD_DOMAIN: hd.{{domain}}
       CMD_PROTOCOL_USESSL: true
       CMD_ALLOW_ORIGIN: "[hd.{{domain}}]"

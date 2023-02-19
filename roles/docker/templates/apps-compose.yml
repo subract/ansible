@@ -151,7 +151,7 @@ services:
       - mqtt
 
     environment:
-      - TZ=America/Chicago
+      - TZ={{ timezone }}
 
     labels:
       - traefik.enable=true
@@ -215,7 +215,7 @@ services:
       - mqtt
 
     environment:
-      - TZ=America/Chicago
+      - TZ={{ timezone }}
 
     labels:
       - traefik.enable=true
@@ -234,7 +234,7 @@ services:
       - web
 
     environment:
-      - TZ=America/Chicago
+      - TZ={{ timezone }}
 
     labels:
       - traefik.enable=true

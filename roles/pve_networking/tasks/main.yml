@@ -7,12 +7,12 @@
   template:
     src: "{{ interfaces_template }}"
     dest: /etc/network/interfaces
-    mode: 0644
+    mode: "0644"
   notify: Reload network interfaces
 
 - name: Configure /etc/resolv.conf
   template:
     src: "{{ resolv_template }}"
     dest: /etc/resolv.conf
-    mode: 0644
+    mode: "0644"
   notify: Reload network interfaces

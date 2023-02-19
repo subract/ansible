@@ -9,7 +9,7 @@
     src: "{{ item.src }}"
     dest: /home/{{ user }}/{{ item.dst }}
     force: true
-    mode: 0660
+    mode: "0660"
     owner: "{{ user }}"
     group: "{{ user }}"
 
@@ -26,7 +26,7 @@
     src: "{{ item.src }}"
     dest: /root/{{ item.dst }}
     force: true
-    mode: 0660
+    mode: "0660"
     owner: root
     group: root
   with_items:

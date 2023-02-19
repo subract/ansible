@@ -10,7 +10,7 @@
   file:
     path: "{{ item }}"
     state: directory
-    mode: 0700
+    mode: "0700"
   loop:
     - /root/.config/backblaze/
     - /root/.config/rclone/
@@ -20,21 +20,21 @@
   copy:
     src: rclone.conf
     dest: /root/.config/rclone/rclone.conf
-    mode: 0600
+    mode: "0600"
 
 - name: Create backup script
   tags: config, rclone
   template:
     src: backblaze-backup
     dest: /usr/local/sbin/
-    mode: 0500
+    mode: "0500"
 
 - name: Configure backup script
   tags: config, rclone
   copy:
     src: excludes.conf
     dest: /root/.config/backblaze/
-    mode: 0600
+    mode: "0600"
 
 - name: Enable cron task
   tags: config, cron, rclone

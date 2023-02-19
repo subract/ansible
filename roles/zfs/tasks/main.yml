@@ -4,7 +4,7 @@
   copy:
     src: zfs-load-key.service
     dest: /etc/systemd/system/zfs-load-key.service
-    mode: 0755
+    mode: "0755"
 
 - name: Enable zfs-load-key service
   tags: config, zfs
@@ -18,7 +18,7 @@
   blockinfile:
     path: /etc/modprobe.d/zfs.conf
     create: true
-    mode: 0644
+    mode: "0644"
     block: |-
       options zfs zfs_arc_max=8589934592
       options zfs zfs_arc_min=2147483648

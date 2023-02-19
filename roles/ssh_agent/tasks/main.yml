@@ -7,7 +7,7 @@
   file:
     path: /home/{{ user }}/.config/systemd/user/
     state: directory
-    mode: 0770
+    mode: "0770"
     owner: "{{ user }}"
     group: "{{ user }}"
 
@@ -16,7 +16,7 @@
   copy:
     src: ssh-agent.service
     dest: /home/{{ user }}/.config/systemd/user/ssh-agent.service
-    mode: 0660
+    mode: "0660"
     owner: "{{ user }}"
     group: "{{ user }}"
 
@@ -35,7 +35,7 @@
   tags: config, ssh
   blockinfile:
     dest: /etc/security/pam_env.conf
-    mode: 0600
+    mode: "0600"
     create: true
     block: |
       # Set SSH_AUTH_SOCK so SSH agent can be found

@@ -12,14 +12,14 @@
     state: directory
     owner: root
     group: root
-    mode: 0755
+    mode: "0755"
 
 - name: Configure sanoid
   tags: config, sanoid
   copy:
     src: sanoid.conf
     dest: /etc/sanoid/sanoid.conf
-    mode: 0644
+    mode: "0644"
 
 - name: Add ssd replication cron job
   tags: config, syncoid

@@ -4,7 +4,7 @@
   blockinfile:
     path: /home/{{ user }}/.zshenv
     create: true
-    mode: 0600
+    mode: "0600"
     owner: "{{ user }}"
     group: "{{ user }}"
     block: |
@@ -19,7 +19,7 @@
   file:
     path: "{{ compose_dir }}"
     state: directory
-    mode: 0770
+    mode: "0770"
     owner: root
     group: docker
 
@@ -28,7 +28,7 @@
   template:
     src: "{{ inventory_hostname }}-compose.yml"
     dest: "{{ compose_dir }}docker-compose.yml"
-    mode: 0660
+    mode: "0660"
     owner: root
     group: docker
 
@@ -37,7 +37,7 @@
   copy:
     src: "{{ inventory_hostname }}.env"
     dest: "{{ compose_dir }}.env"
-    mode: 0440
+    mode: "0440"
     owner: root
     group: docker
 

@@ -10,7 +10,7 @@ services:
     environment:
       - PUID=1001
       - PGID=1001
-      - TZ=America/Chicago
+      - TZ={{ timezone }}
       - DELUGE_LOGLEVEL=error #optional
 
     volumes:

@@ -11,7 +11,7 @@
     state: directory
     owner: "{{ item.user }}"
     group: "{{ item.group }}"
-    mode: 0770
+    mode: "0770"
   loop: "{{ nfs_dirs }}"
   notify: Make mountpoints immutable
 

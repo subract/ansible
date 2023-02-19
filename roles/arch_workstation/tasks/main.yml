@@ -4,7 +4,7 @@
   copy:
     src: pacman.conf
     dest: /etc/pacman.conf
-    mode: 0644
+    mode: "0644"
     owner: root
     group: root
 
@@ -50,7 +50,7 @@
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    mode: 0644
+    mode: "0644"
     owner: root
     group: root
   loop:
@@ -62,7 +62,7 @@
   copy:
     src: mouse.conf
     dest: /etc/X11/xorg.conf.d/99-libinput-custom.conf
-    mode: 0644
+    mode: "0644"
     owner: root
     group: root
 
@@ -71,7 +71,7 @@
   copy:
     src: fonts.conf
     dest: /etc/fonts/local.conf
-    mode: 0644
+    mode: "0644"
     owner: root
     group: root
 
@@ -80,7 +80,7 @@
   copy:
     src: switch_audio_out.sh
     dest: /usr/local/bin/switch_audio_out
-    mode: 0755
+    mode: "0755"
     owner: root
     group: root
 
@@ -89,7 +89,7 @@
   copy:
     src: .gitconfig
     dest: /home/{{ user }}/.gitconfig
-    mode: 0644
+    mode: "0644"
     owner: "{{ user }}"
     group: "{{ user }}"
 
@@ -98,7 +98,7 @@
   blockinfile:
     path: /boot/EFI/refind/refind.conf
     create: true
-    mode: 0600
+    mode: "0600"
     block: |-
       # Don't wear out NVRAM
       use_nvram false
@@ -126,7 +126,7 @@
     remote_src: true
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    mode: 0644
+    mode: "0644"
     owner: root
     group: root
   loop:
@@ -140,7 +140,7 @@
   file:
     dest: /usr/lib/vmware/view/pkcs11
     state: directory
-    mode: 0755
+    mode: "0755"
 
 - name: Configure Horizon remote desktop
   tags: horizon, config
@@ -148,7 +148,7 @@
     src: /usr/lib64/pkcs11/opensc-pkcs11.so
     dest: /usr/lib/vmware/view/pkcs11/libopenscpkcs11.so
     state: link
-    mode: 0644
+    mode: "0644"
 
 - name: Power Bluetooth adapter on startup
   tags: config
