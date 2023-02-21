@@ -1,4 +1,8 @@
 ---
+remote_decrypt_port: 46728
+
+# PVE config
+
 pve_group: pve01
 
 pve_groups:

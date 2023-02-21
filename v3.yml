@@ -1,0 +1,69 @@
+---
+# Do update pre-tasks before anything else...
+
+- hosts: v3
+  become: true
+  gather_facts: true
+  ignore_unreachable: true
+  pre_tasks:
+    - name: Update apt index
+      tags: update, upgrade
+      when: ansible_os_family == "Debian"
+      changed_when: false
+      apt:
+        update_cache: true
+    - name: Run apt dist upgrade
+      tags: upgrade
+      when: ansible_os_family == "Debian"
+      apt:
+        upgrade: dist
+        autoremove: true
+    - name: Update pacman index
+      tags: update, upgrade
+      changed_when: false
+      when: ansible_os_family == "Archlinux"
+      community.general.pacman:
+        update_cache: true
+    - name: Run pacman upgrade
+      tags: upgrade
+      when: ansible_os_family == "Archlinux"
+      community.general.pacman:
+        upgrade: true
+
+# ...then run base config on all machines...
+
+- hosts: v3
+  become: true
+  ignore_unreachable: true
+  roles:
+    - base
+
+# ...and finally, do role-specific tasks
+
+- hosts: lyra
+  become: true
+  gather_facts: false
+  ignore_unreachable: false
+  roles:
+    - pve_networking
+    - remote_decrypt
+    - role: geerlingguy.ntp
+    - role: lae.proxmox
+      vars:
+        pve_reboot_on_kernel_update: false
+
+- hosts: hypervisors
+  become: true
+  gather_facts: false
+  ignore_unreachable: false
+  roles:
+    - simoncaron.pve_addons
+
+- hosts: docker
+  become: true
+  gather_facts: false
+  ignore_unreachable: true
+  roles:
+    - geerlingguy.docker
+    - docker
+    - dotfiles_copy

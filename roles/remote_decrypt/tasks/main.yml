@@ -9,7 +9,7 @@
   lineinfile:
     path: /etc/dropbear-initramfs/config
     regexp: DROPBEAR_OPTIONS=
-    line: DROPBEAR_OPTIONS="-I 180 -j -k -p  46727  -s"
+    line: DROPBEAR_OPTIONS="-I 180 -j -k -p {{ remote_decrypt_port }} -s"
   notify: Update initramfs
 
 - name: Configure dropbear-initramfs SSH key
