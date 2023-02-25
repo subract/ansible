@@ -27,7 +27,7 @@
       # - xf86-video-qxl
       # - spice-vdagent
 
-- name: Enable services
+- name: Enable and start services
   tags: pkg
   service:
     name: "{{ item }}"
@@ -40,7 +40,16 @@
     - avahi-daemon
     - pcscd
     - bluetooth
+
+- name: Enable services
+  tags: pkg
+  service:
+    name: "{{ item }}"
+    enabled: true
+  loop:
     - reflector
+    - nvidia-suspend
+    - nvidia-hibernate
 
 - name: Install packages
   include_tasks: packages.yaml
@@ -157,3 +166,13 @@
     block: |-
       [Policy]
       AutoEnable=true
+
+- name: Save VRAM on suspend
+  tags: system
+  blockinfile:
+    path: /etc/modprobe.d/nvidia-power-management.conf
+    create: true
+    mode: "0644"
+    # This needs to be stored on an fs with enough room, so we'll put it in /home
+    block: |-
+      options nvidia NVreg_PreserveVideoMemoryAllocations=1 NVreg_TemporaryFilePath=/home/{{ user }}/.cache/
