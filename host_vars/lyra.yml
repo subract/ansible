@@ -26,6 +26,7 @@ pve_users:
 pve_roles:
   - name: Terraformer
     privileges:
+      - Pool.Allocate
       - VM.Allocate
       - VM.Clone
       - VM.Config.CDROM
@@ -41,6 +42,8 @@ pve_roles:
       - VM.PowerMgmt
       - Datastore.AllocateSpace
       - Datastore.Audit
+      - Sys.Modify
+      - Sys.Audit
 
 pve_acls:
   - path: /

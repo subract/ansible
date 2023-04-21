@@ -94,6 +94,7 @@
       - freetype2 # font rendering
       - gnome-keyring # keyring
       - gvfs # removable storage mounting
+      - incron # cron for inotify
       - network-manager-applet # tray icon, ProtonVPN dependency
       - noto-fonts-emoji # emojis
       - nss-mdns # mdns name resolution
@@ -102,6 +103,7 @@
       - pavucontrol # PulseAudio volume control
       - pipewire # modern sound
       - pipewire-pulse # replace PuleAudio
+      - trash-cli # trash from command line
       - ttf-fira-code # nice font
       - tumbler # thumbnails for thunar
       - wireplumber # audio session manager

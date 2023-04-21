@@ -40,7 +40,6 @@
   with_items:
     - { src: bat, dst: .config/bat }
     - { src: dunst, dst: .config/dunst }
-    - { src: gtk-3.0, dst: .config/gtk-3.0 }
     - { src: i3, dst: .config/i3 }
     - { src: icons, dst: .icons }
     - { src: kitty, dst: .config/kitty }

@@ -1,6 +1,5 @@
 ---
-
-- name: Configure users
+- name: Configure VyOS
   hosts: vyos
   tasks:
     - name: Ensure vyos and ansible passwords are locked
@@ -23,3 +22,32 @@
         banner: post-login
         text: Welcome to VyOS
         state: present
+
+    - name: Configure interfaces
+      vyos.vyos.vyos_interfaces:
+        state: overridden
+        config:
+          - name: eth0
+            enabled: true
+            description: WAN
+          - name: eth1
+            enabled: true
+            description: Internal
+            vifs:
+              - vlan_id: 10
+                enabled: true
+                description: Servers VLAN
+
+    - name: Configure IP addresses/networks
+      vyos.vyos.vyos_l3_interfaces:
+        state: merged
+        config:
+          - name: eth1
+            vifs:
+              - vlan_id: 10
+                ipv4:
+                  - address: 10.69.10.1/24
+
+    - name: Save configuration to boot config
+      vyos_config:
+        save: true
