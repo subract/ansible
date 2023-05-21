@@ -5,6 +5,7 @@ networks:
   web:
   mqtt:
   db:
+  drone:
 
 
 services:
@@ -100,6 +101,7 @@ services:
       - GITEA__SERVICE__DISABLE_REGISTRATION=true
       - GITEA__MIGRATIONS__ALLOW_LOCALNETWORKS=true
       - GITEA__INDEXER__REPO_INDEXER_ENABLED=true
+      - GITEA__WEBHOOK__ALLOWED_HOST_LIST=*.{{domain}}
 
     volumes:
       - /ssd/app/gitea:/data
@@ -119,6 +121,57 @@ services:
       - traefik.http.routers.gt.tls.certresolver=default
       - traefik.http.services.gt.loadbalancer.server.port=80
 
+
+  drone:
+    container_name: drone
+    image: drone/drone:2
+    restart: unless-stopped
+
+    volumes:
+    - /ssd/app/drone:/data
+
+    networks:
+      - web
+      - drone
+
+    environment:
+    - DRONE_GITEA_SERVER=https://gt.{{ domain }}
+    - DRONE_GITEA_CLIENT_ID=${DRONE_GITEA_CLIENT_ID}
+    - DRONE_GITEA_CLIENT_SECRET=${DRONE_GITEA_CLIENT_SECRET}
+    - DRONE_RPC_SECRET=${DRONE_RPC_SECRET}
+    - DRONE_SERVER_HOST=dr.{{ domain }}
+    - DRONE_SERVER_PROTO=https
+    - DRONE_DATADOG_ENABLED=false
+
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.dr.rule=Host(`dr.{{ domain }}`)
+      - traefik.http.routers.dr.entrypoints=https
+      - traefik.http.routers.dr.tls.certresolver=default
+      - traefik.http.services.dr.loadbalancer.server.port=80
+
+
+  runner:
+    container_name: runner
+    restart: unless-stopped
+    image: drone/drone-runner-docker:1
+
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+
+    networks:
+      - drone
+
+    environment:
+    - DRONE_RPC_PROTO=http
+    - DRONE_RPC_HOST=drone
+    - DRONE_RPC_SECRET=${DRONE_RPC_SECRET}
+    - DRONE_RUNNER_CAPACITY=2
+    - DRONE_RUNNER_NAME=roger-bannister
+
+    # ports:
+    # - 3000:3000
+ 
 
   mosquitto:
     container_name: mosquitto
@@ -268,24 +321,6 @@ services:
       - traefik.http.routers.op.entrypoints=https
       - traefik.http.routers.op.tls.certresolver=default
       - traefik.http.services.op.loadbalancer.server.port=80
-
-  etherpad:
-    container_name: etherpad
-    image: etherpad/etherpad
-    restart: unless-stopped
-
-    volumes:
-      - /ssd/app/etherpad:/opt/etherpad-lite/var
-
-    networks:
-      - web
-
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.ep.rule=Host(`ep.{{ domain }}`)
-      - traefik.http.routers.ep.entrypoints=https
-      - traefik.http.routers.ep.tls.certresolver=default
-      - traefik.http.services.ep.loadbalancer.server.port=9001
 
   # freeipa:
   #   container_name: freeipa

@@ -38,8 +38,11 @@ custom_users:
     uid: 2000
     groups: apps-doc
   - name: dmz-doc
-    create_home: false
     uid: 2010
     groups: dmz-doc
   - name: aven
     groups: [dmz-doc, apps-doc, sudo]
+  # User for pushing web content from CI pipeline
+  - name: web-push
+    create_home: false
+    uid: 2020

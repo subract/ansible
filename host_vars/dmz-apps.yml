@@ -18,3 +18,7 @@ custom_users:
     groups: dmz-doc
   - name: aven
     groups: [dmz-doc, sudo, docker]
+  # User for pushing web content from CI pipeline
+  - name: web-push
+    uid: 2020
+    key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMVUej2tH01md6+Huw6fgsKCDiQtYNfPCJciOtYEX6c9 web-push

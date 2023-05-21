@@ -58,7 +58,6 @@
     name: "{{ item }}"
     enabled: true
   loop:
-    - reflector
     - nvidia-suspend
     - nvidia-hibernate
 
