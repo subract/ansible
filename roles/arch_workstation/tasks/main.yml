@@ -83,7 +83,7 @@
     group: root
 
 - name: Configure fonts
-  tags: config
+  tags: config, fonts
   copy:
     src: fonts.conf
     dest: /etc/fonts/local.conf
