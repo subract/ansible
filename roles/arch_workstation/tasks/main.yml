@@ -227,6 +227,7 @@
     mode: "0600"
     owner: "{{ user }}"
     group: "{{ user }}"
+    regexp: convert_in
     line: >
-      /home/{{ user }}/Videos/convert_in IN_CLOSE_WRITE /usr/bin/ffmpeg -i $@/$# -c:v dnxhd -profile:v dnxhr_hq -pix_fmt yuv422p -c:a pcm_s16le -f mov /home/{{
-      user }}/Videos/convert_out/$# && trash-put $@/$# 
+      /home/{{ user }}/Videos/convert_in IN_CLOSE_WRITE flock /tmp/encode --command "/usr/bin/ffmpeg -i $@/$# -c:v dnxhd -profile:v dnxhr_hq -pix_fmt yuv422p -c:a
+      pcm_s16le -f mov /home/{{ user }}/Videos/convert_out/$# && trash-put $@/$#"
