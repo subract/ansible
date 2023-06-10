@@ -61,8 +61,6 @@
       - neofetch # OS info
       - networkmanager # network manager
       - nmap # network mapper
-      - nvidia # proprietary drivers
-      - nvidia-settings # X server settings
       - nvtop # GPU monitor
       - perl-image-exiftool # metadata parser
       - pv # progress viewer

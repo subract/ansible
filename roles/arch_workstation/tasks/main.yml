@@ -49,17 +49,7 @@
     - cups
     - avahi-daemon
     - pcscd
-    - bluetooth
     - incrond
-
-- name: Enable services
-  tags: pkg
-  service:
-    name: "{{ item }}"
-    enabled: true
-  loop:
-    - nvidia-suspend
-    - nvidia-hibernate
 
 - name: Configure lightdm-gtk-greeter
   tags: pkg, config
@@ -197,18 +187,8 @@
       gtk-theme-name = Catppuccin-Macchiato-Peach
       gtk-application-prefer-dark-theme = true
 
-- name: Save VRAM on suspend
-  tags: system
-  blockinfile:
-    path: /etc/modprobe.d/nvidia-power-management.conf
-    create: true
-    mode: "0644"
-    # This needs to be stored on an fs with enough room, so we'll put it in /home
-    block: |-
-      options nvidia NVreg_PreserveVideoMemoryAllocations=1 NVreg_TemporaryFilePath=/home/{{ user }}/.cache/
-
 - name: Create video in/out dirs
-  tags: config
+  tags: config, incrond
   file:
     name: /home/{{ user }}/Videos/{{ item }}
     state: directory
@@ -220,7 +200,7 @@
     - convert_out
 
 - name: Configure incrond
-  tags: config
+  tags: config, incrond
   lineinfile:
     path: /var/spool/incron/{{ user }}
     create: true
@@ -229,5 +209,5 @@
     group: "{{ user }}"
     regexp: convert_in
     line: >
-      /home/{{ user }}/Videos/convert_in IN_CLOSE_WRITE flock /tmp/encode --command "/usr/bin/ffmpeg -i $@/$# -c:v dnxhd -profile:v dnxhr_hq -pix_fmt yuv422p -c:a
+      /home/{{ user }}/Videos/convert_in IN_CLOSE_WRITE flock /tmp/enc --command "/usr/bin/ffmpeg -i $@/$# -c:v dnxhd -profile:v dnxhr_hq -pix_fmt yuv422p -c:a
       pcm_s16le -f mov /home/{{ user }}/Videos/convert_out/$# && trash-put $@/$#"

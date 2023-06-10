@@ -1,12 +1,19 @@
 ---
+- name: Install desktop software packages
+  tags: pkg
+  package:
+    name:
+      - rocm-hip-sdk # AMD ROCm SKD
+      - rocm-opencl-sdk # AMD ROCm SDK
+
 - name: Configure lightdm for dual monitor setup
   tags: config
   blockinfile:
     path: /etc/lightdm/lightdm.conf
     block: |-
       [SeatDefaults]
-      display-setup-script=xrandr --output DP-4 --mode 2560x1440 --rate 165 --pos 0x400 --primary --output DP-2 --mode 3840x2160 --rate 60 --pos 2560x0
-      session-setup-script=xrandr --output DP-4 --mode 2560x1440 --rate 165 --pos 0x400 --primary --output DP-2 --mode 3840x2160 --rate 60 --pos 2560x0
+      display-setup-script=xrandr --output DP-1 --mode 2560x1440 --rate 165 --pos 0x400 --primary --output DP-2 --mode 3840x2160 --rate 60 --pos 2560x0
+      session-setup-script=xrandr --output DP-1 --mode 2560x1440 --rate 165 --pos 0x400 --primary --output DP-2 --mode 3840x2160 --rate 60 --pos 2560x0
 
 - name: Configure cursor size
   tags: config
