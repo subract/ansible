@@ -1,0 +1,105 @@
+version: "3.7"
+
+networks:
+  web:
+  db:
+
+services:
+  traefik:
+    container_name: traefik
+    image: traefik:latest
+    restart: unless-stopped
+    command: --api.insecure=true --providers.docker
+
+    ports:
+      - 80:80
+      - 443:443
+
+    environment:
+      - CF_API_EMAIL=${CF_API_EMAIL}
+      - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
+      - CF_ZONE_API_TOKEN=${CF_ZONE_API_TOKEN}
+
+    networks:
+      - web
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /ssd/app/traefik/traefik.yml:/traefik.yml
+      - /ssd/app/traefik/dynamic_conf.yml:/dynamic_conf.yml
+      - /ssd/app/traefik/acme.json:/acme.json
+      - /etc/localtime:/etc/localtime:ro
+
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.api.rule=Host(`tr.{{ domain }}`)
+      - traefik.http.routers.api.entrypoints=https
+      - traefik.http.routers.api.tls.certresolver=default
+      - traefik.http.routers.api.service=api@internal
+      - traefik.http.routers.api.middlewares=auth
+      - traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_USERS}
+
+
+  mariadb:
+    container_name: mariadb
+    image: mariadb:latest
+    restart: unless-stopped
+
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+
+    volumes:
+      - /ssd/app/mariadb/data:/var/lib/mysql
+
+    networks:
+      - db
+
+    labels:
+      - traefik.enable=false
+
+
+  nextcloud:
+    container_name: nextcloud
+    image: linuxserver/nextcloud:latest
+    restart: unless-stopped
+    depends_on: 
+      - mariadb
+
+    volumes:
+      - /hdd/enc/app/nextcloud/config:/config
+      - /hdd/enc/app/nextcloud/data:/data
+
+    environment:
+      - PUID=1001
+      - PGID=1001
+
+    networks:
+      - web
+      - db
+
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.nc.rule=Host(`nc.{{ domain }}`)
+      - traefik.http.routers.nc.entrypoints=https
+      - traefik.http.routers.nc.tls.certresolver=default
+      - traefik.serversTransport.forwardingTimeouts.dialTimeout=0s
+      - traefik.http.services.nc.loadbalancer.server.port=80
+
+
+  cyberchef:
+    container_name: cyberchef
+    image: mpepping/cyberchef
+    restart: unless-stopped
+
+    networks:
+      - web
+
+    environment:
+      - TZ={{ timezone }}
+
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.cc.rule=Host(`cc.{{ domain }}`)
+      - traefik.http.routers.cc.entrypoints=https
+      - traefik.http.routers.cc.tls.certresolver=default
+      - traefik.http.services.cc.loadbalancer.server.port=8000

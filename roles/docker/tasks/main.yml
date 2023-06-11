@@ -8,8 +8,7 @@
     owner: "{{ user }}"
     group: "{{ user }}"
     block: |
-      export COMPOSE_FILE={{ compose_dir }}docker-compose.yml
-      alias dc="docker-compose --project-directory {{ compose_dir }}"
+      alias dc='docker-compose $(find /opt/doc/*.yml | sed -e "s/^/-f /")'
       alias dcls="docker container ls"
       alias dcl="docker logs"
       alias dclf="docker logs --follow"
@@ -26,11 +25,13 @@
 - name: Copy docker-compose.yml
   tags: docker, compose
   template:
-    src: "{{ inventory_hostname }}-compose.yml"
-    dest: "{{ compose_dir }}docker-compose.yml"
+    src: "{{ item }}"
+    dest: "{{ compose_dir }}/{{ item | basename }}"
     mode: "0660"
     owner: root
     group: docker
+  with_fileglob:
+    - ../templates/{{ inventory_hostname }}/*.yml
 
 - name: Copy .env
   tags: docker, compose, env
@@ -42,25 +43,26 @@
     group: docker
 
 - name: Pull docker services
-  tags: docker, compose
-  command:
+  tags: docker, compose, pull
+  shell:
     chdir: "{{ compose_dir }}"
-    cmd: docker-compose pull
+    executable: /usr/bin/zsh
+    cmd: set -o pipefail; docker-compose $(find /opt/doc/*.yml | sed -e "s/^/-f /") pull
   register: result
   # these "changed_when" conditions aren't quite working yet
   changed_when: "'Pull complete' in result.stdout"
 
 - name: Start docker services
   tags: docker, compose
-  command:
+  shell:
     chdir: "{{ compose_dir }}"
-    cmd: docker-compose up -d --remove-orphans
+    executable: /usr/bin/zsh
+    cmd: set -o pipefail; docker-compose $(find /opt/doc/*.yml | sed -e "s/^/-f /") up -d
   register: result
   changed_when: "'Started' in result.stdout"
 
 - name: Prune docker services
   tags: docker, compose
   command:
-    chdir: "{{ compose_dir }}"
     cmd: docker system prune -f
   changed_when: false

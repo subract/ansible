@@ -7,7 +7,7 @@ Currently managing the following:
 	- [Automated backups](roles/backblaze/tasks/main.yml) to Backblaze B2 for disaster recovery
 	- [Remotely decryptable](roles/remote_decrypt/tasks/main.yml) full-disk encryption
 - A flotilla of applications deployed with Docker, split across a handful of VMs
-	- A primary application server [hosting the following](/roles/docker/templates/apps-compose.yml)
+	- A primary application server [hosting the following](templates/apps)
 		- [Traefik](https://traefik.io/traefik/) - a reverse proxy managing access to all web services. 
 			- Providing SSL termination and automated certificates with [Let's Encrypt](https://letsencrypt.org/)
 		- [Nextcloud](https://nextcloud.com/) - file storage and synchronization
@@ -18,7 +18,7 @@ Currently managing the following:
 		- [Node-RED](https://nodered.org/) - smart home automation with visual scripting
 		- [CyberChef](https://github.com/gchq/CyberChef) - "Cyber Swiss Army Knife" - handy for random operations
 		- [OctoPrint](https://octoprint.org/) - 3D printer management
-	- A DMZ application server hosting [public services](roles/docker/templates/dmz-apps-compose.yml) to the Internet
+	- A DMZ application server hosting [public services](templates/dmz-apps) to the Internet
 		- [Minecraft servers](https://github.com/itzg/docker-minecraft-server) - a few different worlds for friends and family
 		- [Factorio server](https://github.com/factoriotools/factorio-docker) - the definitive automation game
 		- [Keycloak](https://www.keycloak.org/) - identity and access management, providing single sign-on services

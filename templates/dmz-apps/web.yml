@@ -5,87 +5,6 @@ networks:
   db:
 
 services:
-  mc-survival-3:
-    container_name: mc-survival-3
-    image: itzg/minecraft-server:java17
-    restart: unless-stopped
-
-    ports:
-      - 25568:25565
-
-    networks:
-      - web
-
-    volumes:
-      - /ssd/app/games/minecraft/mc-survival-211205-1.18.0:/data
-
-    environment:
-      TZ: {{ timezone }}
-      EULA: True
-      PVP: false
-      DIFFICULTY: normal
-      SERVER_NAME: Haven Grotto
-      OPS: ${MINECRAFT_OP}
-      MEMORY: 3G
-      MOTD: Haven Grotto
-      TYPE: FORGE
-      VERSION: 1.18.2
-
-    labels:
-      traefik.enable: false
-
-  mc-survival-4:
-    container_name: mc-survival-4
-    image: itzg/minecraft-server:java17
-    restart: unless-stopped
-
-    ports:
-      - 25569:25565
-
-    networks:
-      - web
-
-    volumes:
-      - /ssd/app/games/minecraft/mc-survival-221003-1.19.2:/data
-
-    environment:
-      TZ: {{ timezone }}
-      EULA: True
-      PVP: false
-      DIFFICULTY: normal
-      SERVER_NAME: Boulder Keep
-      OPS: ${MINECRAFT_OP}
-      MEMORY: 3G
-      MOTD: Boulder Keep
-      TYPE: FORGE
-      VERSION: 1.19.2
-      VIEW_DISTANCE: 24
-
-    labels:
-      traefik.enable: false
-
-  factorio:
-    container_name: factorio
-    image: factoriotools/factorio:stable
-    restart: unless-stopped
-    
-    ports:
-      - 34197:34197/udp
-      - 27015:27015/tcp
-
-    networks:
-      - web
-
-    volumes:
-      - /ssd/app/games/factorio/loriini:/factorio
-
-    environment:
-      UPDATE_MODS_ON_START: false
-      SAVE_NAME: Loriini
-
-    labels:
-      traefik.enable: false
-
   traefik:
     container_name: traefik
     image: traefik:latest
@@ -141,6 +60,7 @@ services:
       traefik.http.middlewares.traefik-forward-auth.forwardauth.authResponseHeaders: X-Forwarded-User
       traefik.http.middlewares.traefik-forward-auth.forwardauth.trustForwardHeader: true
 
+
   nginx:
     container_name: nginx
     image: nginxinc/nginx-unprivileged
@@ -164,6 +84,7 @@ services:
       traefik.http.routers.h4.tls.certresolver: default
       # Require keycloak sign-in to access any pages
       traefik.http.routers.h4.middlewares: traefik-forward-auth
+
 
   # Google Docs for markdown documents
   hedgedoc:
@@ -232,6 +153,7 @@ services:
 
     labels:
       traefik.enable: false
+
 
   keycloak:
     container_name: keycloak
