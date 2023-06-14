@@ -11,6 +11,7 @@ Currently managing the following:
 		- [Traefik](https://traefik.io/traefik/) - a reverse proxy managing access to all web services. 
 			- Providing SSL termination and automated certificates with [Let's Encrypt](https://letsencrypt.org/)
 		- [Nextcloud](https://nextcloud.com/) - file storage and synchronization
+		- [Immich](https://immich.app/) - Google Photos replacement for backups
 		- [Gitea](https://gitea.io/en-us/) - lightweight Git hosting
 		- [Drone](https://www.drone.io/) - continuous integration platform
 		- [Home Assistant](https://www.home-assistant.io/) - smart home management
