@@ -54,7 +54,9 @@ services:
       traefik.http.services.forward_auth.loadbalancer.server.port: 4181
       traefik.http.routers.forward_auth.entrypoints: https
       traefik.http.routers.forward_auth.tls.certresolver: default
-      traefik.http.routers.forward_auth.rule: Path(`/_oauth`)
+      traefik.http.routers.forward_auth.rule: (Path(`/_oauth`))
+      # Make sure this rule takes priority over other rules
+      traefik.http.routers.forward_auth.priority: 1000
       traefik.http.routers.forward_auth.middlewares: traefik-forward-auth
       traefik.http.middlewares.traefik-forward-auth.forwardauth.address: http://forward_auth:4181
       traefik.http.middlewares.traefik-forward-auth.forwardauth.authResponseHeaders: X-Forwarded-User
@@ -242,10 +244,16 @@ services:
 
     labels:
       traefik.enable: true
+      # Create service
+      traefik.http.services.dr-service.loadbalancer.server.port: 8055
+      # No Keycloak needed for general APi access
       traefik.http.routers.dr.rule: Host(`dr.{{ secondary_domain }}`)
+      traefik.http.routers.dr.service: dr-service
       traefik.http.routers.dr.entrypoints: https
       traefik.http.routers.dr.tls.certresolver: default
-      traefik.http.services.dr.loadbalancer.server.port: 8055
-
-      # # Require keycloak sign-in to access any pages
-      traefik.http.routers.dr.middlewares: traefik-forward-auth
+      # Require Keycloak to access any admin resources
+      traefik.http.routers.dr-admin.rule: (Host(`dr.{{ secondary_domain }}`) && PathPrefix(`/admin`))
+      traefik.http.routers.dr-admin.service: dr-service
+      traefik.http.routers.dr-admin.entrypoints: https
+      traefik.http.routers.dr-admin.tls.certresolver: default
+      traefik.http.routers.dr-admin.middlewares: traefik-forward-auth
