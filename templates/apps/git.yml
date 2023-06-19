@@ -16,7 +16,7 @@ services:
       - GITEA__SERVICE__DISABLE_REGISTRATION=true
       - GITEA__MIGRATIONS__ALLOW_LOCALNETWORKS=true
       - GITEA__INDEXER__REPO_INDEXER_ENABLED=true
-      - GITEA__WEBHOOK__ALLOWED_HOST_LIST=*.{{domain}}
+      - GITEA__WEBHOOK__ALLOWED_HOST_LIST=*.{{ primary_domain }}
 
     volumes:
       - /ssd/app/gitea:/data
@@ -31,7 +31,7 @@ services:
 
     labels:
       - traefik.enable=true
-      - traefik.http.routers.gt.rule=Host(`gt.{{ domain }}`)
+      - traefik.http.routers.gt.rule=Host(`gt.{{ primary_domain }}`)
       - traefik.http.routers.gt.entrypoints=https
       - traefik.http.routers.gt.tls.certresolver=default
       - traefik.http.services.gt.loadbalancer.server.port=80
@@ -50,17 +50,17 @@ services:
       - drone
 
     environment:
-    - DRONE_GITEA_SERVER=https://gt.{{ domain }}
+    - DRONE_GITEA_SERVER=https://gt.{{ primary_domain }}
     - DRONE_GITEA_CLIENT_ID=${DRONE_GITEA_CLIENT_ID}
     - DRONE_GITEA_CLIENT_SECRET=${DRONE_GITEA_CLIENT_SECRET}
     - DRONE_RPC_SECRET=${DRONE_RPC_SECRET}
-    - DRONE_SERVER_HOST=dr.{{ domain }}
+    - DRONE_SERVER_HOST=dr.{{ primary_domain }}
     - DRONE_SERVER_PROTO=https
     - DRONE_DATADOG_ENABLED=false
 
     labels:
       - traefik.enable=true
-      - traefik.http.routers.dr.rule=Host(`dr.{{ domain }}`)
+      - traefik.http.routers.dr.rule=Host(`dr.{{ primary_domain }}`)
       - traefik.http.routers.dr.entrypoints=https
       - traefik.http.routers.dr.tls.certresolver=default
       - traefik.http.services.dr.loadbalancer.server.port=80

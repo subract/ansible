@@ -122,7 +122,7 @@ services:
 
     labels:
       - traefik.enable=true
-      - traefik.http.routers.im.rule=Host(`im.{{ domain }}`)
+      - traefik.http.routers.im.rule=Host(`im.{{ primary_domain }}`)
       - traefik.http.routers.im.entrypoints=https
       - traefik.http.routers.im.tls.certresolver=default
       - traefik.http.services.im.loadbalancer.server.port=8080

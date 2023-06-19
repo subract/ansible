@@ -32,7 +32,7 @@ services:
 
     labels:
       - traefik.enable=true
-      - traefik.http.routers.api.rule=Host(`tr.{{ domain }}`)
+      - traefik.http.routers.api.rule=Host(`tr.{{ primary_domain }}`)
       - traefik.http.routers.api.entrypoints=https
       - traefik.http.routers.api.tls.certresolver=default
       - traefik.http.routers.api.service=api@internal
@@ -79,7 +79,7 @@ services:
 
     labels:
       - traefik.enable=true
-      - traefik.http.routers.nc.rule=Host(`nc.{{ domain }}`)
+      - traefik.http.routers.nc.rule=Host(`nc.{{ primary_domain }}`)
       - traefik.http.routers.nc.entrypoints=https
       - traefik.http.routers.nc.tls.certresolver=default
       - traefik.serversTransport.forwardingTimeouts.dialTimeout=0s
@@ -99,7 +99,7 @@ services:
 
     labels:
       - traefik.enable=true
-      - traefik.http.routers.cc.rule=Host(`cc.{{ domain }}`)
+      - traefik.http.routers.cc.rule=Host(`cc.{{ primary_domain }}`)
       - traefik.http.routers.cc.entrypoints=https
       - traefik.http.routers.cc.tls.certresolver=default
       - traefik.http.services.cc.loadbalancer.server.port=8000

@@ -19,7 +19,7 @@
   become: true
   become_user: "{{ user }}"
   git:
-    repo: ssh://git@gt.{{ domain }}:1108/subract/dotfiles.git # noqa latest
+    repo: ssh://git@gt.{{ primary_domain }}:1108/subract/dotfiles.git # noqa latest
     dest: /home/{{ user }}/.dotfiles
 
 - name: Revert SSH agent socket owner

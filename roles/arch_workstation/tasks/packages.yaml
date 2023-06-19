@@ -31,6 +31,7 @@
       - tmux # terminal multiplexer
       - transmission-gtk # torrent client
       - veracrypt # file encryption
+      - vidcutter # video cutting utility
       - vim # vim
       - vim-ansible # ansible highlighting
       - virt-viewer # SPICE client
