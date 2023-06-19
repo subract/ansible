@@ -257,3 +257,32 @@ services:
       traefik.http.routers.dr-admin.entrypoints: https
       traefik.http.routers.dr-admin.tls.certresolver: default
       traefik.http.routers.dr-admin.middlewares: traefik-forward-auth
+
+  ghost_dev:
+    container_name: ghost_dev
+    image: ghost:5
+    restart: unless-stopped
+    # Without this, it tries to chmod and fails
+    user: 2010:2010
+
+    networks:
+      - web
+
+    volumes:
+      - /ssd/dmz/app/ghost/dev:/var/lib/ghost/content
+
+    environment:
+      url: https://dev.{{ secondary_domain }}
+      # In dev, a SQLite DB is acceptable
+      database__connection__filename: /var/lib/ghost/content/data/ghost.db
+      NODE_ENV: development
+
+    labels:
+      traefik.enable: true
+      traefik.http.routers.gh_dev.rule: Host(`dev.{{ secondary_domain }}`)
+      traefik.http.routers.gh_dev.entrypoints: https
+      traefik.http.routers.gh_dev.tls.certresolver: default
+      # Require keycloak sign-in to access any pages
+      # I'll porobably toggle this on and off as needed when modifying the code
+      # on an unmodified codebase, private site mode is good enough
+      # traefik.http.routers.gh_dev.middlewares: traefik-forward-auth
