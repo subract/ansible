@@ -208,3 +208,44 @@ services:
       # Apply an IP-based whitelist to the admin router, preventing internet access
       traefik.http.routers.kc-admin.middlewares: kc-admin-ipwhitelist
       traefik.http.middlewares.kc-admin-ipwhitelist.ipwhitelist.sourcerange: "10.0.0.0/8"
+
+
+  directus:
+    container_name: directus
+    image: directus/directus:latest
+    restart: unless-stopped
+    ports:
+      - 8055:8055
+
+    volumes:
+      - /ssd/dmz/app/directus:/directus/database
+
+    networks:
+      - web
+      
+    environment:
+      PUBLIC_URL: https://dr.{{ secondary_domain }}/
+      TELEMETRY: false
+      KEY: ${DIRECTUS_KEY}
+      SECRET: ${DIRECTUS_SECRET}
+      DB_CLIENT: sqlite3
+      DB_FILENAME: ./database/data.db
+      
+      # SSO with Keycloak
+      AUTH_DISABLE_DEFAULT: true
+      AUTH_PROVIDERS: keycloak
+      AUTH_KEYCLOAK_DRIVER: openid
+      AUTH_KEYCLOAK_CLIENT_ID: directus
+      AUTH_KEYCLOAK_CLIENT_SECRET: ${DIRECTUS_AUTH_KEYCLOAK_CLIENT_SECRET}
+      AUTH_KEYCLOAK_ISSUER_URL: https://kc.{{ primary_domain }}/realms/dmz/.well-known/openid-configuration
+      AUTH_KEYCLOAK_IDENTIFIER_KEY: email
+
+    labels:
+      traefik.enable: true
+      traefik.http.routers.dr.rule: Host(`dr.{{ secondary_domain }}`)
+      traefik.http.routers.dr.entrypoints: https
+      traefik.http.routers.dr.tls.certresolver: default
+      traefik.http.services.dr.loadbalancer.server.port: 8055
+
+      # # Require keycloak sign-in to access any pages
+      traefik.http.routers.dr.middlewares: traefik-forward-auth
