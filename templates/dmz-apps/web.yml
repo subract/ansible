@@ -273,9 +273,19 @@ services:
 
     environment:
       url: https://dev.{{ secondary_domain }}
+
       # In dev, a SQLite DB is acceptable
       database__connection__filename: /var/lib/ghost/content/data/ghost.db
       NODE_ENV: development
+
+      # Mail
+      mail__transport: SMTP
+      mail__from: support@{{ secondary_domain }}
+      mail__options__host: smtp.mailgun.org
+      mail__options__port: 465
+      mail__options__secure: true
+      mail__options__auth__user: postmaster@mail.{{ secondary_domain }}
+      mail__options__auth__pass: ${GHOST_SMTP_PASS}
 
     labels:
       traefik.enable: true
