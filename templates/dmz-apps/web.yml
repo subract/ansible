@@ -62,32 +62,6 @@ services:
       traefik.http.middlewares.traefik-forward-auth.forwardauth.authResponseHeaders: X-Forwarded-User
       traefik.http.middlewares.traefik-forward-auth.forwardauth.trustForwardHeader: true
 
-
-  nginx:
-    container_name: nginx
-    image: nginxinc/nginx-unprivileged
-    user: "2020"
-    restart: unless-stopped
-
-    depends_on:
-      - traefik
-      - forward_auth
-
-    volumes:
-      - /ssd/dmz/app/nginx:/usr/share/nginx/html:ro
-
-    networks:
-      - web
-    
-    labels:
-      traefik.enable: true
-      traefik.http.routers.h4.rule: Host(`h4.{{ primary_domain }}`)
-      traefik.http.routers.h4.entrypoints: https
-      traefik.http.routers.h4.tls.certresolver: default
-      # Require keycloak sign-in to access any pages
-      traefik.http.routers.h4.middlewares: traefik-forward-auth
-
-
   # Google Docs for markdown documents
   hedgedoc:
     image: lscr.io/linuxserver/hedgedoc:latest
@@ -296,3 +270,27 @@ services:
       # I'll porobably toggle this on and off as needed when modifying the code
       # on an unmodified codebase, private site mode is good enough
       # traefik.http.routers.gh_dev.middlewares: traefik-forward-auth
+
+  nginx_dev:
+    container_name: nginx_dev
+    image: nginxinc/nginx-unprivileged
+    user: "2020"
+    restart: unless-stopped
+
+    depends_on:
+      - traefik
+      - forward_auth
+
+    volumes:
+      - /ssd/dmz/app/nginx:/usr/share/nginx/html:ro
+
+    networks:
+      - web
+    
+    labels:
+      traefik.enable: true
+      traefik.http.routers.ng_dev.rule: (Host(`dev.{{ secondary_domain }}`) && PathPrefix(`/static`))
+      traefik.http.routers.ng_dev.entrypoints: https
+      traefik.http.routers.ng_dev.tls.certresolver: default
+      # Require keycloak sign-in to access any pages
+      # traefik.http.routers.ng_dev.middlewares: traefik-forward-auth

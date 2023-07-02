@@ -125,6 +125,7 @@
       - bfg # clean git repos
       - brother-hll2350dw # print drivers
       - catppuccin-gtk-theme-macchiato # gtk theme
+      - davinci-resolve # video editor
       - downgrade # downgrade packages
       - git-secrets # dirty word monitoring
       - i3lock-color # stylable lockscreen
