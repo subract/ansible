@@ -25,7 +25,7 @@ services:
       DIFFICULTY: normal
       SERVER_NAME: Haven Grotto
       OPS: ${MINECRAFT_OP}
-      MEMORY: 3G
+      MEMORY: 2G
       MOTD: Haven Grotto
       TYPE: FORGE
       VERSION: 1.18.2
@@ -55,34 +55,11 @@ services:
       DIFFICULTY: normal
       SERVER_NAME: Boulder Keep
       OPS: ${MINECRAFT_OP}
-      MEMORY: 3G
+      MEMORY: 2G
       MOTD: Boulder Keep
       TYPE: FORGE
       VERSION: 1.19.2
       VIEW_DISTANCE: 24
-
-    labels:
-      traefik.enable: false
-
-
-  factorio:
-    container_name: factorio
-    image: factoriotools/factorio:stable
-    restart: unless-stopped
-    
-    ports:
-      - 34197:34197/udp
-      - 27015:27015/tcp
-
-    networks:
-      - web
-
-    volumes:
-      - /ssd/app/games/factorio/loriini:/factorio
-
-    environment:
-      UPDATE_MODS_ON_START: false
-      SAVE_NAME: Loriini
 
     labels:
       traefik.enable: false
