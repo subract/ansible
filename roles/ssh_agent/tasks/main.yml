@@ -19,6 +19,7 @@
     mode: "0660"
     owner: "{{ user }}"
     group: "{{ user }}"
+  notify: Reload systemd daemon
 
 - name: Enable and start ssh agent
   tags: config, ssh
@@ -27,7 +28,6 @@
   systemd:
     name: ssh-agent
     scope: user
-    daemon_reload: true
     state: started
     enabled: true
 
