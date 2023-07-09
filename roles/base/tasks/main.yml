@@ -64,3 +64,9 @@
     group: root
     validate: sshd -t -f %s
   notify: Reload sshd config
+
+- name: Remove motd
+  tags: sshd
+  file:
+    path: /etc/motd
+    state: absent
