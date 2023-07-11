@@ -43,6 +43,7 @@
       - ark # archive manager
       - baobab # disk usage analyser
       - bat # better cat
+      - cameractrls # webcam controls
       - cowsay # cowsay
       - dnsutils # dig
       - docker # containers

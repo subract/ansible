@@ -190,7 +190,7 @@
 - name: Create video in/out dirs
   tags: config, incrond
   file:
-    name: /home/{{ user }}/Videos/{{ item }}
+    name: /home/{{ user }}/scratch/{{ item }}
     state: directory
     mode: "0755"
     owner: "{{ user }}"
@@ -209,5 +209,5 @@
     group: "{{ user }}"
     regexp: convert_in
     line: >
-      /home/{{ user }}/Videos/convert_in IN_CLOSE_WRITE flock /tmp/enc --command "/usr/bin/ffmpeg -i $@/$# -c:v dnxhd -profile:v dnxhr_hq -pix_fmt yuv422p -c:a
-      pcm_s16le -f mov /home/{{ user }}/Videos/convert_out/$# && trash-put $@/$#"
+      /home/{{ user }}/scratch/convert_in IN_CLOSE_WRITE flock /tmp/enc --command "/usr/bin/ffmpeg -i $@/$# -c:v dnxhd -profile:v dnxhr_hq -pix_fmt yuv422p -c:a
+      pcm_s16le -f mov /home/{{ user }}/scratch/convert_out/$# && trash-put $@/$#"
