@@ -200,7 +200,7 @@ services:
       - web
       
     environment:
-      PUBLIC_URL: https://dr.{{ secondary_domain }}/
+      PUBLIC_URL: https://dr.dev.{{ secondary_domain }}/
       TELEMETRY: false
       KEY: ${DIRECTUS_KEY}
       SECRET: ${DIRECTUS_SECRET}
@@ -221,12 +221,12 @@ services:
       # Create service
       traefik.http.services.dr-service.loadbalancer.server.port: 8055
       # No Keycloak needed for general APi access
-      traefik.http.routers.dr.rule: Host(`dr.{{ secondary_domain }}`)
+      traefik.http.routers.dr.rule: Host(`dr.dev.{{ secondary_domain }}`)
       traefik.http.routers.dr.service: dr-service
       traefik.http.routers.dr.entrypoints: https
       traefik.http.routers.dr.tls.certresolver: default
       # Require Keycloak to access any admin resources
-      traefik.http.routers.dr-admin.rule: (Host(`dr.{{ secondary_domain }}`) && PathPrefix(`/admin`))
+      traefik.http.routers.dr-admin.rule: (Host(`dr.dev.{{ secondary_domain }}`) && PathPrefix(`/admin`))
       traefik.http.routers.dr-admin.service: dr-service
       traefik.http.routers.dr-admin.entrypoints: https
       traefik.http.routers.dr-admin.tls.certresolver: default

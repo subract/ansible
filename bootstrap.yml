@@ -23,7 +23,7 @@
     - name: Ensure sudo group has privs
       tags: groups
       lineinfile:
-        line: "%sudo\\tALL=(ALL:ALL) ALL"
+        line: "%sudo ALL=(ALL:ALL) ALL"
         path: /etc/sudoers
 
     - name: Create user
