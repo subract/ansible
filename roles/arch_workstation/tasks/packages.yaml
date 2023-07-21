@@ -126,7 +126,6 @@
       - bfg # clean git repos
       - brother-hll2350dw # print drivers
       - catppuccin-gtk-theme-macchiato # gtk theme
-      - davinci-resolve # video editor
       - downgrade # downgrade packages
       - git-secrets # dirty word monitoring
       - i3lock-color # stylable lockscreen
@@ -135,7 +134,7 @@
       - multimc5 # Minecraft launcher
       - protonmail-bridge # allows local use of ProtonMail
       - protonvpn # ProtonVPN CLI and GUI
-      # - spotify # music
+      - spotify # music
       - refind-theme-regular-git # theme for refind
       - vmware-horizon-client # remote desktop client
       - vmware-horizon-smartcard # smartcard support
