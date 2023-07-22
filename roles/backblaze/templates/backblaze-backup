@@ -1,6 +1,6 @@
 #!/bin/bash
 
-url=https://hc-ping.com/{{ healthcheck_id_backblaze }}
+url=https://hc-ping.com/{{ backblaze_healthcheck_id }}
 
 # Kick the healthchecks.io monitor
 curl -fsS --retry 3 $url/start > /dev/null
@@ -8,13 +8,10 @@ curl -fsS --retry 3 $url/start > /dev/null
 # Save error codes so we know whether any command failed
 error=0
 
-# Sync with Backblaze - takes each path in includes.conf and uploads it
-# with the same path to Backblaze
-
 # Move to config directory
 cd ~/.config/backblaze;
 
-for dir in /ssd/app/ /hdd/enc/app/
+for dir in {{ backblaze_include_dirs }}
 do
   echo Backing up $dir...
   rclone sync --fast-list --transfers 32 --exclude-from excludes.conf --create-empty-src-dirs $dir b2-crypt:$dir
