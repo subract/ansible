@@ -127,3 +127,10 @@
   ignore_unreachable: true
   roles:
     - arch_laptop
+
+- hosts: blog
+  become: true
+  gather_facts: false
+  ignore_unreachable: true
+  roles:
+    - backblaze
