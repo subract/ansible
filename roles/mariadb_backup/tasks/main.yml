@@ -1,18 +1,18 @@
 ---
 - name: Copy backup script
-  tags: backup
+  tags: backup, mariadb
   template:
     src: backup_mariadb.sh
-    dest: /root/.backup_mariadb.sh
+    dest: /usr/sbin/backup_mariadb.sh
     owner: root
     group: root
     mode: "0700"
     force: true
 
 - name: Enable cron task
-  tags: config, cron
+  tags: config, cron, mariadb
   cron:
     name: Back up MariaDB
     minute: "25"
     hour: "2"
-    job: /root/.backup_mariadb.sh > /dev/null
+    job: /usr/sbin/backup_mariadb.sh > /dev/null

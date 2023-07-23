@@ -2,26 +2,29 @@
 
 url=https://hc-ping.com/{{ healthcheck_id_mariadb }}
 
-# Kick the healthchecks.io monitor
+# Start the healthchecks.io monitor
 curl -fsS --retry 3 $url/start > /dev/null
 
+# Ensure failures in pipelines are detected
+set -o pipefail
+
 # Activate Nextcloud maintenance mode
-docker exec nextcloud sudo -u abc php /config/www/nextcloud/occ maintenance:mode --on &&
+docker exec nextcloud occ maintenance:mode --on &&
 
 # Back up all databases
 # Overwrite existing file, because zfs will keep local versions, and Backblaze will keep versions for 30 days
-docker exec mariadb sh -c 'exec mysqldump --all-databases -uroot -p"$MYSQL_ROOT_PASSWORD"' | gzip > /ssd/app/mariadb/dumps/mariadb.sql.gz &&
+docker exec mariadb sh -c 'exec mariadb-dump --all-databases -uroot -p"$MYSQL_ROOT_PASSWORD"' | gzip > /ssd/app/mariadb/dumps/mariadb.sql.gz
 
-# Disable Nextcloud maintenance mode
-docker exec nextcloud sudo -u abc php /config/www/nextcloud/occ maintenance:mode --off
-
-# Explicitly fail if any command failed
+# Explicitly fail if either command failed
 if [[ $? -ne 0 ]] ; then
   echo At least one item failed.
   url=$url/fail
 fi
 
-# Confirm the finish with healthchecks.io
+# Disable Nextcloud maintenance mode
+docker exec nextcloud occ maintenance:mode --off
+
+# Signal success or failure to Healthchecks
 curl -fsS --retry 3 $url > /dev/null
 
 
