@@ -1,6 +1,12 @@
 ---
-- name: Reload sshd config
+- name: Restart sshd
   tags: sshd
   service:
     name: sshd
+    state: restarted
+
+- name: Restart cron
+  tags: cron
+  service:
+    name: cron
     state: restarted

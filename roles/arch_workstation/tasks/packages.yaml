@@ -11,6 +11,7 @@
       - discord # social client
       - evince # pdf viewer
       - firefox # web browser
+      - flameshot # screenshots
       - gimp # image editor
       - hugo # static site generator
       - keepassxc # password manager
@@ -58,7 +59,6 @@
       - hexyl # better xxd
       - iftop # network monitor
       - kitty # terminal emulator
-      - maim # screenshot utility
       - man-db # need men
       - neofetch # OS info
       - networkmanager # network manager

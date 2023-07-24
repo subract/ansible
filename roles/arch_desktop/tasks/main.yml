@@ -5,6 +5,7 @@
     name:
       - rocm-hip-sdk # AMD ROCm SKD
       - rocm-opencl-sdk # AMD ROCm SDK
+      - amd-ucode # Processor microcode
 
 - name: Configure lightdm for dual monitor setup
   tags: config
@@ -12,8 +13,8 @@
     path: /etc/lightdm/lightdm.conf
     block: |-
       [SeatDefaults]
-      display-setup-script=xrandr --output DP-1 --mode 2560x1440 --rate 165 --pos 0x400 --primary --output DP-2 --mode 3840x2160 --rate 60 --pos 2560x0
-      session-setup-script=xrandr --output DP-1 --mode 2560x1440 --rate 165 --pos 0x400 --primary --output DP-2 --mode 3840x2160 --rate 60 --pos 2560x0
+      display-setup-script=xrandr --output DP-1 --mode 2560x1440 --rate 165 --pos 0x400 --primary --output DP-2 --mode 3840x2160 --rate 60 --pos 2560x0 --scale .8x.8
+      session-setup-script=xrandr --output DP-1 --mode 2560x1440 --rate 165 --pos 0x400 --primary --output DP-2 --mode 3840x2160 --rate 60 --pos 2560x0 --scale .8x.8
 
 - name: Configure cursor size
   tags: config
