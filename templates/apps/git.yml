@@ -51,12 +51,12 @@ services:
 
     environment:
     - DRONE_GITEA_SERVER=https://gt.{{ primary_domain }}
-    - DRONE_GITEA_CLIENT_ID=${DRONE_GITEA_CLIENT_ID}
-    - DRONE_GITEA_CLIENT_SECRET=${DRONE_GITEA_CLIENT_SECRET}
-    - DRONE_RPC_SECRET=${DRONE_RPC_SECRET}
     - DRONE_SERVER_HOST=dr.{{ primary_domain }}
     - DRONE_SERVER_PROTO=https
     - DRONE_DATADOG_ENABLED=false
+
+    env_file: 
+      - drone.env
 
     labels:
       - traefik.enable=true
@@ -80,6 +80,8 @@ services:
     environment:
     - DRONE_RPC_PROTO=http
     - DRONE_RPC_HOST=drone
-    - DRONE_RPC_SECRET=${DRONE_RPC_SECRET}
     - DRONE_RUNNER_CAPACITY=2
     - DRONE_RUNNER_NAME=roger-bannister
+
+    env_file: 
+      - drone.env

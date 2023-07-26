@@ -1,0 +1,82 @@
+version: "3.3"
+
+networks:
+  web:
+  peertube_web:
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.25.0.0/16
+  peertube_db:
+
+services:
+  peertube_webserver:
+    container_name: peertube_webserver
+    image: chocobozzz/peertube-webserver:latest
+    restart: unless-stopped
+    env_file:
+      - peertube.env
+
+    volumes:
+      - /opt/peertube/nginx/peertube:/etc/nginx/conf.d/peertube.template
+      - assets:/var/www/peertube/peertube-latest/client/dist:ro
+      - /opt/peertube/data:/var/www/peertube/storage
+    networks:
+      - peertube_web
+      - web
+    depends_on:
+      - peertube
+
+    labels:
+      traefik.enable: true
+      traefik.http.routers.vid.rule: Host(`vid.{{ secondary_domain }}`)
+      traefik.http.routers.vid.entrypoints: https
+      traefik.http.routers.vid.tls.certresolver: default
+
+  peertube:
+    container_name: peertube
+    image: chocobozzz/peertube:production-bullseye
+    restart: unless-stopped
+    env_file:
+      - peertube.env
+    volumes:
+      - assets:/app/client/dist
+      - /opt/peertube/data:/data
+      - /opt/peertube/config:/config
+    networks:
+      peertube_web:
+        ipv4_address: 172.25.0.42
+      peertube_db:
+    depends_on:
+      - peertube_postgres
+      - peertube_redis
+    labels:
+      traefik.enable: false
+
+  peertube_postgres:
+    container_name: peertube_postgres
+    image: postgres:13-alpine
+    restart: unless-stopped
+    env_file:
+      - peertube.env
+    volumes:
+      - /opt/peertube/db:/var/lib/postgresql/data
+    networks:
+      peertube_db:
+    labels:
+      traefik.enable: false
+
+
+  peertube_redis:
+    container_name: peertube_redis
+    image: redis:6-alpine
+    restart: unless-stopped
+    volumes:
+      - /opt/peertube/redis:/data
+    networks:
+      peertube_db:
+    labels:
+      traefik.enable: false
+
+volumes:
+  assets:

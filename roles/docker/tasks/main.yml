@@ -33,14 +33,26 @@
   with_fileglob:
     - ../templates/{{ inventory_hostname }}/*.yml
 
-- name: Copy .env
+- name: Copy .env files
   tags: docker, compose, env
   copy:
-    src: "{{ inventory_hostname }}.env"
-    dest: "{{ compose_dir }}.env"
+    src: "{{ item }}"
+    dest: "{{ compose_dir }}/{{ item | basename }}"
     mode: "0440"
     owner: root
     group: docker
+  with_fileglob:
+    - ../files/{{ inventory_hostname }}/docker_env/*.env
+
+- name: Copy compose .env
+  tags: docker, compose, env
+  copy:
+    src: ../files/{{ inventory_hostname }}/docker_env/compose_env
+    dest: "{{ compose_dir }}/.env"
+    mode: "0440"
+    owner: root
+    group: docker
+  ignore_errors: true # file may not exist if not needed
 
 - name: Pull docker services
   tags: docker, compose, pull
@@ -57,7 +69,7 @@
   shell:
     chdir: "{{ compose_dir }}"
     executable: /usr/bin/zsh
-    cmd: set -o pipefail; docker-compose $(find /opt/doc/*.yml | sed -e "s/^/-f /") up -d
+    cmd: set -o pipefail; docker-compose $(find /opt/doc/*.yml | sed -e "s/^/-f /") up -d --remove-orphans
   register: result
   changed_when: "'Started' in result.stdout"
 

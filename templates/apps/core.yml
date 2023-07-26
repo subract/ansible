@@ -9,16 +9,14 @@ services:
     container_name: traefik
     image: traefik:latest
     restart: unless-stopped
-    command: --api.insecure=true --providers.docker
+    command: --providers.docker
 
     ports:
       - 80:80
       - 443:443
 
-    environment:
-      - CF_API_EMAIL=${CF_API_EMAIL}
-      - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
-      - CF_ZONE_API_TOKEN=${CF_ZONE_API_TOKEN}
+    env_file: 
+      - traefik.env
 
     networks:
       - web
@@ -44,9 +42,8 @@ services:
     container_name: mariadb
     image: mariadb:latest
     restart: unless-stopped
-
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    env_file: 
+      - mariadb.env
 
     volumes:
       - /ssd/app/mariadb/data:/var/lib/mysql
