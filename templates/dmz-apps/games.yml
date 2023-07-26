@@ -8,6 +8,8 @@ services:
     container_name: mc-survival-3
     image: itzg/minecraft-server:java17
     restart: unless-stopped
+    env_file:
+      - minecraft.env
 
     ports:
       - 25568:25565
@@ -24,7 +26,6 @@ services:
       PVP: false
       DIFFICULTY: normal
       SERVER_NAME: Haven Grotto
-      OPS: ${MINECRAFT_OP}
       MEMORY: 2G
       MOTD: Haven Grotto
       TYPE: FORGE
@@ -38,6 +39,8 @@ services:
     container_name: mc-survival-4
     image: itzg/minecraft-server:java17
     restart: unless-stopped
+    env_file:
+      - minecraft.env
 
     ports:
       - 25569:25565
@@ -54,7 +57,6 @@ services:
       PVP: false
       DIFFICULTY: normal
       SERVER_NAME: Boulder Keep
-      OPS: ${MINECRAFT_OP}
       MEMORY: 2G
       MOTD: Boulder Keep
       TYPE: FORGE

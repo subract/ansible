@@ -7,7 +7,6 @@ all:
         dmz-apps:
         seedling:
         jj:
-        arch-dev:
     docker:
       hosts:
         apps:
@@ -23,7 +22,6 @@ all:
     workstations:
       hosts:
         fornax:
-        arch-dev:
         titania:
     hypervisors:
       hosts:
