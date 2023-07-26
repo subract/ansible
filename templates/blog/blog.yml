@@ -27,41 +27,44 @@ services:
     labels:
       traefik.enable: false
 
-  directus:
-    container_name: directus
-    image: directus/directus:latest
-    restart: unless-stopped
-    ports:
-      - 8055:8055
+  # directus:
+  #   container_name: directus
+  #   image: directus/directus:latest
+  #   restart: unless-stopped
 
-    volumes:
-      - /opt/directus:/directus/database
+  #   env_file:
+  #     - blog.env
 
-    networks:
-      - web
+  #   volumes:
+  #     - /opt/directus:/directus/database
+
+  #   networks:
+  #     - web
       
-    environment:
-      PUBLIC_URL: https://dr.{{ secondary_domain }}/
-      TELEMETRY: false
-      KEY: ${DIRECTUS_KEY}
-      SECRET: ${DIRECTUS_SECRET}
-      DB_CLIENT: sqlite3
-      DB_FILENAME: ./database/data.db
+  #   environment:
+  #     PUBLIC_URL: https://dr.{{ secondary_domain }}/
+  #     TELEMETRY: false
+  #     KEY: ${DIRECTUS_KEY}
+  #     SECRET: ${DIRECTUS_SECRET}
+  #     DB_CLIENT: sqlite3
+  #     DB_FILENAME: ./database/data.db
 
-    labels:
-      traefik.enable: true
-      # Create service
-      traefik.http.services.dr-service.loadbalancer.server.port: 8055
-      # No Keycloak needed for general APi access
-      traefik.http.routers.dr.rule: Host(`dr.{{ secondary_domain }}`)
-      traefik.http.routers.dr.service: dr-service
-      traefik.http.routers.dr.entrypoints: https
-      traefik.http.routers.dr.tls.certresolver: default
+  #   labels:
+  #     traefik.enable: true
+  #     # Create service
+  #     traefik.http.services.dr-service.loadbalancer.server.port: 8055
+  #     # No Keycloak needed for general APi access
+  #     traefik.http.routers.dr.rule: Host(`dr.{{ secondary_domain }}`)
+  #     traefik.http.routers.dr.service: dr-service
+  #     traefik.http.routers.dr.entrypoints: https
+  #     traefik.http.routers.dr.tls.certresolver: default
 
   ghost:
     container_name: ghost
     image: ghost:5
     restart: unless-stopped
+    env_file:
+      - blog.env
 
     networks:
       - web
