@@ -99,6 +99,7 @@
       - noto-fonts-emoji # emojis
       - nss-mdns # mdns name resolution
       - opensc # smart card libraries
+      - otf-ipafont # Japanese kanji font
       - pasystray # PulseAudio tray icon
       - pavucontrol # PulseAudio volume control
       - pipewire # modern sound
