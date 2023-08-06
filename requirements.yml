@@ -5,7 +5,6 @@ roles:
   - name: robertdebock.rsyslog
   - name: geerlingguy.ntp
   - name: lae.proxmox
-  - name: simoncaron.pve_addons
 
 collections:
   - name: kewlfft.aur

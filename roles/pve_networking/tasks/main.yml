@@ -5,14 +5,14 @@
 
 - name: Configure /etc/network/interfaces
   template:
-    src: "{{ interfaces_template }}"
+    src: "{{ inventory_hostname }}/pve_networking/interfaces.j2"
     dest: /etc/network/interfaces
     mode: "0644"
   notify: Reload network interfaces
 
 - name: Configure /etc/resolv.conf
   template:
-    src: "{{ resolv_template }}"
+    src: "{{ inventory_hostname }}/pve_networking/resolv.conf.j2"
     dest: /etc/resolv.conf
     mode: "0644"
   notify: Reload network interfaces

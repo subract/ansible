@@ -7,25 +7,25 @@
   ignore_unreachable: true
   pre_tasks:
     - name: Update apt index
-      tags: update, upgrade
+      tags: update, upgrade, apt
       when: ansible_os_family == "Debian"
       changed_when: false
       apt:
         update_cache: true
     - name: Run apt dist upgrade
-      tags: upgrade
+      tags: upgrade, apt
       when: ansible_os_family == "Debian"
       apt:
         upgrade: dist
         autoremove: true
     - name: Update pacman index
-      tags: update, upgrade
+      tags: update, upgrade, pacman
       changed_when: false
       when: ansible_os_family == "Archlinux"
       community.general.pacman:
         update_cache: true
     - name: Run pacman upgrade
-      tags: upgrade
+      tags: upgrade, pacman
       when: ansible_os_family == "Archlinux"
       community.general.pacman:
         upgrade: true
@@ -45,25 +45,18 @@
   gather_facts: false
   ignore_unreachable: false
   roles:
+    - dotfiles_copy
     - pve_networking
-    - remote_decrypt
-    - role: geerlingguy.ntp
-    - role: lae.proxmox
+    - geerlingguy.ntp
+    - role: lexxel.proxmox # temporary, till lae.proxmox updates for PVE 8.x
       vars:
         pve_reboot_on_kernel_update: false
 
-- hosts: hypervisors
-  become: true
-  gather_facts: false
-  ignore_unreachable: false
-  roles:
-    - simoncaron.pve_addons
-
-- hosts: docker
-  become: true
-  gather_facts: false
-  ignore_unreachable: true
-  roles:
-    - geerlingguy.docker
-    - docker
-    - dotfiles_copy
+# - hosts: docker
+#   become: true
+#   gather_facts: false
+#   ignore_unreachable: true
+#   roles:
+#     - geerlingguy.docker
+#     - docker
+#     - dotfiles_copy

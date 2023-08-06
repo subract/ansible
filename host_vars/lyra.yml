@@ -3,6 +3,7 @@ remote_decrypt_port: 46728
 
 # PVE config
 
+pve_repository_line: "deb http://download.proxmox.com/debian/pve bullseye pve-no-subscription"
 pve_group: pve01
 
 pve_groups:
@@ -52,6 +53,3 @@ pve_acls:
   - path: /
     roles: [Terraformer]
     users: terraform-prov@pve
-
-interfaces_template: interfaces-{{ pve_group }}.j2
-resolv_template: resolv-{{ pve_group }}.conf.j2
