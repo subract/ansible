@@ -104,6 +104,7 @@
       - pavucontrol # PulseAudio volume control
       - pipewire # modern sound
       - pipewire-pulse # replace PuleAudio
+      - python-httpx # for ansible managing OPNsense
       - trash-cli # trash from command line
       - ttf-fira-code # nice font
       - tumbler # thumbnails for thunar
