@@ -128,7 +128,7 @@
   roles:
     - arch_laptop
 
-- hosts: blog
+- hosts: web1
   become: true
   gather_facts: false
   ignore_unreachable: true

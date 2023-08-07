@@ -29,7 +29,7 @@ services:
 
     labels:
       traefik.enable: true
-      traefik.http.routers.vid.rule: Host(`vid.{{ secondary_domain }}`)
+      traefik.http.routers.vid.rule: Host(`v.{{ tertiary_domain }}`)
       traefik.http.routers.vid.entrypoints: https
       traefik.http.routers.vid.tls.certresolver: default
 

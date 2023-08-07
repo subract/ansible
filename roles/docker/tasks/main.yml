@@ -65,7 +65,7 @@
   changed_when: "'Pull complete' in result.stdout"
 
 - name: Start docker services
-  tags: docker, compose
+  tags: docker, compose, up
   shell:
     chdir: "{{ compose_dir }}"
     executable: /usr/bin/zsh
@@ -74,7 +74,7 @@
   changed_when: "'Started' in result.stdout"
 
 - name: Prune docker services
-  tags: docker, compose
+  tags: docker, compose up
   command:
     cmd: docker system prune -f
   changed_when: false

@@ -12,7 +12,7 @@ all:
         apps:
         dmz-apps:
         seedling:
-        blog:
+        web1:
           ansible_host: "{{ secondary_domain }}"
     nfs_clients:
       hosts:
