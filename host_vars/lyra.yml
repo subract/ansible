@@ -12,10 +12,10 @@ pve_groups:
 
 pve_users:
   - name: aven@pam
-    email: aven@localhost
+    email: aven@{{ tertiary_domain }}
     groups: [ops]
   - name: terraform-prov@pve
-    email: terraform-prov@localhost
+    email: terraform-prov@{{ tertiary_domain }}
     password: !vault |
       $ANSIBLE_VAULT;1.1;AES256
       31303762343938396261633932306463633139323366343130376133663436373932343034616530
