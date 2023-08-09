@@ -23,6 +23,7 @@
     - name: Ensure sudo group has privs
       tags: groups
       lineinfile:
+        regexp: sudo.*ALL
         line: "%sudo ALL=(ALL:ALL) ALL"
         path: /etc/sudoers
 

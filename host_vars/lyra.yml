@@ -1,5 +1,7 @@
 ---
-remote_decrypt_port: 46728
+# Network config
+nfs_net: "10.69.5.0/24"
+mgmt_ip: 10.0.2.2
 
 # PVE config
 

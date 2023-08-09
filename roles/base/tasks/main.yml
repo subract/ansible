@@ -23,6 +23,7 @@
       - git
       - ufw
       - rsync
+      - kitty-terminfo
     state: present
 
 - name: Remove unwanted packages

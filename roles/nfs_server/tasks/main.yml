@@ -4,10 +4,26 @@
   apt:
     name: nfs-kernel-server
 
-- name: Create NFS exports
+- name: Configure NFS
   tags: config, nfs
-  copy:
-    src: ansible.exports
-    dest: /etc/exports.d/ansible.exports
+  template:
+    src: "{{ inventory_hostname }}/nfs.conf.j2"
+    dest: /etc/nfs.conf
     mode: "0600"
   notify: Restart nfs-server
+
+- name: Add NFS groups
+  tags: users, groups, nfs, config
+  group:
+    name: "{{ item.name }}"
+    gid: "{{ item.gid | default(omit) }}"
+  loop: "{{ nfs_groups }}"
+
+- name: Add NFS users
+  tags: users, nfs, config
+  user:
+    name: "{{ item.name }}"
+    groups: "{{ item.groups | default(omit) }}"
+    uid: "{{ item.uid | default(omit) }}"
+    create_home: "{{ item.create_home | default(True) }}"
+  loop: "{{ nfs_users }}"

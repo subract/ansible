@@ -1,0 +1,11 @@
+# Groups and users for NFS shares
+nfs_groups:
+  - name: apps-doc
+    gid: 2010
+nfs_users:
+  - name: apps-doc
+    create_home: false
+    uid: 2010
+    groups: apps-doc
+  - name: aven
+    groups: [apps-doc, sudo]

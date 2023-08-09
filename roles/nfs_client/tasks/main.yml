@@ -15,11 +15,27 @@
   loop: "{{ nfs_dirs }}"
   notify: Make mountpoints immutable
 
+- name: Add NFS groups
+  tags: users, groups, nfs, config
+  group:
+    name: "{{ item.name }}"
+    gid: "{{ item.gid | default(omit) }}"
+  loop: "{{ nfs_groups }}"
+
+- name: Add NFS users
+  tags: users, nfs, config
+  user:
+    name: "{{ item.name }}"
+    groups: "{{ item.groups | default(omit) }}"
+    uid: "{{ item.uid | default(omit) }}"
+    create_home: "{{ item.create_home | default(True) }}"
+  loop: "{{ nfs_users }}"
+
 - name: Map NFS shares
   tags: config, nfs
-  lineinfile:
-    path: /etc/fstab
-    regexp: "{{ item.path }}"
-    # /etc/fstab traditionally has tabs, so skip no-tab linting rule
-    line: "10.0.0.2:{{ item.path }}\t{{ item.path }}\tnfs\tauto\t0\t0" # noqa no-tabs
+  ansible.posix.mount:
+    src: "{{ nfs_server_ip }}:{{ item.path }}"
+    path: "{{ item.path }}"
+    state: mounted
+    fstype: nfs
   loop: "{{ nfs_dirs }}"

@@ -1,7 +1,7 @@
 ---
 - name: Make mountpoints immutable
   tags: config, nfs
-  ansible.builtin.file:
+  file:
     path: "{{ item.path }}"
     attributes: +i
   loop: "{{ nfs_dirs }}"

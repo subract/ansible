@@ -35,22 +35,47 @@
 - hosts: v3
   become: true
   ignore_unreachable: true
+  gather_facts: false
   roles:
     - base
 
 # ...and finally, do role-specific tasks
 
+- hosts: deb-test
+  become: true
+  gather_facts: false
+  roles:
+    - dotfiles_copy
+    - nfs_client
+
 - hosts: lyra
   become: true
   gather_facts: false
-  ignore_unreachable: false
   roles:
     - dotfiles_copy
     - pve_networking
+    - nfs_server
     - geerlingguy.ntp
     - role: lexxel.proxmox # temporary, till lae.proxmox updates for PVE 8.x
       vars:
         pve_reboot_on_kernel_update: false
+
+- name: Configure ZFS filesystems
+  hosts: lyra
+  become: true
+  gather_facts: false
+  tags: zfs
+  tasks:
+    - name: Create app fs
+      community.general.zfs:
+        name: nvme/enc/app
+        state: present
+    - name: Share app fs
+      community.general.zfs:
+        name: nvme/enc/app
+        state: present
+        extra_zfs_properties:
+          sharenfs: rw=@{{ nfs_net }}
 
 # - hosts: docker
 #   become: true

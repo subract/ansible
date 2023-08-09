@@ -1,0 +1,5 @@
+---
+nfs_dirs:
+  - path: /nvme/enc/app
+    user: root
+    group: root
