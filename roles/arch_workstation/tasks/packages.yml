@@ -4,7 +4,6 @@
   package:
     name:
       # User apps
-      - audacity # audio editor
       - blender # 3D modeling
       - code # de-Microsofted VS Code fork
       - digikam # photo manager
@@ -137,6 +136,7 @@
       - protonmail-bridge # allows local use of ProtonMail
       - protonvpn # ProtonVPN CLI and GUI
       - spotify # music
+      - tenacity # music, but homemade
       - refind-theme-regular-git # theme for refind
       - vmware-horizon-client # remote desktop client
       - vmware-horizon-smartcard # smartcard support
