@@ -50,7 +50,7 @@
 
 - hosts: lyra
   become: true
-  gather_facts: false
+  gather_facts: true
   roles:
     - dotfiles_copy
     - pve_networking
