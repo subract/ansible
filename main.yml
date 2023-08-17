@@ -134,3 +134,7 @@
   ignore_unreachable: true
   roles:
     - backblaze
+    - role: artis3n.tailscale
+      tags: tailscale
+      vars:
+        tailscale_args: --advertise-exit-node --advertise-tags=tag:vps

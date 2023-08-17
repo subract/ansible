@@ -6,6 +6,7 @@ roles:
   - name: geerlingguy.ntp
   - name: lae.proxmox
   - name: simoncaron.pve_addons
+  - name: artis3n.tailscale
 
 collections:
   - name: kewlfft.aur
