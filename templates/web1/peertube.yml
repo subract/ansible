@@ -2,37 +2,9 @@ version: "3.3"
 
 networks:
   web:
-  peertube_web:
-    ipam:
-      driver: default
-      config:
-      - subnet: 172.25.0.0/16
   peertube_db:
 
 services:
-  peertube_webserver:
-    container_name: peertube_webserver
-    image: chocobozzz/peertube-webserver:latest
-    restart: unless-stopped
-    env_file:
-      - peertube.env
-
-    volumes:
-      - /opt/peertube/nginx/peertube:/etc/nginx/conf.d/peertube.template
-      - assets:/var/www/peertube/peertube-latest/client/dist:ro
-      - /opt/peertube/data:/var/www/peertube/storage
-    networks:
-      - peertube_web
-      - web
-    depends_on:
-      - peertube
-
-    labels:
-      traefik.enable: true
-      traefik.http.routers.vid.rule: Host(`vid.{{ secondary_domain }}`)
-      traefik.http.routers.vid.entrypoints: https
-      traefik.http.routers.vid.tls.certresolver: default
-
   peertube:
     container_name: peertube
     image: chocobozzz/peertube:production-bullseye
@@ -44,14 +16,17 @@ services:
       - /opt/peertube/data:/data
       - /opt/peertube/config:/config
     networks:
-      peertube_web:
-        ipv4_address: 172.25.0.42
+      web:
       peertube_db:
     depends_on:
       - peertube_postgres
       - peertube_redis
     labels:
-      traefik.enable: false
+      traefik.enable: true
+      traefik.http.routers.vid.rule: Host(`v.{{ tertiary_domain }}`)
+      traefik.http.routers.vid.entrypoints: https
+      traefik.http.routers.vid.tls.certresolver: default
+      traefik.http.services.vid.loadbalancer.server.port: 9000
 
   peertube_postgres:
     container_name: peertube_postgres

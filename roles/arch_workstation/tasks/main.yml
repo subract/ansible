@@ -35,7 +35,7 @@
     state: started
 
 - name: Install packages
-  include_tasks: packages.yaml
+  include_tasks: packages.yml
 
 - name: Enable and start services
   tags: pkg
@@ -46,10 +46,19 @@
   loop:
     - lightdm
     - systemd-timesyncd
+    - systemd-resolved
     - cups
     - avahi-daemon
     - pcscd
     - incrond
+
+- name: Configure DNS resolution
+  tags: config, net
+  file:
+    src: /run/systemd/resolve/stub-resolv.conf
+    dest: /etc/resolv.conf
+    state: link
+    force: true
 
 - name: Configure lightdm-gtk-greeter
   tags: pkg, config

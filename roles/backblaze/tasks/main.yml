@@ -40,6 +40,6 @@
   tags: config, cron, rclone
   cron:
     name: Back up to Backblaze
-    minute: "30"
-    hour: "5"
+    minute: "15"
+    hour: "3"
     job: /usr/local/sbin/backblaze-backup

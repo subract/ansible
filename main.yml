@@ -126,9 +126,13 @@
   roles:
     - arch_laptop
 
-- hosts: blog
+- hosts: web1
   become: true
   gather_facts: false
   ignore_unreachable: true
   roles:
     - backblaze
+    - role: artis3n.tailscale
+      tags: tailscale
+      vars:
+        tailscale_args: --advertise-exit-node --advertise-tags=tag:vps

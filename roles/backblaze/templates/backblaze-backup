@@ -11,6 +11,10 @@ error=0
 # Move to config directory
 cd ~/.config/backblaze;
 
+{% if 'docker' in group_names %}
+docker-compose $(find /opt/doc/*.yml | sed -e "s/^/-f /") stop
+{% endif %}
+
 for dir in {{ backblaze_include_dirs }}
 do
   echo Backing up $dir...
@@ -25,6 +29,10 @@ if [[ $error -ne 0 ]] ; then
   echo At least one item failed.
   url=$url/fail
 fi
+
+{% if 'docker' in group_names %}
+docker-compose $(find /opt/doc/*.yml | sed -e "s/^/-f /") start
+{% endif %}
 
 # Confirm the finish with healthchecks.io
 curl -fsS --retry 3 $url > /dev/null

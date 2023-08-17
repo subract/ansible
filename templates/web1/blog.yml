@@ -86,7 +86,6 @@ services:
       mail__options__port: 465
       mail__options__secure: true
       mail__options__auth__user: postmaster@mail.{{ secondary_domain }}
-      mail__options__auth__pass: ${GHOST_SMTP_PASS}
 
     labels:
       traefik.enable: true
