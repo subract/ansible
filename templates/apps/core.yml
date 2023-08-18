@@ -100,3 +100,31 @@ services:
       - traefik.http.routers.cc.entrypoints=https
       - traefik.http.routers.cc.tls.certresolver=default
       - traefik.http.services.cc.loadbalancer.server.port=8000
+
+
+  tailscale_dns:
+    container_name: tailscale_dns
+    image: ghcr.io/giodamelio/tailscale-custom-domain-dns:0.6.2
+    restart: unless-stopped
+
+    env_file:
+      - tailscale_dns.env
+
+    networks:
+      - web
+
+    ports:
+      - 5353:53/udp
+
+    volumes:
+      - /ssd/app/tailscale_dns:/config
+
+    environment:
+      TSDNS_DNSSERVER_PORT: 53
+      TSDNS_DOMAIN: "{{ tertiary_domain }}."
+      TSDNS_TAILSCALE_AUTHKEY: "{{ tailscale_authkey }}"
+      TSDNS_TAILSCALE_HOSTNAME: tsdns
+      TSDNS_TAILSCALE_STATEDIR: /config
+
+    labels:
+      - traefik.enable=false
