@@ -12,6 +12,7 @@
       - firefox # web browser
       - flameshot # screenshots
       - gimp # image editor
+      - go # programming is fun
       - hugo # static site generator
       - keepassxc # password manager
       - libqalculate # CLI calculator

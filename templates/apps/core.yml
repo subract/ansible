@@ -113,18 +113,15 @@ services:
     networks:
       - web
 
-    ports:
-      - 5353:53/udp
-
     volumes:
-      - /ssd/app/tailscale_dns:/config
+      - /ssd/app/tailscale_dns:/data
 
     environment:
-      TSDNS_DNSSERVER_PORT: 53
       TSDNS_DOMAIN: "{{ tertiary_domain }}."
       TSDNS_TAILSCALE_AUTHKEY: "{{ tailscale_authkey }}"
       TSDNS_TAILSCALE_HOSTNAME: tsdns
-      TSDNS_TAILSCALE_STATEDIR: /config
+      # TSDNS_LOGLEVEL: debug
+
 
     labels:
       - traefik.enable=false

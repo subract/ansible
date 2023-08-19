@@ -85,6 +85,7 @@
     - arch_workstation
     - ssh_agent
     - dotfiles_clone
+    - artis3n.tailscale
 
 - hosts: apps
   become: true
