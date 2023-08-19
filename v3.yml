@@ -47,6 +47,7 @@
   roles:
     - dotfiles_copy
     - nfs_client
+    - artis3n.tailscale
 
 - hosts: lyra
   become: true
@@ -59,6 +60,9 @@
     - role: lexxel.proxmox # temporary, till lae.proxmox updates for PVE 8.x
       vars:
         pve_reboot_on_kernel_update: false
+    - role: artis3n.tailscale
+      vars:
+        tailscale_args: --advertise-tags=tag:nfs-client
 
 - name: Configure ZFS filesystems
   hosts: lyra
@@ -75,7 +79,7 @@
         name: nvme/enc/app
         state: present
         extra_zfs_properties:
-          sharenfs: rw=@{{ nfs_net }}
+          sharenfs: rw=@{{ tailnet }}
 
 # - hosts: docker
 #   become: true

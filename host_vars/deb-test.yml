@@ -1,4 +1,5 @@
 ---
+ansible_host: deb-test.v3
 nfs_dirs:
   - path: /nvme/enc/app
     user: root
