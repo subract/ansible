@@ -1,4 +1,58 @@
 ---
+
+# PVE config
+
+pve_group: pve01
+
+pve_groups:
+  - name: ops
+    comment: Operations Team
+
+pve_users:
+  - name: aven@pam
+    email: aven@{{ tertiary_domain }}
+    groups: [ops]
+  - name: terraform-prov@pve
+    email: terraform-prov@{{ tertiary_domain }}
+    password: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      31303762343938396261633932306463633139323366343130376133663436373932343034616530
+      3637623466303263343733356262393739343861653966340a616533346561383338323433636635
+      63363239653566643031613362313638373161346565663762663566333636303131663863313066
+      6463663034663865650a356163663364633130333836363134613730353232663864363235363265
+      36616562386331623439613530393166646466613039363964343962353837333736
+
+pve_roles:
+  - name: Terraformer
+    privileges:
+      - Pool.Allocate
+      - VM.Allocate
+      - VM.Clone
+      - VM.Config.CDROM
+      - VM.Config.CPU
+      - VM.Config.Cloudinit
+      - VM.Config.Disk
+      - VM.Config.HWType
+      - VM.Config.Memory
+      - VM.Config.Network
+      - VM.Config.Options
+      - VM.Monitor
+      - VM.Audit
+      - VM.PowerMgmt
+      - Datastore.AllocateSpace
+      - Datastore.Audit
+      - Sys.Modify
+      - Sys.Audit
+
+pve_acls:
+  - path: /
+    roles: [Administrator]
+    groups: [ops]
+  - path: /
+    roles: [Terraformer]
+    users: terraform-prov@pve
+
+
 # Hostname for remote backup server
 backup_host: !vault |-
   $ANSIBLE_VAULT;1.1;AES256
@@ -26,8 +80,6 @@ backblaze_healthcheck_id: !vault |-
   3764623537336164640a653332656664363536343736393766383336393034653865653361353864
   62383162383832383361373665653733316138306461323362623439633330626137633265323939
   3663323462323564356630353262383134333935666464663665
-
-remote_decrypt_port: 46727
 
 # Users/groups for nfs server
 custom_groups:

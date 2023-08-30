@@ -46,12 +46,14 @@
   ignore_unreachable: false
   roles:
     - zfs
-    - nfs_server
-    - syncoid_sanoid
-    - backblaze
-    - more_users
-    - remote_decrypt
-    - simoncaron.pve_addons
+    - role: lexxel.proxmox
+      vars:
+        pve_reboot_on_kernel_update: false
+#     - nfs_server
+#     - syncoid_sanoid
+#     - backblaze
+#     - more_users
+#     - remote_decrypt
 
 - hosts: vm
   become: true
