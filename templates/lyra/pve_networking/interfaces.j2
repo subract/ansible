@@ -3,16 +3,10 @@
 auto lo
 iface lo inet loopback
 
+# 1Gb NIC
 allow-hotplug enp2s0f0
+auto enp2s0f0
 iface enp2s0f0 inet manual
-
-# Managemnt VLAN interface for Proxmox itself
-auto vmbr0.2
-iface vmbr0.2 inet static
-    # Depends on the Ansible controller being able to resolve the IP of the
-    # managed host
-    address {{ lookup('dig', ansible_fqdn) }}/24
-    gateway 10.0.2.1
 
 # Upstream bridge
 auto vmbr0
@@ -21,16 +15,30 @@ iface vmbr0 inet static
     bridge_stp off
     bridge_fd 0
 
+# Managemnt VLAN interface for Proxmox itself
+auto vmbr0.2
+iface vmbr0.2 inet static
+    address {{ mgmt_ip }}/24
+    gateway 10.0.2.1
+
+##################
+
+# 2.5Gb NIC 
+allow-hotplug enp1s0
+auto enp1s0
+iface enp1s0 inet manual
+
 # Downstream bridge
 auto vmbr1
 iface vmbr1 inet static
+    bridge_ports enp1s0
     bridge_stp off
     bridge_fd 0
     bridge-vlan-aware yes
     # Don't allow VMs to talk to the VLAN 2 (Management)
     bridge-vids 3-4094
 
-# 2.5Gb NIC not currently used
-allow-hotplug enp1s0
-auto enp1s0
-iface enp1s0 inet manual
+# Storage VLAN interface for Proxmox itself
+auto vmbr1.5
+iface vmbr1.5 inet static
+    address {{ nfs_server_ip }}/24
