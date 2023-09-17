@@ -79,6 +79,7 @@
       - wireshark-qt # protocol analyzer
       - xorg-xev # view key events
       - zip # zips
+      - zsh-completions # more zsh completions
 
       # Helpers and styling
       - ansible-lint # ansible linting

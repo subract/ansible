@@ -49,11 +49,12 @@
     - role: lexxel.proxmox
       vars:
         pve_reboot_on_kernel_update: false
-#     - nfs_server
-#     - syncoid_sanoid
-#     - backblaze
-#     - more_users
-#     - remote_decrypt
+    - pve_networking
+    - nfs_server
+    - syncoid_sanoid
+    - backblaze
+    - more_users
+    - remote_decrypt
 
 - hosts: vm
   become: true
@@ -61,6 +62,14 @@
   ignore_unreachable: true
   roles:
     - xterm_js
+
+- hosts: nfs_clients
+  become: true
+  gather_facts: false
+  ignore_unreachable: true
+  roles:
+    - more_users
+    - nfs_client
 
 - hosts: docker
   become: true
@@ -70,14 +79,6 @@
     - geerlingguy.docker
     - docker
     - dotfiles_copy
-
-- hosts: nfs_clients
-  become: true
-  gather_facts: false
-  ignore_unreachable: true
-  roles:
-    - nfs_client
-    - more_users
 
 - hosts: workstations
   become: true

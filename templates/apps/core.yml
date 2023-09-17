@@ -104,7 +104,7 @@ services:
 
   tailscale_dns:
     container_name: tailscale_dns
-    image: ghcr.io/giodamelio/tailscale-custom-domain-dns:0.6.2
+    image: ghcr.io/giodamelio/tailscale-custom-domain-dns:0.6.4
     restart: unless-stopped
 
     env_file:

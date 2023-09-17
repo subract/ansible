@@ -26,7 +26,6 @@ all:
     hypervisors:
       hosts:
         draco:
-          ansible_host: 10.0.0.2
         lyra:
     v3:
       hosts:
