@@ -39,10 +39,12 @@ pve_roles:
       - VM.Monitor
       - VM.Audit
       - VM.PowerMgmt
+      - VM.Migrate
       - Datastore.AllocateSpace
       - Datastore.Audit
       - Sys.Modify
       - Sys.Audit
+      - Sys.Console
 
 pve_acls:
   - path: /
@@ -80,6 +82,8 @@ backblaze_healthcheck_id: !vault |-
   3764623537336164640a653332656664363536343736393766383336393034653865653361353864
   62383162383832383361373665653733316138306461323362623439633330626137633265323939
   3663323462323564356630353262383134333935666464663665
+
+remote_decrypt_port: 46727 
 
 # Users/groups for nfs server
 custom_groups:

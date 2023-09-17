@@ -46,7 +46,7 @@
   ignore_unreachable: false
   roles:
     - pve_networking
-    - remote_decrypt
+    # - remote_decrypt
     - role: geerlingguy.ntp
     - role: lae.proxmox
       vars:

@@ -1,5 +1,5 @@
 ---
-remote_decrypt_port: 46728
+mgmt_ip: 10.0.2.2
 
 # PVE config
 
@@ -40,10 +40,13 @@ pve_roles:
       - VM.Monitor
       - VM.Audit
       - VM.PowerMgmt
+      - VM.Migrate
       - Datastore.AllocateSpace
       - Datastore.Audit
       - Sys.Modify
       - Sys.Audit
+      - Sys.Console
+      - SDN.Use
 
 pve_acls:
   - path: /

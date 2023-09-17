@@ -7,7 +7,7 @@
 - name: Configure dropbear-initramfs options
   tags: config
   lineinfile:
-    path: /etc/dropbear-initramfs/config
+    path: /etc/dropbear/initramfs/dropbear.conf
     regexp: DROPBEAR_OPTIONS=
     line: DROPBEAR_OPTIONS="-I 180 -j -k -p {{ remote_decrypt_port }} -s"
   notify: Update initramfs
@@ -15,7 +15,7 @@
 - name: Configure dropbear-initramfs SSH key
   tags: config
   lineinfile:
-    path: /etc/dropbear-initramfs/authorized_keys
+    path: /etc/dropbear/initramfs/authorized_keys
     regexp: Homelab
     line: "{{ ssh_key }}"
     create: true
