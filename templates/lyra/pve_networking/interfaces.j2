@@ -37,8 +37,3 @@ iface vmbr1 inet static
     bridge-vlan-aware yes
     # Don't allow VMs to talk to the VLAN 2 (Management)
     bridge-vids 3-4094
-
-# Storage VLAN interface for Proxmox itself
-auto vmbr1.5
-iface vmbr1.5 inet static
-    address {{ nfs_server_ip }}/24
