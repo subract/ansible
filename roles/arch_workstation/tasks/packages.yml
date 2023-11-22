@@ -99,7 +99,6 @@
       - network-manager-applet # tray icon, ProtonVPN dependency
       - noto-fonts-emoji # emojis
       - nss-mdns # mdns name resolution
-      - opensc # smart card libraries
       - otf-ipafont # Japanese kanji font
       - pasystray # PulseAudio tray icon
       - pavucontrol # PulseAudio volume control
@@ -140,7 +139,5 @@
       - spotify # music
       - tenacity # music, but homemade
       - refind-theme-regular-git # theme for refind
-      - vmware-horizon-client # remote desktop client
-      - vmware-horizon-smartcard # smartcard support
       - xcursor-simp1e-catpuccin-macchiato # cursor theme
     state: present
