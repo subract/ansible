@@ -15,11 +15,35 @@
   loop: "{{ nfs_dirs }}"
   notify: Make mountpoints immutable
 
-- name: Map NFS shares
+# Mark mountpoints as immutable (if created) before mounting
+- name: Flush handlers
+  tags: config, nfs
+  meta: flush_handlers
+
+- name: Print all facts
+  tags: nfs
+  debug:
+    var: ansible_facts
+
+# We need the nfs client to shut down before the tailscale tunnel goes down
+- name: Add lines to nfs-client.target
   tags: config, nfs
   lineinfile:
-    path: /etc/fstab
-    regexp: "{{ item.path }}"
-    # /etc/fstab traditionally has tabs, so skip no-tab linting rule
-    line: "10.0.0.2:{{ item.path }}\t{{ item.path }}\tnfs\tauto\t0\t0" # noqa no-tabs
+    path: /etc/systemd/system/remote-fs.target.wants/nfs-client.target
+    insertafter: ^Before=
+    line: "{{ item }}"
+  with_items:
+    - After=tailscaled.service
+    - Wants=tailscaled.service
+  when: "'tailscale0' in ansible_interfaces"
+  notify: Reload systemd
+
+- name: Mount NFS shares
+  tags: config, nfs
+  ansible.posix.mount:
+    src: "{{ item.server }}:{{ item.path }}"
+    path: "{{ item.path }}"
+    opts: rw
+    state: mounted
+    fstype: nfs
   loop: "{{ nfs_dirs }}"

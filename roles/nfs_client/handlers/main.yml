@@ -5,3 +5,7 @@
     path: "{{ item.path }}"
     attributes: +i
   loop: "{{ nfs_dirs }}"
+
+- name: Reload systemd
+  systemd:
+    daemon_reload: true

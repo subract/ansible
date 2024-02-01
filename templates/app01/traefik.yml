@@ -1,0 +1,37 @@
+version: "3.7"
+
+networks:
+  web:
+
+services:
+  traefik:
+    container_name: traefik
+    image: traefik:latest
+    restart: unless-stopped
+    command: --providers.docker
+
+    ports:
+      - 80:80
+      - 443:443
+
+    env_file: 
+      - traefik.env
+
+    networks:
+      - web
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - {{ app_root }}/traefik_neo/traefik.yml:/traefik.yml
+      - {{ app_root }}/traefik_neo/dynamic_conf.yml:/dynamic_conf.yml
+      - {{ app_root }}/traefik_neo/acme.json:/acme.json
+      - /etc/localtime:/etc/localtime:ro
+
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.api.rule=Host(`tr.{{ tertiary_domain }}`)
+      - traefik.http.routers.api.entrypoints=https
+      - traefik.http.routers.api.tls.certresolver=default
+      - traefik.http.routers.api.service=api@internal
+      - traefik.http.routers.api.middlewares=auth
+      - traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_USERS}

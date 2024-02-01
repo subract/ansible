@@ -46,11 +46,15 @@
   ignore_unreachable: false
   roles:
     - pve_networking
-    # - remote_decrypt
-    - role: geerlingguy.ntp
+    - zfs
+    - geerlingguy.ntp
     - role: lae.proxmox
       vars:
         pve_reboot_on_kernel_update: false
+    - role: artis3n.tailscale
+      tags: tailscale
+      vars:
+        tailscale_args: --advertise-tags=tag:nfs-server
 
 - hosts: hypervisors
   become: true
@@ -58,6 +62,13 @@
   ignore_unreachable: false
   roles:
     - simoncaron.pve_addons
+
+- hosts: vm
+  become: true
+  gather_facts: false
+  ignore_unreachable: true
+  roles:
+    - xterm_js
 
 - hosts: docker
   become: true
@@ -67,3 +78,9 @@
     - geerlingguy.docker
     - docker
     - dotfiles_copy
+    - role: artis3n.tailscale
+      tags: tailscale
+      vars:
+        tailscale_args: --advertise-tags=tag:docker
+    # Need this eventually, but needs refactored
+    - nfs_client

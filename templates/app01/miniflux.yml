@@ -1,0 +1,49 @@
+version: "3.7"
+
+networks:
+  web:
+  db:
+
+services:
+  miniflux:
+    container_name: miniflux
+    image: miniflux/miniflux:latest
+    depends_on:
+      db:
+        condition: service_healthy
+
+    networks:
+      - web
+      - db
+
+    env_file: miniflux.env
+    environment:
+      - RUN_MIGRATIONS=1
+      - BASE_URL=https://mf.{{ tertiary_domain }}
+
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.mf.rule=Host(`mf.{{ tertiary_domain }}`)
+      - traefik.http.routers.mf.entrypoints=https
+      - traefik.http.routers.mf.tls.certresolver=default
+      - traefik.http.services.mf.loadbalancer.server.port=8080
+
+  db:
+    container_name: miniflux_db
+    image: postgres:15
+
+    networks:
+      - db
+
+    env_file: miniflux.env
+    environment:
+      - POSTGRES_USER=miniflux
+      - POSTGRES_DB=miniflux
+
+    volumes:
+      - {{ app_root }}/miniflux_db:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "miniflux"]
+      interval: 10s
+      start_period: 30s

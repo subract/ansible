@@ -19,7 +19,7 @@
 
 - name: Set user authorized keys
   tags: users, config
-  authorized_key:
+  ansible.posix.authorized_key:
     user: "{{ item.name }}"
     state: present
     key: "{{ item.key }}"

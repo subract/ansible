@@ -1,0 +1,35 @@
+version: "3.7"
+
+networks:
+  web:
+
+services:
+  mc-survival-5:
+    container_name: mc-survival-5
+    image: itzg/minecraft-server
+    restart: unless-stopped
+    env_file:
+      - minecraft.env
+
+    ports:
+      - 25569:25565
+
+    networks:
+      - web
+
+    volumes:
+      - /opt/minecraft/mc-survival-231223-1.20.4:/data
+
+    environment:
+      TZ: {{ timezone }}
+      EULA: True
+      PVP: false
+      DIFFICULTY: normal
+      SERVER_NAME: Keelhaul Cay
+      MEMORY: 2G
+      MOTD: Keelhaul Cay
+      TYPE: FORGE
+      VERSION: 1.20.4
+
+    labels:
+      traefik.enable: false

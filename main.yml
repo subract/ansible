@@ -46,7 +46,7 @@
   ignore_unreachable: false
   roles:
     - zfs
-    - role: lexxel.proxmox
+    - role: lae.proxmox
       vars:
         pve_reboot_on_kernel_update: false
     - pve_networking

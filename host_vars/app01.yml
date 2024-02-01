@@ -1,0 +1,8 @@
+---
+
+# NFS directories mounted on file server
+nfs_dirs:
+  - server: lyra
+    path: "{{ app_root }}"
+    user: root
+    group: root

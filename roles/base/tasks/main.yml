@@ -57,7 +57,7 @@
 
 - name: Set timezone
   tags: config, tz
-  timezone:
+  community.general.timezone:
     name: "{{ timezone }}"
   notify: Restart cron
 

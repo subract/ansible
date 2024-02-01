@@ -1,10 +1,12 @@
 ---
 # NFS directories mounted on file server
 nfs_dirs:
-  - path: /ssd/app
+  - server: 10.0.0.2
+    path: /ssd/app
     user: root
     group: root
-  - path: /hdd/enc/app/nextcloud
+  - server: 10.0.0.2
+    path: /hdd/enc/app/nextcloud
     user: root
     group: root
 

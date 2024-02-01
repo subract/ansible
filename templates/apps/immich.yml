@@ -18,11 +18,17 @@ services:
     depends_on:
       - redis
       - database
-      - typesense
     networks:
       immich:
+      web:
     restart: unless-stopped
 
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.im.rule=Host(`im.{{ primary_domain }}`)
+      - traefik.http.routers.im.entrypoints=https
+      - traefik.http.routers.im.tls.certresolver=default
+      - traefik.http.services.im.loadbalancer.server.port=3001
 
   immich-microservices:
     container_name: immich_microservices
@@ -37,7 +43,6 @@ services:
     depends_on:
       - redis
       - database
-      - typesense
     networks:
       immich:
     restart: unless-stopped
@@ -57,33 +62,6 @@ services:
       immich:
     restart: unless-stopped
 
-
-  immich-web:
-    container_name: immich_web
-    image: ghcr.io/immich-app/immich-web:${IMMICH_VERSION:-release}
-    env_file:
-      - immich.env
-    networks:
-      immich:
-    restart: unless-stopped
-
-
-  typesense:
-    container_name: immich_typesense
-    image: typesense/typesense:0.24.0
-    environment:
-      - TYPESENSE_DATA_DIR=/data
-    env_file:
-      - immich.env
-    logging:
-      driver: none
-    networks:
-      immich:
-    volumes:
-      - /ssd/app/immich/typesense:/data
-    restart: unless-stopped
-
-
   redis:
     container_name: immich_redis
     image: redis:6.2
@@ -94,7 +72,8 @@ services:
 
   database:
     container_name: immich_postgres
-    image: postgres:14
+    image: tensorchord/pgvecto-rs:pg14-v0.1.11
+
     env_file:
       - immich.env
     environment:
@@ -104,27 +83,3 @@ services:
     volumes:
       - /ssd/app/immich/postgres:/var/lib/postgresql/data
     restart: unless-stopped
-
-
-  immich-proxy:
-    container_name: immich_proxy
-    image: ghcr.io/immich-app/immich-proxy:${IMMICH_VERSION:-release}
-    environment:
-      # Make sure these values get passed through from the env file
-      - IMMICH_SERVER_URL
-      - IMMICH_WEB_URL
-    depends_on:
-      - immich-server
-    restart: unless-stopped
-
-    networks:
-      immich:
-      web:
-
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.im.rule=Host(`im.{{ primary_domain }}`)
-      - traefik.http.routers.im.entrypoints=https
-      - traefik.http.routers.im.tls.certresolver=default
-      - traefik.http.services.im.loadbalancer.server.port=8080
-
