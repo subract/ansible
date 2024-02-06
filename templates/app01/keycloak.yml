@@ -1,0 +1,116 @@
+version: "3.7"
+
+networks:
+  web:
+  db:
+
+services:
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:latest
+    restart: unless-stopped
+    command: start
+
+    env_file:
+      - keycloak.env
+
+    # Since Keycloak can send its own logs to our log server, we don't need it
+    # to also send logs there via Docker's default GELF facility
+    logging:
+      driver: json-file
+
+    depends_on:
+      - mariadb
+
+    environment:
+      KC_HOSTNAME: auth.{{ tertiary_domain }} 
+      KC_PROXY: edge
+      KC_DB: mariadb
+      KC_DB_URL_HOST: mariadb
+      KC_DB_URL_PORT: 3306
+      KC_DB_URL_DATABASE: keycloak
+      KC_DB_USERNAME: keycloak
+      # Not needed after initial setup
+      # KEYCLOAK_ADMIN:
+      # KEYCLOAK_ADMIN_PASSWORD:
+
+    networks:
+      - web
+      - db
+
+    labels:
+      traefik.enable: true
+      traefik.docker.network: doc_web
+
+      # Create service named "kc-service" attached to port 8080
+      traefik.http.services.kc-service.loadbalancer.server.port: 8080
+
+      # Create a basic router for Keycloak
+      traefik.http.routers.kc.rule: Host(`auth.{{ tertiary_domain }}`)
+      traefik.http.routers.kc.service: kc-service
+      traefik.http.routers.kc.entrypoints: https
+      traefik.http.routers.kc.tls.certresolver: default
+          
+      # Create an additional router for the admin interface
+      # Example here: https://www.reddit.com/r/Traefik/comments/hpsrx9/is_it_possible_to_configure_whitelist_for/
+      traefik.http.routers.kc-admin.rule: (Host(`auth.{{ tertiary_domain }}`) && PathPrefix(`/admin`,`/metrics`,`/health`))
+      traefik.http.routers.kc-admin.service: kc-service
+      traefik.http.routers.kc-admin.entrypoints: https
+      traefik.http.routers.kc-admin.tls.certresolver: default
+          
+      # Apply an IP-based whitelist to the admin router, preventing internet access
+      # On hold till this bug is addressed: https://github.com/tailscale/tailscale/issues/10205
+      # traefik.http.routers.kc-admin.middlewares: kc-admin-ipwhitelist
+      # traefik.http.middlewares.kc-admin-ipwhitelist.ipwhitelist.sourcerange: "10.0.0.0/8, 100.64.0.0/10"
+
+
+  mariadb:
+    container_name: keycloak_db
+    image: mariadb:10
+    env_file:
+      - keycloak.env
+    
+    volumes:
+      - {{ app_root }}/keycloak_db:/var/lib/mysql
+
+    networks:
+      - db
+
+    labels:
+      traefik.enable: false
+
+  # Enables Traefik to talk to Keycloak for forward authentication
+  # https://brianturchyn.net/traefik-forwardauth-support-with-keycloak/
+  forward_auth:
+    container_name: forward_auth
+    image: mesosphere/traefik-forward-auth:latest
+    env_file:
+      - forward_auth.env
+
+    depends_on:
+      - traefik
+      - keycloak
+
+    networks:
+      - web
+
+    environment:
+      PROVIDER_URI: https://auth.{{ tertiary_domain }}/realms/home
+      CLIENT_ID: forward_auth
+      # LOG_LEVEL: debug
+      # No need to request group scope atm
+      SCOPE: openid email profile
+
+    labels:
+      traefik.enable: true
+      #traefik.docker.network: doc_web
+      traefik.http.services.forward_auth.loadbalancer.server.port: 4181
+      traefik.http.routers.forward_auth.entrypoints: https
+      traefik.http.routers.forward_auth.tls.certresolver: default
+      traefik.http.routers.forward_auth.rule: (Path(`/_oauth`))
+      # Make sure this rule takes priority over other rules
+      traefik.http.routers.forward_auth.priority: 1000
+      traefik.http.routers.forward_auth.middlewares: traefik-forward-auth
+      traefik.http.middlewares.traefik-forward-auth.forwardauth.address: http://forward_auth:4181
+      traefik.http.middlewares.traefik-forward-auth.forwardauth.authResponseHeaders: X-Forwarded-User
+      traefik.http.middlewares.traefik-forward-auth.forwardauth.trustForwardHeader: true

@@ -18,15 +18,21 @@ services:
 
     env_file: miniflux.env
     environment:
-      - RUN_MIGRATIONS=1
-      - BASE_URL=https://mf.{{ tertiary_domain }}
-
+      RUN_MIGRATIONS: 1
+      BASE_URL: https://rss.{{ tertiary_domain }}
+      CLEANUP_ARCHIVE_UNREAD_DAYS: -1
+      CLEANUP_ARCHIVE_READ_DAYS: -1
+      OAUTH2_PROVIDER: oidc
+      OAUTH2_CLIENT_ID: miniflux
+      OAUTH2_REDIRECT_URL: https://rss.{{ tertiary_domain }}/oauth2/oidc/callback
+      OAUTH2_OIDC_DISCOVERY_ENDPOINT: https://auth.{{ tertiary_domain }}/realms/home
+    
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.mf.rule=Host(`mf.{{ tertiary_domain }}`)
-      - traefik.http.routers.mf.entrypoints=https
-      - traefik.http.routers.mf.tls.certresolver=default
-      - traefik.http.services.mf.loadbalancer.server.port=8080
+      traefik.enable: true
+      traefik.http.routers.rss.rule: Host(`rss.{{ tertiary_domain }}`)
+      traefik.http.routers.rss.entrypoints: https
+      traefik.http.routers.rss.tls.certresolver: default
+      traefik.http.services.rss.loadbalancer.server.port: 8080
 
   db:
     container_name: miniflux_db
@@ -37,13 +43,16 @@ services:
 
     env_file: miniflux.env
     environment:
-      - POSTGRES_USER=miniflux
-      - POSTGRES_DB=miniflux
+      POSTGRES_USER: miniflux
+      POSTGRES_DB: miniflux
 
     volumes:
       - {{ app_root }}/miniflux_db:/var/lib/postgresql/data
 
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "miniflux"]
-      interval: 10s
+      interval: 4s
       start_period: 30s
+
+    labels:
+      traefik.enable: false
