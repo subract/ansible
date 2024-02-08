@@ -1,10 +1,12 @@
 ---
 # NFS directories mounted on file server
 nfs_dirs:
-  - path: /ssd/dmz/app
+  - server: 10.0.0.2
+    path: /ssd/dmz/app
     user: dmz-doc
     group: dmz-doc
-  - path: /ssd/app/games
+  - server: 10.0.0.2
+    path: /ssd/app/games
     user: root
     group: root
 # Users/groups for nfs server

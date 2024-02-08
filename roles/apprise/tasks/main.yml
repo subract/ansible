@@ -1,0 +1,31 @@
+---
+- name: Install apprise
+  tags: pkg
+  apt:
+    name: apprise
+    state: present
+
+- name: Configure apprise (user)
+  tags: pkg, config
+  blockinfile:
+    path: /home/{{ user }}/.apprise.yml
+    create: true
+    mode: "0644"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    block: |
+      version: 1
+      urls:
+        - ntfy://{{ ntfy_topic }}:
+            tags: postal_horn,{{ ansible_hostname }}
+
+
+- name: Configure apprise (root)
+  tags: pkg, config
+  copy:
+    src: /home/{{ user }}/.apprise.yml
+    dest: /root/apprise.yml
+    remote_src: true
+    mode: "0644"
+    owner: root
+    group: root

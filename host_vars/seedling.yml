@@ -1,6 +1,0 @@
----
-# NFS directories mounted on file server
-nfs_dirs:
-  - path: /ssd/app/deluge,
-    user: root
-    group: root

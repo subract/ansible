@@ -20,11 +20,6 @@
   tags: config, nfs
   meta: flush_handlers
 
-- name: Print all facts
-  tags: nfs
-  debug:
-    var: ansible_facts
-
 # We need the nfs client to shut down before the tailscale tunnel goes down
 - name: Add lines to nfs-client.target
   tags: config, nfs

@@ -1,0 +1,8 @@
+---
+- name: Configure filesystems
+  tags: config, zfs
+  community.general.zfs:
+    name: "{{ app_root | regex_replace('^/', '') }}" # Strip leading slash
+    state: present
+    extra_zfs_properties:
+      sharenfs: rw=app01.{{ tailscale_magic_dns }},no_root_squash

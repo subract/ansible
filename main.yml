@@ -49,6 +49,10 @@
     - role: lae.proxmox
       vars:
         pve_reboot_on_kernel_update: false
+        pve_zfs_enabled: true
+        pve_zfs_options: |-
+          options zfs zfs_arc_max=8589934592
+          options zfs zfs_arc_min=2147483648
     - pve_networking
     - nfs_server
     - syncoid_sanoid

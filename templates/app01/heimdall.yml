@@ -1,0 +1,27 @@
+version: '3.7'
+
+networks:
+  web:
+
+services:
+  heimdall:
+    container_name: heimdall
+    image: linuxserver/heimdall
+
+    networks:
+      - web
+
+    environment:
+      PGID: 1000
+      PUID: 1000
+      TZ: {{ timezone }}
+
+    volumes:
+      - {{ app_root }}/heimdall:/config
+    
+    labels:
+      traefik.enable: true
+      traefik.http.routers.heimdall.rule: Host(`dash.{{ tertiary_domain }}`)
+      traefik.http.routers.heimdall.entrypoints: https
+      traefik.http.routers.heimdall.tls.certresolver: default
+      traefik.http.services.heimdall.loadbalancer.server.port: 80

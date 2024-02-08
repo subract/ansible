@@ -1,7 +1,8 @@
 ---
 # Do update pre-tasks before anything else...
 
-- hosts: v3
+- name: Run upgrades
+  hosts: v3
   become: true
   gather_facts: true
   ignore_unreachable: true
@@ -32,45 +33,56 @@
 
 # ...then run base config on all machines...
 
-- hosts: v3
+- name: Base config
+  hosts: v3
   become: true
+  gather_facts: false
   ignore_unreachable: true
   roles:
     - base
 
 # ...and finally, do role-specific tasks
 
-- hosts: lyra
+- name: Roles
+  hosts: lyra
   become: true
   gather_facts: false
   ignore_unreachable: false
   roles:
     - pve_networking
-    - zfs
     - geerlingguy.ntp
     - role: lae.proxmox
       vars:
         pve_reboot_on_kernel_update: false
+        pve_zfs_enabled: true
+        pve_zfs_options: |-
+          options zfs zfs_arc_max=8589934592
+          options zfs zfs_arc_min=2147483648
     - role: artis3n.tailscale
       tags: tailscale
       vars:
         tailscale_args: --advertise-tags=tag:nfs-server
 
-- hosts: hypervisors
+- name: Roles
+  hosts: hypervisors
   become: true
   gather_facts: false
   ignore_unreachable: false
   roles:
     - simoncaron.pve_addons
+    - apprise
 
-- hosts: vm
+- name: Roles
+  hosts: vm
   become: true
   gather_facts: false
   ignore_unreachable: true
   roles:
     - xterm_js
+    - apprise
 
-- hosts: docker
+- name: Roles
+  hosts: docker
   become: true
   gather_facts: false
   ignore_unreachable: true
@@ -84,3 +96,14 @@
         tailscale_args: --advertise-tags=tag:docker
     # Need this eventually, but needs refactored
     - nfs_client
+
+- name: Host-specific tasks
+  hosts: v3
+  gather_facts: false
+  tasks:
+    - name: Run host-specific tasks
+      include_tasks:
+        file: "{{ item }}"
+      with_first_found:
+        - files: host_tasks/{{ ansible_hostname }}.yml
+          skip: true

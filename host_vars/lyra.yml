@@ -13,48 +13,48 @@ pve_users:
   - name: aven@pam
     email: aven@localhost
     groups: [ops]
-  - name: terraform-prov@pve
-    email: terraform-prov@localhost
-    password: !vault |
-      $ANSIBLE_VAULT;1.1;AES256
-      31303762343938396261633932306463633139323366343130376133663436373932343034616530
-      3637623466303263343733356262393739343861653966340a616533346561383338323433636635
-      63363239653566643031613362313638373161346565663762663566333636303131663863313066
-      6463663034663865650a356163663364633130333836363134613730353232663864363235363265
-      36616562386331623439613530393166646466613039363964343962353837333736
+#   - name: terraform-prov@pve
+#     email: terraform-prov@localhost
+#     password: !vault |
+#       $ANSIBLE_VAULT;1.1;AES256
+#       31303762343938396261633932306463633139323366343130376133663436373932343034616530
+#       3637623466303263343733356262393739343861653966340a616533346561383338323433636635
+#       63363239653566643031613362313638373161346565663762663566333636303131663863313066
+#       6463663034663865650a356163663364633130333836363134613730353232663864363235363265
+#       36616562386331623439613530393166646466613039363964343962353837333736
 
-pve_roles:
-  - name: Terraformer
-    privileges:
-      - Pool.Allocate
-      - VM.Allocate
-      - VM.Clone
-      - VM.Config.CDROM
-      - VM.Config.CPU
-      - VM.Config.Cloudinit
-      - VM.Config.Disk
-      - VM.Config.HWType
-      - VM.Config.Memory
-      - VM.Config.Network
-      - VM.Config.Options
-      - VM.Monitor
-      - VM.Audit
-      - VM.PowerMgmt
-      - VM.Migrate
-      - Datastore.AllocateSpace
-      - Datastore.Audit
-      - Sys.Modify
-      - Sys.Audit
-      - Sys.Console
-      - SDN.Use
+# pve_roles:
+#   - name: Terraformer
+#     privileges:
+#       - Pool.Allocate
+#       - VM.Allocate
+#       - VM.Clone
+#       - VM.Config.CDROM
+#       - VM.Config.CPU
+#       - VM.Config.Cloudinit
+#       - VM.Config.Disk
+#       - VM.Config.HWType
+#       - VM.Config.Memory
+#       - VM.Config.Network
+#       - VM.Config.Options
+#       - VM.Monitor
+#       - VM.Audit
+#       - VM.PowerMgmt
+#       - VM.Migrate
+#       - Datastore.AllocateSpace
+#       - Datastore.Audit
+#       - Sys.Modify
+#       - Sys.Audit
+#       - Sys.Console
+#       - SDN.Use
 
-pve_acls:
-  - path: /
-    roles: [Administrator]
-    groups: [ops]
-  - path: /
-    roles: [Terraformer]
-    users: terraform-prov@pve
+# pve_acls:
+#   - path: /
+#     roles: [Administrator]
+#     groups: [ops]
+#   - path: /
+#     roles: [Terraformer]
+#     users: terraform-prov@pve
 
 interfaces_template: interfaces-{{ pve_group }}.j2
 resolv_template: resolv-{{ pve_group }}.conf.j2

@@ -47,7 +47,7 @@
 - name: Copy compose .env
   tags: docker, compose, env
   copy:
-    src: ../files/{{ inventory_hostname }}/docker_env/compose_env
+    src: "{{ inventory_hostname }}/docker_env/compose_env"
     dest: "{{ compose_dir }}/.env"
     mode: "0440"
     owner: root
@@ -74,7 +74,7 @@
   changed_when: "'Started' in result.stdout"
 
 - name: Prune docker services
-  tags: docker, compose up
+  tags: docker, compose,  up
   command:
     cmd: docker system prune -f
   changed_when: false
