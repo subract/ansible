@@ -7,7 +7,7 @@ services:
   changedetection:
     container_name: changedetection
     image: ghcr.io/dgtlmoon/changedetection.io
-    hostname: changedetection
+    restart: unless-stopped
 
     networks:
       - web

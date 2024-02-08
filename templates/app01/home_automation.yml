@@ -9,6 +9,7 @@ services:
   home_assistant:
     container_name: home_assistant
     image: homeassistant/home-assistant:latest
+    restart: unless-stopped
 
     networks:
       - web
@@ -35,6 +36,7 @@ services:
   mosquitto:
     container_name: mosquitto
     image: eclipse-mosquitto
+    restart: unless-stopped
 
     networks:
       - mqtt
@@ -55,8 +57,8 @@ services:
     volumes:
       - {{ app_root }}/zigbee2mqtt:/app/data
 
-    # devices:
-    #   - /dev/ttyUSB0
+    devices:
+      - /dev/ttyUSB0
 
     networks:
       - web
@@ -67,7 +69,7 @@ services:
 
     labels:
       traefik.enable: true
-      traefik.http.routers.zigbee.rule: Host(`zigbee.{{ primary_domain }}`)
+      traefik.http.routers.zigbee.rule: Host(`zigbee.{{ tertiary_domain }}`)
       traefik.http.routers.zigbee.entrypoints: https
       traefik.http.routers.zigbee.tls.certresolver: default
       traefik.http.services.zigbee.loadbalancer.server.port: 8080

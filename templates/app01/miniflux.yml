@@ -8,6 +8,8 @@ services:
   miniflux:
     container_name: miniflux
     image: miniflux/miniflux:latest
+    restart: unless-stopped
+
     depends_on:
       db:
         condition: service_healthy
@@ -37,6 +39,7 @@ services:
   db:
     container_name: miniflux_db
     image: postgres:15
+    restart: unless-stopped
 
     networks:
       - db

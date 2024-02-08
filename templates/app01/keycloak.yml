@@ -11,16 +11,11 @@ services:
     restart: unless-stopped
     command: start
 
-    env_file:
-      - keycloak.env
-
-    # Since Keycloak can send its own logs to our log server, we don't need it
-    # to also send logs there via Docker's default GELF facility
-    logging:
-      driver: json-file
-
     depends_on:
       - mariadb
+
+    env_file:
+      - keycloak.env
 
     environment:
       KC_HOSTNAME: auth.{{ tertiary_domain }} 
@@ -67,14 +62,16 @@ services:
   mariadb:
     container_name: keycloak_db
     image: mariadb:10
+    restart: unless-stopped 
+
+    networks:
+      - db  
+  
     env_file:
       - keycloak.env
     
     volumes:
       - {{ app_root }}/keycloak_db:/var/lib/mysql
-
-    networks:
-      - db
 
     labels:
       traefik.enable: false
@@ -84,8 +81,7 @@ services:
   forward_auth:
     container_name: forward_auth
     image: mesosphere/traefik-forward-auth:latest
-    env_file:
-      - forward_auth.env
+    restart: unless-stopped
 
     depends_on:
       - traefik
@@ -93,6 +89,9 @@ services:
 
     networks:
       - web
+
+    env_file:
+      - forward_auth.env
 
     environment:
       PROVIDER_URI: https://auth.{{ tertiary_domain }}/realms/home

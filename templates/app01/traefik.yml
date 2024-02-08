@@ -7,8 +7,9 @@ services:
   traefik:
     container_name: traefik
     image: traefik:latest
-    restart: unless-stopped
     command: --providers.docker
+
+    restart: unless-stopped
 
     ports:
       - 80:80

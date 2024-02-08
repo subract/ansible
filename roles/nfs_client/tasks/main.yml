@@ -20,18 +20,41 @@
   tags: config, nfs
   meta: flush_handlers
 
-# We need the nfs client to shut down before the tailscale tunnel goes down
-- name: Add lines to nfs-client.target
-  tags: config, nfs
-  lineinfile:
-    path: /etc/systemd/system/remote-fs.target.wants/nfs-client.target
-    insertafter: ^Before=
-    line: "{{ item }}"
-  with_items:
-    - After=tailscaled.service
-    - Wants=tailscaled.service
+# If using Tailscale, configure NFS to depend on it being up
+- name: Configure NFS to depend on Tailscale
   when: "'tailscale0' in ansible_interfaces"
-  notify: Reload systemd
+  block: 
+  # We need the nfs client to depend on the tailscale tunnel
+  - name: Add lines to nfs-client.target
+    tags: config, nfs
+    lineinfile:
+      path: /etc/systemd/system/remote-fs.target.wants/nfs-client.target
+      insertafter: ^Before=
+      line: "{{ item }}"
+    with_items:
+      - After=tailscaled.service
+      - Wants=tailscaled.service
+    when: "'tailscale0' in ansible_interfaces"
+    notify: Reload systemd
+
+  # We need Tailscale not to report being up for a few seconds
+  # So we create an override on the service that adds a 5s delay
+  - name: Create override directory for tailscaled.service
+    tags: config, nfs
+    file:
+      path: "/etc/systemd/system/tailscaled.service.d"
+      state: directory
+      mode: 0755  
+
+  - name: Create tailscaled override file
+    tags: config, nfs
+    copy:
+      content: |
+        [Service]
+        ExecStartPost=sleep 5
+      dest: "/etc/systemd/system/tailscaled.service.d/override.conf"
+      mode: 0644
+    notify: Reload systemd
 
 - name: Mount NFS shares
   tags: config, nfs

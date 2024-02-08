@@ -7,6 +7,7 @@ services:
   heimdall:
     container_name: heimdall
     image: linuxserver/heimdall
+    restart: unless-stopped
 
     networks:
       - web
