@@ -32,6 +32,7 @@ all:
         app01:
           ansible_host: app01.v3
         web1:
+        offsite01:
   vars:
     ansible_python_interpreter: auto_silent
     ansible_user: ansible

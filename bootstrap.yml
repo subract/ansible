@@ -35,7 +35,7 @@
 
     - name: Set ssh key for user
       tags: user, ssh
-      authorized_key:
+      ansible.posix.authorized_key:
         user: "{{ user }}"
         key: "{{ ssh_key }}"
         exclusive: true

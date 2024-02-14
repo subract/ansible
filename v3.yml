@@ -97,9 +97,22 @@
     # Need this eventually, but needs refactored
     - nfs_client
 
+- name: Roles
+  hosts: offsite01
+  become: true
+  gather_facts: false
+  ignore_unreachable: true
+  roles:
+    - role: artis3n.tailscale
+      tags: tailscale
+      vars:
+        tailscale_args: --advertise-tags=tag:offsite
+    - dotfiles_copy
+
 - name: Host-specific tasks
   hosts: v3
   gather_facts: false
+  become: true
   tasks:
     - name: Run host-specific tasks
       include_tasks:

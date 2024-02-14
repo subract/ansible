@@ -39,9 +39,9 @@
   block:
     - name: Create override directory for docker.service
       file:
-        path: "/etc/systemd/system/docker.service.d"
+        path: /etc/systemd/system/docker.service.d
         state: directory
-        mode: 0755
+        mode: "0755"
 
     - name: Create override file for docker.service
       copy:
@@ -49,8 +49,8 @@
           [Unit]
           Requires=nfs-client.target
           After=nfs-client.target
-        dest: "/etc/systemd/system/docker.service.d/override.conf"
-        mode: 0644
+        dest: /etc/systemd/system/docker.service.d/override.conf
+        mode: "0644"
       notify: Reload systemd
 
 - name: Copy docker-compose.yml files

@@ -4,7 +4,7 @@
   copy:
     src: zfs-load-key.service
     dest: /etc/systemd/system/zfs-load-key.service
-    mode: "0755"
+    mode: "0644"
 
 - name: Enable zfs-load-key service
   tags: config, zfs

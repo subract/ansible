@@ -32,70 +32,70 @@ services:
       - traefik.http.services.ha.loadbalancer.server.port=8123
 
 
-  nodered:
-    container_name: nodered
-    image: nodered/node-red
-    restart: unless-stopped
-    user: root
+  # nodered:
+  #   container_name: nodered
+  #   image: nodered/node-red
+  #   restart: unless-stopped
+  #   user: root
 
-    volumes:
-      - /ssd/app/nodered:/data
-      - /etc/localtime:/etc/localtime:ro
+  #   volumes:
+  #     - /ssd/app/nodered:/data
+  #     - /etc/localtime:/etc/localtime:ro
 
-    networks:
-      - web
-      - mqtt
+  #   networks:
+  #     - web
+  #     - mqtt
 
-    environment:
-      - TZ={{ timezone }}
+  #   environment:
+  #     - TZ={{ timezone }}
 
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.nr.rule=Host(`nr.{{ primary_domain }}`)
-      - traefik.http.routers.nr.entrypoints=https
-      - traefik.http.routers.nr.tls.certresolver=default
-      - traefik.http.services.nr.loadbalancer.server.port=1880
-
-
-  mosquitto:
-    container_name: mosquitto
-    image: eclipse-mosquitto
-    restart: unless-stopped
-
-    networks:
-      - mqtt
-
-    volumes:
-      - /ssd/app/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
-
-    labels:
-      - traefik.enable=false
+  #   labels:
+  #     - traefik.enable=true
+  #     - traefik.http.routers.nr.rule=Host(`nr.{{ primary_domain }}`)
+  #     - traefik.http.routers.nr.entrypoints=https
+  #     - traefik.http.routers.nr.tls.certresolver=default
+  #     - traefik.http.services.nr.loadbalancer.server.port=1880
 
 
-  zigbee2mqtt:
-    container_name: zigbee2mqtt
-    image: koenkk/zigbee2mqtt
-    restart: unless-stopped
-    depends_on:
-      - mosquitto
+  # mosquitto:
+  #   container_name: mosquitto
+  #   image: eclipse-mosquitto
+  #   restart: unless-stopped
 
-    volumes:
-      - /ssd/app/zigbee2mqtt:/app/data
+  #   networks:
+  #     - mqtt
 
-    devices:
-      - /dev/ttyUSB0
+  #   volumes:
+  #     - /ssd/app/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
 
-    networks:
-      - web
-      - mqtt
+  #   labels:
+  #     - traefik.enable=false
 
-    environment:
-      - TZ={{ timezone }}
 
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.zb.rule=Host(`zb.{{ primary_domain }}`)
-      - traefik.http.routers.zb.entrypoints=https
-      - traefik.http.routers.zb.tls.certresolver=default
-      - traefik.http.services.zb.loadbalancer.server.port=8080
+  # zigbee2mqtt:
+  #   container_name: zigbee2mqtt
+  #   image: koenkk/zigbee2mqtt
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - mosquitto
+
+  #   volumes:
+  #     - /ssd/app/zigbee2mqtt:/app/data
+
+  #   devices:
+  #     - /dev/ttyUSB0
+
+  #   networks:
+  #     - web
+  #     - mqtt
+
+  #   environment:
+  #     - TZ={{ timezone }}
+
+  #   labels:
+  #     - traefik.enable=true
+  #     - traefik.http.routers.zb.rule=Host(`zb.{{ primary_domain }}`)
+  #     - traefik.http.routers.zb.entrypoints=https
+  #     - traefik.http.routers.zb.tls.certresolver=default
+  #     - traefik.http.services.zb.loadbalancer.server.port=8080
 
