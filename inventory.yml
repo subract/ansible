@@ -11,17 +11,21 @@ all:
       hosts:
         apps:
         dmz-apps:
-        web1:
-          ansible_host: "{{ secondary_domain }}"
+        web01:
+          ansible_host: "{{ tertiary_domain }}"
+        web02:
+          ansible_host: "dashy-demo.{{ quaternary_domain }}"
         app01:
           ansible_host: "app01.v3"
     nfs_clients:
       hosts:
         apps:
         dmz-apps:
+        app01:
     workstations:
       hosts:
         titania:
+        ixion:
     hypervisors:
       hosts:
         draco:
@@ -31,8 +35,10 @@ all:
         lyra:
         app01:
           ansible_host: app01.v3
-        web1:
+        web01:
         offsite01:
+        web02:
+        ixion:
   vars:
     ansible_python_interpreter: auto_silent
     ansible_user: ansible
@@ -62,6 +68,13 @@ all:
       66373033383537393962613165363461646262643836396639343862366264646531343235303130
       6536353361653839650a373731393664663136353964326237653137313666336535373935626632
       3137
+    quaternary_domain: !vault | 
+      $ANSIBLE_VAULT;1.1;AES256
+      37323037663538323036643030613736633930366661613165376632366236343964326538653562
+      3635636637386432353335313736616131313638336639380a613938396165333333373636353134
+      62616234336635666131663530643438353237346333653163613566373138353332363333353538
+      6237646532373731390a353565646336633565653161656366316230306362373830343063303536
+      3266
 
     tailscale_authkey: !vault |-
       $ANSIBLE_VAULT;1.1;AES256

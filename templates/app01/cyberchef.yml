@@ -22,4 +22,4 @@ services:
       traefik.http.routers.chef.entrypoints: https
       traefik.http.routers.chef.tls.certresolver: default
       traefik.http.services.chef.loadbalancer.server.port: 8000
-      traefik.http.routers.chef.middlewares: traefik-forward-auth
+      traefik.http.routers.chef.middlewares: authelia

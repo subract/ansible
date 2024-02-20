@@ -27,7 +27,8 @@ services:
       OAUTH2_PROVIDER: oidc
       OAUTH2_CLIENT_ID: miniflux
       OAUTH2_REDIRECT_URL: https://rss.{{ tertiary_domain }}/oauth2/oidc/callback
-      OAUTH2_OIDC_DISCOVERY_ENDPOINT: https://auth.{{ tertiary_domain }}/realms/home
+      OAUTH2_OIDC_DISCOVERY_ENDPOINT: https://auth.{{ tertiary_domain }}
+      OAUTH2_USER_CREATION: 1
     
     labels:
       traefik.enable: true

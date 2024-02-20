@@ -33,43 +33,43 @@ services:
       traefik.http.routers.home.tls.certresolver: default
       traefik.http.services.home.loadbalancer.server.port: 8123
 
-  # mosquitto:
-  #   container_name: mosquitto
-  #   image: eclipse-mosquitto
-  #   restart: unless-stopped
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto
+    restart: unless-stopped
 
-  #   networks:
-  #     - mqtt
+    networks:
+      - mqtt
 
-  #   volumes:
-  #     - {{ app_root }}/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    volumes:
+      - {{ app_root }}/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
 
-  #   labels:
-  #     - traefik.enable=false
+    labels:
+      - traefik.enable=false
 
-  # zigbee2mqtt:
-  #   container_name: zigbee2mqtt
-  #   image: koenkk/zigbee2mqtt
+  zigbee2mqtt:
+    container_name: zigbee2mqtt
+    image: koenkk/zigbee2mqtt
 
-  #   depends_on:
-  #     - mosquitto
+    depends_on:
+      - mosquitto
 
-  #   volumes:
-  #     - {{ app_root }}/zigbee2mqtt:/app/data
+    volumes:
+      - {{ app_root }}/zigbee2mqtt:/app/data
 
-  #   devices:
-  #     - /dev/ttyUSB0
+    devices:
+      - /dev/ttyUSB0
 
-  #   networks:
-  #     - web
-  #     - mqtt
+    networks:
+      - web
+      - mqtt
 
-  #   environment:
-  #     TZ: {{ timezone }}
+    environment:
+      TZ: {{ timezone }}
 
-  #   labels:
-  #     traefik.enable: true
-  #     traefik.http.routers.zigbee.rule: Host(`zigbee.{{ tertiary_domain }}`)
-  #     traefik.http.routers.zigbee.entrypoints: https
-  #     traefik.http.routers.zigbee.tls.certresolver: default
-  #     traefik.http.services.zigbee.loadbalancer.server.port: 8080
+    labels:
+      traefik.enable: true
+      traefik.http.routers.zigbee.rule: Host(`zigbee.{{ tertiary_domain }}`)
+      traefik.http.routers.zigbee.entrypoints: https
+      traefik.http.routers.zigbee.tls.certresolver: default
+      traefik.http.services.zigbee.loadbalancer.server.port: 8080

@@ -93,8 +93,14 @@
     - role: artis3n.tailscale
       tags: tailscale
       vars:
-        tailscale_args: --advertise-tags=tag:docker
-    # Need this eventually, but needs refactored
+        tailscale_args: --advertise-exit-node --advertise-tags=tag:docker
+
+- name: Roles
+  hosts: nfs_clients
+  become: true
+  gather_facts: false
+  ignore_unreachable: true
+  roles:
     - nfs_client
 
 - name: Roles
@@ -108,6 +114,13 @@
       vars:
         tailscale_args: --advertise-tags=tag:offsite
     - dotfiles_copy
+
+- name: Roles
+  hosts: ixion
+  become: true
+  gather_facts: false
+  ignore_unreachable: true
+  roles:
 
 - name: Host-specific tasks
   hosts: v3

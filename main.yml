@@ -136,7 +136,7 @@
   roles:
     - arch_laptop
 
-- hosts: web1
+- hosts: web01
   become: true
   gather_facts: false
   ignore_unreachable: true

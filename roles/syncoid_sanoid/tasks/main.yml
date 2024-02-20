@@ -24,17 +24,25 @@
 - name: Add ssd replication cron job
   tags: config, syncoid
   ansible.builtin.cron:
-    name: Sync ssd to hdd/enc/backup
+    name: Sync ssd/app to hdd/enc/backup
     minute: "2"
     hour: "2"
-    job: /usr/sbin/syncoid -r --skip-parent --no-sync-snap ssd hdd/enc/backup
+    job: /usr/sbin/syncoid -r --skip-parent --no-sync-snap ssd/app hdd/enc/backup/app
 
-- name: Add remote backup cron job
+- name: Add ssd replication cron job
   tags: config, syncoid
   ansible.builtin.cron:
-    name: Sync hdd to remote server
-    minute: "0"
-    hour: "4"
-    job: >
-      /usr/sbin/syncoid -r --no-sync-snap --skip-parent  --exclude {{ remote_exclude_dir }} --sendoptions=w --sshport 1984 --sshkey /root/.ssh/id_rsa  hdd/enc
-      aven@{{ backup_host }}:hdd/enc
+    name: Sync ssd/dmz to hdd/enc/backup
+    minute: "2"
+    hour: "2"
+    job: /usr/sbin/syncoid -r --skip-parent --no-sync-snap ssd/dmz hdd/enc/backup/dmz
+
+# - name: Add remote backup cron job
+#   tags: config, syncoid
+#   ansible.builtin.cron:
+#     name: Sync hdd to remote server
+#     minute: "0"
+#     hour: "4"
+#     job: >
+#       /usr/sbin/syncoid -r --no-sync-snap --skip-parent  --exclude {{ remote_exclude_dir }} --sendoptions=w --sshport 1984 --sshkey /root/.ssh/id_rsa  hdd/enc
+#       aven@{{ backup_host }}:hdd/enc
