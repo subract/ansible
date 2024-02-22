@@ -16,7 +16,6 @@ all:
         web02:
           ansible_host: "dashy-demo.{{ quaternary_domain }}"
         app01:
-          ansible_host: "app01.v3"
     nfs_clients:
       hosts:
         apps:
@@ -34,7 +33,6 @@ all:
       hosts:
         lyra:
         app01:
-          ansible_host: app01.v3
         web01:
         offsite01:
         web02:

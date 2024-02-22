@@ -23,13 +23,15 @@ services:
     environment:
       PAPERLESS_REDIS: redis://paperless_redis:6379
       PAPERLESS_TIKA_ENABLED: 1
-      PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://gpaperless_otenberg:3000
+      PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://gpaperless_gotenberg:3000
       PAPERLESS_TIKA_ENDPOINT: http://paperless_tika:9998
       PAPERLESS_URL: https://paper.{{ tertiary_domain }}
       PAPERLESS_TIME_ZONE: {{ timezone }}
       PAPERLESS_OCR_USER_ARGS: '{"continue_on_soft_render_error": true}'
       PAPERLESS_TASK_WORKERS: 2
       PAPERLESS_THREADS_PER_WORKER: 4
+      PAPERLESS_FILENAME_DATE_ORDER: YMD
+      PAPERLESS_DATE_ORDER: MYD
 
     volumes:
       - {{ app_root}}/paperless/data:/usr/src/paperless/data
@@ -43,6 +45,7 @@ services:
       traefik.http.routers.paper.entrypoints: https
       traefik.http.routers.paper.tls.certresolver: default
       traefik.http.services.paper.loadbalancer.server.port: 8000
+      traefik.http.routers.paper.middlewares: authelia
 
 
   paperless_redis:
@@ -55,9 +58,6 @@ services:
 
     # volumes:
     #   - redisdata:/data
-
-    labels:
-      traefik.enable: false
 
 
   paperless_gotenberg:
@@ -72,9 +72,6 @@ services:
     networks:
       - paperless
 
-    labels:
-      traefik.enable: false
-
 
   paperless_tika:
     container_name: paperless_tika
@@ -83,6 +80,3 @@ services:
 
     networks:
       - paperless
-
-    labels:
-      traefik.enable: false

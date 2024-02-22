@@ -58,6 +58,3 @@ services:
       test: ["CMD", "pg_isready", "-U", "miniflux"]
       interval: 4s
       start_period: 30s
-
-    labels:
-      traefik.enable: false
