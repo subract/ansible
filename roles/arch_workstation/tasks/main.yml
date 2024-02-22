@@ -147,23 +147,8 @@
   loop:
     - src: /boot/EFI/refind/themes/refind-theme-regular/icons/384-144/os_arch.png
       dest: /boot/EFI/refind/themes/refind-theme-regular/icons/384-144/os_linux.png
-    - src: /boot/EFI/refind/themes/refind-theme-regular/icons/384-144/os_win11.png
+    - src: /boot/EFI/refind/themes/refind-theme-regular/icons/384-144/os_windows.png
       dest: /boot/EFI/refind/themes/refind-theme-regular/icons/384-144/os_win8.png
-
-- name: Create Horizon remote desktop dir
-  tags: horizon, config
-  file:
-    dest: /usr/lib/vmware/view/pkcs11
-    state: directory
-    mode: "0755"
-
-- name: Configure Horizon remote desktop
-  tags: horizon, config
-  file:
-    src: /usr/lib64/pkcs11/opensc-pkcs11.so
-    dest: /usr/lib/vmware/view/pkcs11/libopenscpkcs11.so
-    state: link
-    mode: "0644"
 
 - name: Power Bluetooth adapter on startup
   tags: config
@@ -196,27 +181,27 @@
       gtk-theme-name = Catppuccin-Macchiato-Peach
       gtk-application-prefer-dark-theme = true
 
-- name: Create video in/out dirs
-  tags: config, incrond
-  file:
-    name: /home/{{ user }}/scratch/{{ item }}
-    state: directory
-    mode: "0755"
-    owner: "{{ user }}"
-    group: "{{ user }}"
-  loop:
-    - convert_in
-    - convert_out
+# - name: Create video in/out dirs
+#   tags: config, incrond
+#   file:
+#     name: /home/{{ user }}/scratch/{{ item }}
+#     state: directory
+#     mode: "0755"
+#     owner: "{{ user }}"
+#     group: "{{ user }}"
+#   loop:
+#     - convert_in
+#     - convert_out
 
-- name: Configure incrond
-  tags: config, incrond
-  lineinfile:
-    path: /var/spool/incron/{{ user }}
-    create: true
-    mode: "0600"
-    owner: "{{ user }}"
-    group: "{{ user }}"
-    regexp: convert_in
-    line: >
-      /home/{{ user }}/scratch/convert_in IN_CLOSE_WRITE flock /tmp/enc --command "/usr/bin/ffmpeg -i $@/$# -c:v dnxhd -profile:v dnxhr_hq -pix_fmt yuv422p -c:a
-      pcm_s16le -f mov /home/{{ user }}/scratch/convert_out/$# && trash-put $@/$#"
+# - name: Configure incrond
+#   tags: config, incrond
+#   lineinfile:
+#     path: /var/spool/incron/{{ user }}
+#     create: true
+#     mode: "0600"
+#     owner: "{{ user }}"
+#     group: "{{ user }}"
+#     regexp: convert_in
+#     line: >
+#       /home/{{ user }}/scratch/convert_in IN_CLOSE_WRITE flock /tmp/enc --command "/usr/bin/ffmpeg -i $@/$# -c:v dnxhd -profile:v dnxhr_hq -pix_fmt yuv422p -c:a
+#       pcm_s16le -f mov /home/{{ user }}/scratch/convert_out/$# && trash-put $@/$#"

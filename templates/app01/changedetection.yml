@@ -34,7 +34,7 @@ services:
       traefik.http.routers.change.entrypoints: https
       traefik.http.routers.change.tls.certresolver: default
       traefik.http.services.change.loadbalancer.server.port: 5000
-      traefik.http.routers.change.middlewares: traefik-forward-auth
+      traefik.http.routers.change.middlewares: authelia
 
   #      - 
   #

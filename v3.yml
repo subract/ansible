@@ -121,6 +121,12 @@
   gather_facts: false
   ignore_unreachable: true
   roles:
+    - arch_workstation
+    - arch_laptop
+    - arch_secureboot
+    - dotfiles_clone
+    - role: artis3n.tailscale
+      tags: tailscale
 
 - name: Host-specific tasks
   hosts: v3

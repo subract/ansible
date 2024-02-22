@@ -41,7 +41,7 @@ services:
 
   authelia:
     container_name: authelia
-    image: docker.io/authelia/authelia:latest
+    image: ghcr.io/authelia/authelia:master
     restart: unless-stopped
 
     depends_on:
@@ -65,6 +65,11 @@ services:
       - {{ app_root }}/authelia/config:/config
       - {{ app_root }}/authelia/secrets:/secrets
 
+    healthcheck:
+      interval: 4s
+      start_period: 30s
+
+
     labels:
       traefik.enable: true
       traefik.docker.network: doc_web
@@ -75,9 +80,9 @@ services:
       traefik.http.middlewares.authelia.forwardAuth.address: http://authelia:9091/api/verify?rd=https%3A%2F%2Fauth.{{ tertiary_domain }}%2F
       traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader: true
       traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders: Remote-User,Remote-Groups,Remote-Name,Remote-Email
-      traefik.http.middlewares.authelia-basic.forwardAuth.address: http://authelia:9091/api/verify?auth=basic
-      traefik.http.middlewares.authelia-basic.forwardAuth.trustForwardHeader: true
-      traefik.http.middlewares.authelia-basic.forwardAuth.authResponseHeaders: Remote-User,Remote-Groups,Remote-Name,Remote-Email
+      # traefik.http.middlewares.authelia-basic.forwardAuth.address: http://authelia:9091/api/verify?auth=basic
+      # traefik.http.middlewares.authelia-basic.forwardAuth.trustForwardHeader: true
+      # traefik.http.middlewares.authelia-basic.forwardAuth.authResponseHeaders: Remote-User,Remote-Groups,Remote-Name,Remote-Email
 
 
   authelia_redis:

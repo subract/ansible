@@ -37,7 +37,7 @@
       - vim-ansible # ansible highlighting
       - virt-viewer # SPICE client
       - vlc # media player
-      - youtube-dl # youtube downloader
+      - yt-dlp # youtube downloader
 
       # System utilities
       - ansible # config manager
@@ -88,7 +88,6 @@
       - bluez-utils # includes cli management
       - breeze # dark theme
       - breeze-icons # icon theme
-      - ccid # smart card driver
       - dunst # notification daemon
       - ffmpegthumbnailer # video thumbnails
       - file-roller # archive support for thunar
@@ -104,7 +103,6 @@
       - pavucontrol # PulseAudio volume control
       - pipewire # modern sound
       - pipewire-pulse # replace PuleAudio
-      - python-httpx # for ansible managing OPNsense
       - trash-cli # trash from command line
       - ttf-fira-code # nice font
       - tumbler # thumbnails for thunar
@@ -132,8 +130,9 @@
       - git-secrets # dirty word monitoring
       - i3lock-color # stylable lockscreen
       - i3lock-fancy-rapid-git # nice blurry lockscreens, fast
+      - imhex # binary file analyzer
       - magic-wormhole # file transfer
-      - multimc5 # Minecraft launcher
+      # - multimc5 # Minecraft launcher
       - protonmail-bridge # allows local use of ProtonMail
       - protonvpn # ProtonVPN CLI and GUI
       - spotify # music

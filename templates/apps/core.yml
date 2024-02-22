@@ -102,26 +102,26 @@ services:
   #     - traefik.http.services.cc.loadbalancer.server.port=8000
 
 
-  tailscale_dns:
-    container_name: tailscale_dns
-    image: ghcr.io/giodamelio/tailscale-custom-domain-dns:0.6.4
-    restart: unless-stopped
+  # tailscale_dns:
+  #   container_name: tailscale_dns
+  #   image: ghcr.io/giodamelio/tailscale-custom-domain-dns:0.6.4
+  #   restart: unless-stopped
 
-    env_file:
-      - tailscale_dns.env
+  #   env_file:
+  #     - tailscale_dns.env
 
-    networks:
-      - web
+  #   networks:
+  #     - web
 
-    volumes:
-      - /ssd/app/tailscale_dns:/data
+  #   volumes:
+  #     - /ssd/app/tailscale_dns:/data
 
-    environment:
-      TSDNS_DOMAIN: "{{ tertiary_domain }}."
-      TSDNS_TAILSCALE_AUTHKEY: "{{ tailscale_authkey }}"
-      TSDNS_TAILSCALE_HOSTNAME: tsdns
-      # TSDNS_LOGLEVEL: debug
+  #   environment:
+  #     TSDNS_DOMAIN: "{{ tertiary_domain }}."
+  #     TSDNS_TAILSCALE_AUTHKEY: "{{ tailscale_authkey }}"
+  #     TSDNS_TAILSCALE_HOSTNAME: tsdns
+  #     # TSDNS_LOGLEVEL: debug
 
 
-    labels:
-      - traefik.enable=false
+  #   labels:
+  #     - traefik.enable=false
