@@ -5,19 +5,19 @@ networks:
   web:
 
 services:
-  immich-server:
+  immich_server:
     container_name: immich_server
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
     command: ["start-server.sh"]
     volumes:
       - ${IMMICH_DATA_LOCATION}:/usr/src/app/upload
-      - ${IMMICH_AVEN_UPLOAD_LOCATION}:/usr/src/app/upload/library/aven
+      - ${IMMICH_UPLOAD_LOCATION}:/usr/src/app/upload/library
       - ${IMMICH_IMPORT_LOCATION}:/mnt/aven:ro
     env_file:
       - immich.env
     depends_on:
-      - redis
-      - database
+      - immich_redis
+      - immich_postgres
     networks:
       immich:
       web:
@@ -25,44 +25,43 @@ services:
 
     labels:
       - traefik.enable=true
-      - traefik.http.routers.im.rule=Host(`im.{{ primary_domain }}`)
-      - traefik.http.routers.im.entrypoints=https
-      - traefik.http.routers.im.tls.certresolver=default
-      - traefik.http.services.im.loadbalancer.server.port=3001
+      - traefik.http.routers.pic.rule=Host(`pic.{{ tertiary_domain }}`)
+      - traefik.http.routers.pic.entrypoints=https
+      - traefik.http.routers.pic.tls.certresolver=default
+      - traefik.http.services.pic.loadbalancer.server.port=3001
 
-  immich-microservices:
+  immich_microservices:
     container_name: immich_microservices
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
     command: ["start-microservices.sh"]
     volumes:
       - ${IMMICH_DATA_LOCATION}:/usr/src/app/upload
-      - ${IMMICH_AVEN_UPLOAD_LOCATION}:/usr/src/app/upload/library/aven
+      - ${IMMICH_UPLOAD_LOCATION}:/usr/src/app/upload/library
       - ${IMMICH_IMPORT_LOCATION}:/mnt/aven:ro
     env_file:
       - immich.env
     depends_on:
-      - redis
-      - database
+      - immich_redis
+      - immich_postgres
     networks:
       immich:
     restart: unless-stopped
 
-
-  immich-machine-learning:
+  immich_machine_learning:
     container_name: immich_machine_learning
     image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
     volumes:
       - ${IMMICH_DATA_LOCATION}:/usr/src/app/upload
-      - ${IMMICH_AVEN_UPLOAD_LOCATION}:/usr/src/app/upload/library/aven
+      - ${IMMICH_UPLOAD_LOCATION}:/usr/src/app/upload/library
       - ${IMMICH_IMPORT_LOCATION}:/mnt/aven:ro
-      - /ssd/app/immich/ml_cache:/cache
+      - {{ app_root }}/immich/ml_cache:/cache
     env_file:
       - immich.env
     networks:
       immich:
     restart: unless-stopped
 
-  redis:
+  immich_redis:
     container_name: immich_redis
     image: redis:6.2
     restart: unless-stopped
@@ -70,9 +69,9 @@ services:
       immich:
 
 
-  database:
+  immich_postgres:
     container_name: immich_postgres
-    image: tensorchord/pgvecto-rs:pg14-v0.1.11
+    image: tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
 
     env_file:
       - immich.env
@@ -81,5 +80,5 @@ services:
     networks:
       immich:
     volumes:
-      - /ssd/app/immich/postgres:/var/lib/postgresql/data
+      - {{ app_root }}/immich/postgres:/var/lib/postgresql/data
     restart: unless-stopped

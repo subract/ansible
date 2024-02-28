@@ -5,25 +5,26 @@ Currently managing the following:
 - A Proxmox VE server providing VM hosting
 	- Using [ZFS](https://openzfs.org/wiki/Main_Page) and [automated snapshots](roles/syncoid_sanoid/tasks/main.yml) with Sanoid for [functional immortality](https://github.com/jimsalterjrs/sanoid)
 	- [Automated backups](roles/backblaze/tasks/main.yml) to Backblaze B2 for disaster recovery
-	- [Remotely decryptable](roles/remote_decrypt/tasks/main.yml) full-disk encryption
+	- ZFS-based full-disk encryption
 - A flotilla of applications deployed with Docker, split across a handful of VMs
-	- A primary application server [hosting the following](templates/apps)
+	- A primary application server [hosting the following](templates/app01)
 		- [Traefik](https://traefik.io/traefik/) - a reverse proxy managing access to all web services. 
 			- Providing SSL termination and automated certificates with [Let's Encrypt](https://letsencrypt.org/)
+		- [Authelia](https://www.authelia.com/) - an authentication and authorization server providing SSO
 		- [Nextcloud](https://nextcloud.com/) - file storage and synchronization
 		- [Immich](https://immich.app/) - Google Photos replacement for backups
 		- [Gitea](https://gitea.io/en-us/) - lightweight Git hosting
-		- [Drone](https://www.drone.io/) - continuous integration platform
+		- [Drone](https://www.drone.io/) - continuous integration platform handling deployments
 		- [Home Assistant](https://www.home-assistant.io/) - smart home management
 			- Supported by [Zigbee2MQTT](https://www.zigbee2mqtt.io) and [Mosquitto](https://mosquitto.org/)
-		- [Node-RED](https://nodered.org/) - smart home automation with visual scripting
 		- [CyberChef](https://github.com/gchq/CyberChef) - "Cyber Swiss Army Knife" - handy for random operations
-		- [OctoPrint](https://octoprint.org/) - 3D printer management
-	- A DMZ application server hosting [public services](templates/dmz-apps) to the Internet
+		- [Miniflux](https://miniflux.app/) - a minimalist RSS feed reader
+		- [Paperless-ngx](https://docs.paperless-ngx.com/) - a document management system to digitize documents
+		- [Changedetection.io](https://changedetection.io/) - monitor web pages for changes
+	- A cloud VPS hosting [public services](templates/web01) to the Internet
 		- [Minecraft servers](https://github.com/itzg/docker-minecraft-server) - a few different worlds for friends and family
-		- [Factorio server](https://github.com/factoriotools/factorio-docker) - the definitive automation game
-		- [Keycloak](https://www.keycloak.org/) - identity and access management, providing single sign-on services
-		- [HedgeDoc](https://hedgedoc.org/) - collaborative Markdown editor
+		- [Peertube](https://joinpeertube.org/en_US) - a YouTube alternative platform that supports ActivityPub federation
+		- A personal blog
 - A couple of Arch workstations
 	- Managing [packages](roles/arch_workstation/tasks/packages.yaml), services, and [sundry other configuration](roles/arch_workstation/tasks/main.yml)
 	- Using [secure boot](roles/arch_secureboot/tasks/main.yml) for boot integrity with full-disk encryption
