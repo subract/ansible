@@ -2,14 +2,34 @@ version: "3.7"
 
 networks:
   web:
+  docker-socket:
 
 services:
+  docker-socket-proxy:
+    container_name: docker-socket-proxy
+    image: ghcr.io/tecnativa/docker-socket-proxy:0.1.1
+    restart: unless-stopped
+
+    environment:
+      CONTAINERS: 1
+      NETWORKS: 1
+      SERVICES: 1
+      TASKS: 1
+      POST: 0 # default, prevents writes
+
+    networks:
+      - docker-socket
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
   traefik:
     container_name: traefik
     image: traefik:latest
-    command: --providers.docker
-
     restart: unless-stopped
+
+    depends_on:
+      - docker-socket-proxy
 
     ports:
       - 80:80
@@ -20,9 +40,9 @@ services:
 
     networks:
       - web
+      - docker-socket
 
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
       - {{ app_root }}/traefik_neo/traefik.yml:/traefik.yml
       - {{ app_root }}/traefik_neo/dynamic_conf.yml:/dynamic_conf.yml
       - {{ app_root }}/traefik_neo/acme.json:/acme.json
