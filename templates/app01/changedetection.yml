@@ -26,7 +26,7 @@ services:
         condition: service_started
 
     volumes:
-      - {{ app_root }}/changedetction:/datastore
+      - {{ app_root }}/changedetection:/datastore
 
     labels:
       traefik.enable: true
@@ -35,6 +35,11 @@ services:
       traefik.http.routers.change.tls.certresolver: default
       traefik.http.services.change.loadbalancer.server.port: 5000
       traefik.http.routers.change.middlewares: authelia
+      homepage.group: Apps
+      homepage.name: Change detection
+      homepage.icon: changedetection-io.png
+      homepage.href: https://change.{{ tertiary_domain }}/
+      homepage.description: Change monitoring
 
   playwright-chrome:
     container_name: playwright-chrome

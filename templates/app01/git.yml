@@ -37,6 +37,11 @@ services:
       traefik.http.routers.git.tls.certresolver: default
       traefik.http.services.git.loadbalancer.server.port: 80
       traefik.http.routers.git.middlewares: authelia
+      homepage.group: Apps
+      homepage.name: Gitea
+      homepage.icon: gitea.png
+      homepage.href: https://git.{{ tertiary_domain }}/
+      homepage.description: Git hosting
 
 
 
@@ -66,6 +71,11 @@ services:
       traefik.http.routers.drone.tls.certresolver: default
       traefik.http.services.drone.loadbalancer.server.port: 80
       traefik.http.routers.drone.middlewares: authelia
+      homepage.group: Apps
+      homepage.name: Drone
+      homepage.icon: drone.png
+      homepage.href: https://drone.{{ tertiary_domain }}/
+      homepage.description: CI/CD
 
 
   runner:

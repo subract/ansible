@@ -25,12 +25,17 @@ services:
       - db
 
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.file.rule=Host(`file.{{ tertiary_domain }}`)
-      - traefik.http.routers.file.entrypoints=https
-      - traefik.http.routers.file.tls.certresolver=default
-      - traefik.serversTransport.forwardingTimeouts.dialTimeout=0s
-      - traefik.http.services.file.loadbalancer.server.port=80
+      traefik.enable: true
+      traefik.http.routers.file.rule: Host(`file.{{ tertiary_domain }}`)
+      traefik.http.routers.file.entrypoints: https
+      traefik.http.routers.file.tls.certresolver: default
+      traefik.serversTransport.forwardingTimeouts.dialTimeout: 0s
+      traefik.http.services.file.loadbalancer.server.port: 80
+      homepage.group: Apps
+      homepage.name: Nextcloud
+      homepage.icon: nextcloud.png
+      homepage.href: https://file.{{ tertiary_domain }}/
+      homepage.description: File sync
 
 
   nextcloud_mariadb:

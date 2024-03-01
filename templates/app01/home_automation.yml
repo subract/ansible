@@ -33,6 +33,11 @@ services:
       traefik.http.routers.home.tls.certresolver: default
       traefik.http.services.home.loadbalancer.server.port: 8123
       traefik.http.routers.home.middlewares: authelia
+      homepage.group: Apps
+      homepage.name: Home Assistant
+      homepage.icon: home-assistant.png
+      homepage.href: https://home.{{ tertiary_domain }}/
+      homepage.description: Home automation
 
   mosquitto:
     container_name: mosquitto
@@ -75,3 +80,8 @@ services:
       traefik.http.routers.zigbee.tls.certresolver: default
       traefik.http.services.zigbee.loadbalancer.server.port: 8080
       traefik.http.routers.zigbee.middlewares: authelia
+      homepage.group: Apps
+      homepage.name: Zigbee2MQTT
+      homepage.icon: zigbee2mqtt.png
+      homepage.href: https://zigbee.{{ tertiary_domain }}/
+      homepage.description: Mesh networking
