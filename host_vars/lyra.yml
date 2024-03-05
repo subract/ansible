@@ -8,11 +8,17 @@ pve_group: pve01
 pve_groups:
   - name: ops
     comment: Operations Team
+  - name: api-ro
+    comment: Read-only API access for stats
 
 pve_users:
   - name: aven@pam
-    email: aven@localhost
+    email: aven@{{ tertiary_domain }}
     groups: [ops]
+  - name: homepage@pam
+    email: homepage@localhost
+    groups: [api-ro]
+
 #   - name: terraform-prov@pve
 #     email: terraform-prov@localhost
 #     password: !vault |
@@ -48,10 +54,13 @@ pve_users:
 #       - Sys.Console
 #       - SDN.Use
 
-# pve_acls:
-#   - path: /
-#     roles: [Administrator]
-#     groups: [ops]
+pve_acls:
+  - path: /
+    roles: [Administrator]
+    groups: [ops]
+  - path: /
+    roles: [PVEAuditor]
+    group: [api-ro]
 #   - path: /
 #     roles: [Terraformer]
 #     users: terraform-prov@pve

@@ -47,10 +47,15 @@ services:
       traefik.http.services.paper.loadbalancer.server.port: 8000
       traefik.http.routers.paper.middlewares: authelia
       homepage.group: Apps
-      homepage.name: Paperless
+      homepage.name: Document management
       homepage.icon: paperless-ngx.png
       homepage.href: https://paper.{{ tertiary_domain }}/
-      homepage.description: Document management
+      homepage.weight: 15
+      homepage.description: Paperless
+      homepage.siteMonitor: http://paperless:8000
+      homepage.widget.type: paperlessngx
+      homepage.widget.url: https://paper.{{ tertiary_domain }}
+      homepage.widget.key: ${PAPERLESS_API_KEY}
 
 
   paperless_redis:

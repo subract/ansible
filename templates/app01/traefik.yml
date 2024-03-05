@@ -59,7 +59,13 @@ services:
       # Below will cause Traefik to request a wildcard cert
       traefik.http.routers.api.tls.domains[0].main: "*.{{ tertiary_domain }}"
       homepage.group: Admin
-      homepage.name: Traefik
+      homepage.name: Reverse proxy
       homepage.icon: traefik.png
       homepage.href: https://proxy.{{ tertiary_domain }}/
-      homepage.description: Reverse proxy
+      homepage.description: Traefik
+      homepage.siteMonitor: https://proxy.{{ tertiary_domain }}
+      homepage.widget.type: traefik
+      homepage.widget.url: https://proxy.{{ tertiary_domain }}
+      homepage.widget.username: aven 
+      homepage.widget.password: ${TRAEFIK_PASSWORD}
+      homepage.weight: 25

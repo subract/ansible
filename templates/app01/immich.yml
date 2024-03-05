@@ -30,10 +30,16 @@ services:
       traefik.http.routers.pic.tls.certresolver: default
       traefik.http.services.pic.loadbalancer.server.port: 3001
       homepage.group: Apps
-      homepage.name: Immich
+      homepage.name: Photo management
       homepage.icon: immich.png
       homepage.href: https://pic.{{ tertiary_domain }}/
-      homepage.description: Photo backups
+      homepage.weight: 10
+      homepage.description: Immich
+      homepage.siteMonitor: http://immich_server:3001
+      homepage.widget.type: immich
+      homepage.widget.url: http://immich_server:3001
+      homepage.widget.key: ${IMMICH_API_KEY}
+      homepage.widget.fields: '["photos", "videos"]'
 
   immich_microservices:
     container_name: immich_microservices

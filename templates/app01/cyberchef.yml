@@ -23,7 +23,9 @@ services:
       traefik.http.routers.chef.tls.certresolver: default
       traefik.http.services.chef.loadbalancer.server.port: 8000
       homepage.group: Apps
-      homepage.name: CyberChef
+      homepage.name: Swiss army knife
       homepage.icon: cyberchef.png
       homepage.href: https://chef.{{ tertiary_domain }}/
-      homepage.description: Swiss army knife
+      homepage.description: CyberChef
+      homepage.siteMonitor: http://cyberchef:8000
+      homepage.weight: 60

@@ -36,10 +36,15 @@ services:
       traefik.http.services.change.loadbalancer.server.port: 5000
       traefik.http.routers.change.middlewares: authelia
       homepage.group: Apps
-      homepage.name: Change detection
+      homepage.name: Change monitoring
       homepage.icon: changedetection-io.png
       homepage.href: https://change.{{ tertiary_domain }}/
-      homepage.description: Change monitoring
+      homepage.description: Changedetection.io
+      homepage.siteMonitor: http://changedetection:5000
+      homepage.weight: 40
+      homepage.widget.type: changedetectionio
+      homepage.widget.url: http://changedetection:5000
+      homepage.widget.key: ${CHANGEDETECTION_API_KEY}
 
   playwright-chrome:
     container_name: playwright-chrome

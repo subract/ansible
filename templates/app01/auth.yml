@@ -38,10 +38,12 @@ services:
       traefik.http.routers.ldap.tls.certresolver: default
       traefik.http.services.ldap.loadbalancer.server.port: 17170
       homepage.group: Admin
-      homepage.name: lldap
+      homepage.name: User management
       homepage.icon: mdi-account-supervisor
       homepage.href: https://ldap.{{ tertiary_domain }}/
-      homepage.description: User management
+      homepage.description: lldap
+      homepage.siteMonitor: http://lldap:17170
+      homepage.weight: 20
 
 
   authelia:
@@ -89,10 +91,12 @@ services:
       # traefik.http.middlewares.authelia-basic.forwardAuth.trustForwardHeader: true
       # traefik.http.middlewares.authelia-basic.forwardAuth.authResponseHeaders: Remote-User,Remote-Groups,Remote-Name,Remote-Email
       homepage.group: Admin
-      homepage.name: Authelia
+      homepage.name: Authentication
       homepage.icon: authelia.png
       homepage.href: https://auth.{{ tertiary_domain }}/
-      homepage.description: Auth services
+      homepage.description: Authelia
+      homepage.siteMonitor: http://authelia:9091
+      homepage.weight: 15
 
 
   authelia_redis:
@@ -102,6 +106,9 @@ services:
 
     networks:
       redis:
+
+    volumes:
+      - {{ app_root }}/authelia/redis:/data
 
     environment:
       TZ: {{ timezone }}

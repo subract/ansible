@@ -32,10 +32,16 @@ services:
       traefik.serversTransport.forwardingTimeouts.dialTimeout: 0s
       traefik.http.services.file.loadbalancer.server.port: 80
       homepage.group: Apps
-      homepage.name: Nextcloud
+      homepage.name: File sync
       homepage.icon: nextcloud.png
       homepage.href: https://file.{{ tertiary_domain }}/
-      homepage.description: File sync
+      homepage.weight: 20
+      homepage.description: Nextcloud
+      homepage.siteMonitor: http://nextcloud
+      homepage.widget.type: nextcloud
+      homepage.widget.fields: '["freespace", "numfiles"]'
+      homepage.widget.url: https://file.{{ tertiary_domain }}
+      homepage.widget.key: ${NEXTCLOUD_API_KEY}
 
 
   nextcloud_mariadb:

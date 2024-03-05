@@ -34,10 +34,16 @@ services:
       traefik.http.services.home.loadbalancer.server.port: 8123
       traefik.http.routers.home.middlewares: authelia
       homepage.group: Apps
-      homepage.name: Home Assistant
+      homepage.name: Home automation
       homepage.icon: home-assistant.png
       homepage.href: https://home.{{ tertiary_domain }}/
-      homepage.description: Home automation
+      homepage.weight: 5
+      homepage.description: Home Assistant
+      homepage.siteMonitor: http://home_assistant:8123
+      homepage.widget.type: homeassistant
+      homepage.widget.fields: '["lights_on"]'
+      homepage.widget.url: http://home_assistant:8123
+      homepage.widget.key: ${HOMEASSISTANT_API_KEY}
 
   mosquitto:
     container_name: mosquitto
@@ -81,7 +87,9 @@ services:
       traefik.http.services.zigbee.loadbalancer.server.port: 8080
       traefik.http.routers.zigbee.middlewares: authelia
       homepage.group: Apps
-      homepage.name: Zigbee2MQTT
+      homepage.name: Mesh networking
       homepage.icon: zigbee2mqtt.png
       homepage.href: https://zigbee.{{ tertiary_domain }}/
-      homepage.description: Mesh networking
+      homepage.description: Zigbee2MQTT
+      homepage.siteMonitor: http://zigbee2mqtt:8080
+      homepage.weight: 65

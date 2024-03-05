@@ -38,11 +38,12 @@ services:
       traefik.http.services.git.loadbalancer.server.port: 80
       traefik.http.routers.git.middlewares: authelia
       homepage.group: Apps
-      homepage.name: Gitea
+      homepage.name: Git hosting
       homepage.icon: gitea.png
       homepage.href: https://git.{{ tertiary_domain }}/
-      homepage.description: Git hosting
-
+      homepage.description: Gitea
+      homepage.siteMonitor: http://gitea
+      homepage.weight: 50
 
 
   drone:
@@ -72,10 +73,12 @@ services:
       traefik.http.services.drone.loadbalancer.server.port: 80
       traefik.http.routers.drone.middlewares: authelia
       homepage.group: Apps
-      homepage.name: Drone
+      homepage.name: CI/CD
       homepage.icon: drone.png
       homepage.href: https://drone.{{ tertiary_domain }}/
-      homepage.description: CI/CD
+      homepage.description: Drone
+      homepage.siteMonitor: http://drone
+      homepage.weight: 55
 
 
   runner:
