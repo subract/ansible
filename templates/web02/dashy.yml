@@ -29,7 +29,7 @@ services:
 
   dashy:
     container_name: dashy
-    image: ghcr.io/lissy93/dashy
+    image: ghcr.io/lissy93/dashy:2.1.2
     restart: unless-stopped
 
     networks:
@@ -57,7 +57,7 @@ services:
 
   dashy-keycloak:
     container_name: dashy-keycloak
-    image: ghcr.io/lissy93/dashy
+    image: ghcr.io/lissy93/dashy:2.1.2
     restart: unless-stopped
 
     networks:

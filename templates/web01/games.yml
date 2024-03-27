@@ -26,7 +26,7 @@ services:
       PVP: false
       DIFFICULTY: normal
       SERVER_NAME: Keelhaul Cay
-      MEMORY: 2G
+      MEMORY: 1G
       MOTD: Keelhaul Cay
       TYPE: FORGE
       VERSION: 1.20.4
