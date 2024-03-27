@@ -97,4 +97,4 @@ services:
       DRONE_RUNNER_NAME: roger-bannister
 
     volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock
