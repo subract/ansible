@@ -2,16 +2,18 @@
 - name: Set docker env vars/shortcuts
   tags: docker, config
   blockinfile:
-    path: /home/{{ user }}/.zshenv
+    path: /etc/zsh/zshrc.local
     create: true
-    mode: "0600"
-    owner: "{{ user }}"
-    group: "{{ user }}"
+    mode: "0644"
+    owner: root
+    group: root
     block: |
       alias dc='docker-compose $(find /opt/doc/*.yml | sed -e "s/^/-f /")'
       alias dcls="docker container ls"
+      alias dcps="docker container ps"
       alias dcl="docker logs"
       alias dclf="docker logs --follow"
+      alias dcsh='f() { docker exec -it "$1" bash || docker exec -it "$1" sh; }; f'
 
 - name: Create compose directory
   tags: docker, compose
