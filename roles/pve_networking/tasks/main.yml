@@ -11,10 +11,11 @@
     mode: "0644"
   notify: Reload network interfaces
 
-- name: Configure /etc/resolv.conf
-  tags: config, net
-  template:
-    src: "{{ inventory_hostname }}/pve_networking/resolv.conf.j2"
-    dest: /etc/resolv.conf
-    mode: "0644"
-  notify: Reload network interfaces
+# Conflicts with Tailscale
+# - name: Configure /etc/resolv.conf
+#   tags: config, net
+#   template:
+#     src: "{{ inventory_hostname }}/pve_networking/resolv.conf.j2"
+#     dest: /etc/resolv.conf
+#     mode: "0644"
+#   notify: Reload network interfaces

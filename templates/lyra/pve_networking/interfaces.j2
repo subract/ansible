@@ -14,16 +14,12 @@ iface vmbr0 inet static
     bridge_ports enp2s0f0
     bridge_stp off
     bridge_fd 0
-
-# Managemnt VLAN interface for Proxmox itself
-auto vmbr0.2
-iface vmbr0.2 inet static
-    address {{ mgmt_ip }}/24
-    gateway 10.0.2.1
+    address 192.168.0.252/24
+	gateway 192.168.0.1
 
 ##################
 
-# 2.5Gb NIC 
+# 2.5Gb NIC
 allow-hotplug enp1s0
 auto enp1s0
 iface enp1s0 inet manual
@@ -37,3 +33,10 @@ iface vmbr1 inet static
     bridge-vlan-aware yes
     # Don't allow VMs to talk to the VLAN 2 (Management)
     bridge-vids 3-4094
+    address 10.69.0.5/24
+    post-up ip route add 10.69.0.0/16 via 10.69.0.1 dev vmbr1
+
+# Managemnt VLAN interface for Proxmox itself
+auto vmbr1.2
+iface vmbr1.2 inet static
+    address {{ mgmt_ip }}/24
