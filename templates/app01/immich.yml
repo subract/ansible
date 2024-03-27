@@ -65,7 +65,7 @@ services:
       - ${IMMICH_DATA_LOCATION}:/usr/src/app/upload
       - ${IMMICH_UPLOAD_LOCATION}:/usr/src/app/upload/library
       - ${IMMICH_IMPORT_LOCATION}:/mnt/aven:ro
-      - {{ app_root }}/immich/ml_cache:/cache
+      - "{{ app_root }}/immich/ml_cache:/cache"
     env_file:
       - immich.env
     networks:
@@ -91,5 +91,5 @@ services:
     networks:
       immich:
     volumes:
-      - {{ app_root }}/immich/postgres:/var/lib/postgresql/data
+      - "{{ app_root }}/immich/postgres:/var/lib/postgresql/data"
     restart: unless-stopped

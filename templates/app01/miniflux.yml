@@ -62,7 +62,7 @@ services:
       POSTGRES_DB: miniflux
 
     volumes:
-      - {{ app_root }}/miniflux_db:/var/lib/postgresql/data
+      - "{{ app_root }}/miniflux_db:/var/lib/postgresql/data"
 
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "miniflux"]

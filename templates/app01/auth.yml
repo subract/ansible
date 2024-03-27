@@ -29,7 +29,7 @@ services:
       # - LLDAP_DATABASE_URL=postgres://postgres-user:password@postgres-server/my-database
 
     volumes:
-      - {{ app_root }}/lldap:/data
+      - "{{ app_root }}/lldap:/data"
 
     labels:
       traefik.enable: true
@@ -69,8 +69,8 @@ services:
       AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET_FILE: /secrets/oidc_hmac_secret
 
     volumes:
-      - {{ app_root }}/authelia/config:/config
-      - {{ app_root }}/authelia/secrets:/secrets
+      - "{{ app_root }}/authelia/config:/config"
+      - "{{ app_root }}/authelia/secrets:/secrets"
 
     healthcheck:
       interval: 4s
@@ -108,7 +108,6 @@ services:
       redis:
 
     volumes:
-      - {{ app_root }}/authelia/redis:/data
-
+      - "{{ app_root }}/authelia/redis:/data"
     environment:
       TZ: {{ timezone }}

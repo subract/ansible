@@ -34,8 +34,8 @@ services:
       PAPERLESS_DATE_ORDER: MYD
 
     volumes:
-      - {{ app_root}}/paperless/data:/usr/src/paperless/data
-      - {{ app_root}}/paperless/media:/usr/src/paperless/media
+      - "{{ app_root}}/paperless/data:/usr/src/paperless/data"
+      - "{{ app_root}}/paperless/media:/usr/src/paperless/media"
       # - ./export:/usr/src/paperless/export
       # - ./consume:/usr/src/paperless/consume
 

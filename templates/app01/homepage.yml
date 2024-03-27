@@ -18,8 +18,8 @@ services:
       LOG_LEVEL: debug
 
     volumes:
-      - {{ app_root }}/homepage/config:/app/config
-      - {{ app_root }}/homepage/icons:/app/public/icons
+      - "{{ app_root }}/homepage/config:/app/config"
+      - "{{ app_root }}/homepage/icons:/app/public/icons"
 
     healthcheck:
       interval: 4s

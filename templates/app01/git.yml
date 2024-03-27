@@ -23,7 +23,7 @@ services:
       GITEA__WEBHOOK__ALLOWED_HOST_LIST: "*.{{ tertiary_domain }}"
 
     volumes:
-      - {{ app_root }}/gitea:/data
+      - "{{ app_root }}/gitea:/data"
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
 
@@ -63,7 +63,7 @@ services:
       DRONE_DATADOG_ENABLED: false
 
     volumes:
-      - {{ app_root }}/drone:/data
+      - "{{ app_root }}/drone:/data"
 
     labels:
       traefik.enable: true

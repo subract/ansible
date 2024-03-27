@@ -43,9 +43,9 @@ services:
       - docker-socket
 
     volumes:
-      - {{ app_root }}/traefik_neo/traefik.yml:/traefik.yml
-      - {{ app_root }}/traefik_neo/dynamic_conf.yml:/dynamic_conf.yml
-      - {{ app_root }}/traefik_neo/acme.json:/acme.json
+      - "{{ app_root }}/traefik/traefik.yml:/traefik.yml"
+      - "{{ app_root }}/traefik/dynamic_conf.yml:/dynamic_conf.yml"
+      - "{{ app_root }}/traefik/acme.json:/acme.json"
       - /etc/localtime:/etc/localtime:ro
 
     labels:

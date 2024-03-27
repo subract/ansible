@@ -13,8 +13,8 @@ services:
       - nextcloud_mariadb
 
     volumes:
-      - {{ app_root }}/nextcloud/config:/config
-      - {{ app_root }}/nextcloud/data:/data
+      - "{{ app_root }}/nextcloud/config:/config"
+      - "{{ app_root }}/nextcloud/data:/data"
 
     environment:
       - PUID=1001
@@ -52,7 +52,7 @@ services:
       - nextcloud.env
 
     volumes:
-      - {{ app_root }}/nextcloud_mariadb/data:/var/lib/mysql
+      - "{{ app_root }}/nextcloud_mariadb/data:/var/lib/mysql"
 
     networks:
       - db
