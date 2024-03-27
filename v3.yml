@@ -106,6 +106,14 @@
     - nfs_client
 
 - name: Roles
+  hosts: web01
+  become: true
+  gather_facts: false
+  ignore_unreachable: true
+  roles:
+    - backblaze
+
+- name: Roles
   hosts: offsite01
   become: true
   gather_facts: false

@@ -42,4 +42,4 @@
     name: Back up to Backblaze
     minute: "15"
     hour: "3"
-    job: /usr/local/sbin/backblaze-backup
+    job: /usr/local/sbin/backblaze-backup 2>&1 | logger -t backblaze-backup
