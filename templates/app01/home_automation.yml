@@ -75,7 +75,7 @@ services:
       homepage.href: https://auto.{{ tertiary_domain }}/
       homepage.weight: 64
       homepage.description: Node-RED
-      homepage.siteMonitor: http://node-red:1880
+      homepage.siteMonitor: http://node_red:1880
 
   mosquitto:
     container_name: mosquitto
