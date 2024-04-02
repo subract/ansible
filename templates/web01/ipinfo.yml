@@ -1,0 +1,20 @@
+version: "3.8"
+
+networks:
+  web:
+
+services:
+  ipinfo:
+    container_name: ipinfo
+    image: peterdavehello/ipinfo.tw:latest
+    restart: unless-stopped
+
+    networks:
+      web:
+
+    labels:
+      traefik.enable: true
+      traefik.http.routers.ipinfo.rule: Host(`ip.{{ tertiary_domain }}`)
+      traefik.http.routers.ipinfo.entrypoints: https
+      traefik.http.routers.ipinfo.tls.certresolver: default
+      traefik.http.services.ipinfo.loadbalancer.server.port: 8080
