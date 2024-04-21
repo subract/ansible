@@ -17,26 +17,23 @@
 - name: Configure sanoid
   tags: config, sanoid
   copy:
-    src: sanoid.conf
+    src: "{{ inventory_hostname }}/sanoid.conf"
     dest: /etc/sanoid/sanoid.conf
     mode: "0644"
+  notify: Restart sanoid
 
-- name: Add ssd replication cron job
+- name: Add nvme replication cron job
   tags: config, syncoid
   ansible.builtin.cron:
-    name: Sync ssd/app to hdd/enc/backup
+    name: Sync nvme/enc to hdd/enc
     minute: "2"
     hour: "2"
-    job: /usr/sbin/syncoid -r --skip-parent --no-sync-snap ssd/app hdd/enc/backup/app
+    # No -f - obsolete datasets will need to be deleted on hdd manually,
+    # but I can't accidentally delete a dataset and lose it in both places.
+    job: /usr/sbin/syncoid -r --skip-parent --no-sync-snap nvme/enc hdd/enc
 
-- name: Add ssd replication cron job
-  tags: config, syncoid
-  ansible.builtin.cron:
-    name: Sync ssd/dmz to hdd/enc/backup
-    minute: "2"
-    hour: "2"
-    job: /usr/sbin/syncoid -r --skip-parent --no-sync-snap ssd/dmz hdd/enc/backup/dmz
-
+# Disabled while I'm living that metered connections lyfe :(
+#
 # - name: Add remote backup cron job
 #   tags: config, syncoid
 #   ansible.builtin.cron:
