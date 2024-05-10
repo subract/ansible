@@ -1,5 +1,5 @@
 # Backblaze config
-backblaze_include_dirs: /opt/directus /opt/ghost /opt/nginx /opt/traefik /opt/peertube
+backblaze_include_dirs: /opt
 
 # Healthchecks.io monitor ID for Backblaze backup task
 backblaze_healthcheck_id: !vault |-
