@@ -51,6 +51,7 @@
   roles:
     - pve_networking
     - geerlingguy.ntp
+    - syncoid_sanoid
     - role: lae.proxmox
       tags: proxmox
       vars:
