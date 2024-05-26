@@ -6,7 +6,6 @@
       # User apps
       - blender # 3D modeling
       - code # de-Microsofted VS Code fork
-      - digikam # photo manager
       - discord # social client
       - evince # pdf viewer
       - firefox # web browser
@@ -131,9 +130,10 @@
       - i3lock-color # stylable lockscreen
       - i3lock-fancy-rapid-git # nice blurry lockscreens, fast
       - imhex # binary file analyzer
+      - localsend-bin # cross-platform airdrop
       - magic-wormhole # file transfer
       # - multimc5 # Minecraft launcher
-      - protonmail-bridge # allows local use of ProtonMail
+      - protonmail-bridge-bin # allows local use of ProtonMail
       - protonvpn # ProtonVPN CLI and GUI
       - spotify # music
       - tenacity # music, but homemade
