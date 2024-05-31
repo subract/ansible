@@ -7,7 +7,7 @@ networks:
 services:
   peertube:
     container_name: peertube
-    image: chocobozzz/peertube:production-bullseye
+    image: chocobozzz/peertube:production-bookworm
     restart: unless-stopped
     env_file:
       - peertube.env
