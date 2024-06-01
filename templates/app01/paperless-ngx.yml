@@ -27,11 +27,13 @@ services:
       PAPERLESS_TIKA_ENDPOINT: http://paperless_tika:9998
       PAPERLESS_URL: https://paper.{{ tertiary_domain }}
       PAPERLESS_TIME_ZONE: {{ timezone }}
-      PAPERLESS_OCR_USER_ARGS: '{"continue_on_soft_render_error": true}'
+      # Continue and invalidate digital signatures - Paperless keeps originals as well
+      PAPERLESS_OCR_USER_ARGS: '{"continue_on_soft_render_error": true,"invalidate_digital_signatures": true}'
       PAPERLESS_TASK_WORKERS: 2
       PAPERLESS_THREADS_PER_WORKER: 4
       PAPERLESS_FILENAME_DATE_ORDER: YMD
       PAPERLESS_DATE_ORDER: MYD
+
 
     volumes:
       - "{{ app_root}}/paperless/data:/usr/src/paperless/data"
