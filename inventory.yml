@@ -27,7 +27,7 @@ all:
         ixion:
     hypervisors:
       hosts:
-        draco:
+        cepheus:
         lyra:
     v3:
       hosts:
@@ -40,6 +40,7 @@ all:
         offsite01:
         web02:
         ixion:
+        cepheus:
   vars:
     ansible_python_interpreter: auto_silent
     ansible_user: ansible

@@ -67,6 +67,29 @@
         tailscale_args: --advertise-tags=tag:nfs-server
 
 - name: Roles
+  hosts: cepheus
+  become: true
+  gather_facts: false
+  ignore_unreachable: false
+  roles:
+    # - pve_networking
+    - geerlingguy.ntp
+    # - syncoid_sanoid
+    - role: lae.proxmox
+      tags: proxmox
+      vars:
+        pve_reboot_on_kernel_update: false
+        pve_zfs_enabled: true
+        pve_zfs_options: |-
+          options zfs zfs_arc_max=8589934592
+          options zfs zfs_arc_min=2147483648
+        pve_zfs_zed_email: aven@{{ tertiary_domain }}
+    - role: artis3n.tailscale
+      tags: tailscale
+      vars:
+        tailscale_args: --advertise-tags=tag:nfs-server
+
+- name: Roles
   hosts: hypervisors
   become: true
   gather_facts: false
