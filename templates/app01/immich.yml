@@ -8,7 +8,6 @@ services:
   immich_server:
     container_name: immich_server
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
-    command: ["start-server.sh"]
     volumes:
       - ${IMMICH_DATA_LOCATION}:/usr/src/app/upload
       - ${IMMICH_UPLOAD_LOCATION}:/usr/src/app/upload/library
@@ -40,23 +39,6 @@ services:
       homepage.widget.url: http://immich_server:3001
       homepage.widget.key: ${IMMICH_API_KEY}
       homepage.widget.fields: '["photos", "videos"]'
-
-  immich_microservices:
-    container_name: immich_microservices
-    image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
-    command: ["start-microservices.sh"]
-    volumes:
-      - ${IMMICH_DATA_LOCATION}:/usr/src/app/upload
-      - ${IMMICH_UPLOAD_LOCATION}:/usr/src/app/upload/library
-      - ${IMMICH_IMPORT_LOCATION}:/mnt/aven:ro
-    env_file:
-      - immich.env
-    depends_on:
-      - immich_redis
-      - immich_postgres
-    networks:
-      immich:
-    restart: unless-stopped
 
   immich_machine_learning:
     container_name: immich_machine_learning
