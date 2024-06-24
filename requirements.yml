@@ -7,6 +7,7 @@ roles:
   - name: lae.proxmox
   - name: simoncaron.pve_addons
   - name: artis3n.tailscale
+  - name: konstruktoid.docker_rootless
 
 collections:
   - name: kewlfft.aur

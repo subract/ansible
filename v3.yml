@@ -72,24 +72,14 @@
   gather_facts: false
   ignore_unreachable: false
   roles:
-    # - pve_networking
     - geerlingguy.ntp
-    # - syncoid_sanoid
-    - role: lae.proxmox
-      tags: proxmox
-      vars:
-        pve_reboot_on_kernel_update: false
-        pve_zfs_enabled: true
-        pve_zfs_options: |-
-          options zfs zfs_arc_max=8589934592
-          options zfs zfs_arc_min=2147483648
-        pve_zfs_zed_email: aven@{{ tertiary_domain }}
+    - zigbee_udev
     - role: artis3n.tailscale
       tags: tailscale
       vars:
-        tailscale_args: --advertise-tags=tag:nfs-server
+        tailscale_args: --advertise-tags=tag:docker --snat-subnet-routes=false
 
-- name: Roles
+- name: Hypervisor roles
   hosts: hypervisors
   become: true
   gather_facts: false
@@ -98,7 +88,7 @@
     - simoncaron.pve_addons
     - apprise
 
-- name: Roles
+- name: VM roles
   hosts: vm
   become: true
   gather_facts: false
@@ -107,19 +97,31 @@
     - xterm_js
     - apprise
 
-- name: Roles
+- name: Docker roles
   hosts: docker
   become: true
   gather_facts: false
   ignore_unreachable: true
   roles:
-    - geerlingguy.docker
+    - role: geerlingguy.docker
+      vars:
+        docker_compose_version: "v2.27.2"
     - docker
     - dotfiles_copy
-    - role: artis3n.tailscale
-      tags: tailscale
+
+- name: Docker rootless
+  hosts: docker_rootless
+  become: true
+  gather_facts: false
+  ignore_unreachable: true
+  roles:
+    - dotfiles_copy
+    - role: konstruktoid.docker_rootless
       vars:
-        tailscale_args: --advertise-exit-node --advertise-tags=tag:docker
+        docker_compose: true
+        docker_allow_privileged_ports: true
+        docker_allow_ping: true
+    - docker
 
 - name: Roles
   hosts: nfs_clients

@@ -1,5 +1,3 @@
-version: "3.7"
-
 networks:
   web:
   ldap:
@@ -15,18 +13,11 @@ services:
       - web
       - ldap
 
-    env_file: keycloak.env
+    env_file: lldap.env
     environment:
-      # - UID=####
-      # - GID=####
+      UID: 4003
+      GID: 4003
       TZ: {{ timezone }}
-      # If using LDAPS, set enabled true and configure cert and key path
-      # - LLDAP_LDAPS_OPTIONS__ENABLED=true
-      # - LLDAP_LDAPS_OPTIONS__CERT_FILE=/path/to/certfile.crt
-      # - LLDAP_LDAPS_OPTIONS__KEY_FILE=/path/to/keyfile.key
-      # You can also set a different database:
-      # - LLDAP_DATABASE_URL=mysql://mysql-user:password@mysql-server/my-database
-      # - LLDAP_DATABASE_URL=postgres://postgres-user:password@postgres-server/my-database
 
     volumes:
       - "{{ app_root }}/lldap:/data"
@@ -49,6 +40,7 @@ services:
   authelia:
     container_name: authelia
     image: ghcr.io/authelia/authelia:master
+    user: 4003:4003
     restart: unless-stopped
 
     depends_on:
@@ -102,6 +94,7 @@ services:
   authelia_redis:
     container_name: authelia_redis
     image: redis:alpine
+    user: 4003:4003
     restart: unless-stopped
 
     networks:

@@ -1,0 +1,16 @@
+---
+- name: Ensure udev rule is configured for Zigbee stick
+  tags: config, udev, usb, zigbee
+  blockinfile:
+    dest: /etc/udev/rules.d/99-usb-serial.rules
+    # Allow user 4010, used for zigbee2mqtt
+    content: |
+      SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", SYMLINK+="zigbee_stick", MODE="0660", GROUP="4010"
+    create: true
+    mode: "0660"
+    owner: root
+    group: root
+  changed_when: true
+  notify:
+    - Reload udev rules
+    - Trigger udev rules

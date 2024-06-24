@@ -9,6 +9,7 @@ all:
         app01:
     docker:
       hosts:
+        cepheus:
         apps:
         dmz-apps:
         web01:
@@ -16,6 +17,7 @@ all:
         web02:
           ansible_host: "dashy-demo.{{ quaternary_domain }}"
         app01:
+    docker_rootless:
     nfs_clients:
       hosts:
         apps:
@@ -27,7 +29,6 @@ all:
         ixion:
     hypervisors:
       hosts:
-        cepheus:
         lyra:
     v3:
       hosts:
@@ -41,6 +42,7 @@ all:
         web02:
         ixion:
         cepheus:
+          app_root: /opt
   vars:
     ansible_python_interpreter: auto_silent
     ansible_user: ansible

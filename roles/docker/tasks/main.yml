@@ -64,7 +64,7 @@
     owner: root
     group: docker
   with_fileglob:
-    - ../templates/{{ inventory_hostname }}/*.yml
+    - ../templates/{{ inventory_hostname }}/compose/*.yml
 
 - name: Copy .env files
   tags: docker, compose, env

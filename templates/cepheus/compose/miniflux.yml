@@ -1,5 +1,3 @@
-version: "3.7"
-
 networks:
   web:
   db:
@@ -8,6 +6,7 @@ services:
   miniflux:
     container_name: miniflux
     image: miniflux/miniflux:latest
+    user: 4006:4006
     restart: unless-stopped
 
     depends_on:
@@ -51,6 +50,7 @@ services:
   db:
     container_name: miniflux_db
     image: postgres:15
+    user: 4006:4006
     restart: unless-stopped
 
     networks:
@@ -62,9 +62,8 @@ services:
       POSTGRES_DB: miniflux
 
     volumes:
-      - "{{ app_root }}/miniflux_db:/var/lib/postgresql/data"
+      - "{{ app_root }}/miniflux:/var/lib/postgresql/data"
 
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "miniflux"]
-      interval: 4s
-      start_period: 30s
+      start_interval: 5s
