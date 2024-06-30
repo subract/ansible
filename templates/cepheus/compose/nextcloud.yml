@@ -1,5 +1,3 @@
-version: "3.7"
-
 networks:
   web:
   db:
@@ -17,8 +15,8 @@ services:
       - "{{ app_root }}/nextcloud/data:/data"
 
     environment:
-      - PUID=1001
-      - PGID=1001
+      PUID: 4011
+      PGID: 4011
 
     networks:
       - web
@@ -47,12 +45,14 @@ services:
   nextcloud_mariadb:
     container_name: nextcloud_mariadb
     image: mariadb:latest
+    user: 4011:4011
+
     restart: unless-stopped
     env_file: 
       - nextcloud.env
 
     volumes:
-      - "{{ app_root }}/nextcloud_mariadb/data:/var/lib/mysql"
+      - "{{ app_root }}/nextcloud/mariadb/data:/var/lib/mysql"
 
     networks:
       - db

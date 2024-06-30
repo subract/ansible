@@ -26,13 +26,13 @@
     mode: "0644"
   notify: Restart sanoid
 
-- name: Configure backup sanoid
-  tags: config, sanoid
-  copy:
-    src: "{{ inventory_hostname }}/sanoid_backup.conf"
-    dest: /etc/sanoid/backup/sanoid.conf
-    mode: "0644"
-  notify: Restart sanoid
+# - name: Configure backup sanoid
+#   tags: config, sanoid
+#   copy:
+#     src: "{{ inventory_hostname }}/sanoid_backup.conf"
+#     dest: /etc/sanoid/backup/sanoid.conf
+#     mode: "0644"
+#   notify: Restart sanoid
 
 # - name: Add SSD replication cron job
 #   tags: config, syncoid

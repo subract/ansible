@@ -6,11 +6,11 @@ services:
   immich_server:
     container_name: immich_server
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
-    user: 4009:4009
+    user: 4011:4011
 
     # Quicksync
     devices:
-          - /dev/dri:/dev/dri
+      - /dev/dri:/dev/dri
       
     volumes:
       - ${IMMICH_DATA_LOCATION}:/usr/src/app/upload
@@ -44,10 +44,11 @@ services:
       homepage.widget.key: ${IMMICH_API_KEY}
       homepage.widget.fields: '["photos", "videos"]'
 
+
   immich_machine_learning:
-    container_name: immich_machine_learning
+    container_name: immich-machine-learning
     image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
-    user: 4009:4009
+    user: 4011:4011
     
     deploy:
       resources:
@@ -69,18 +70,22 @@ services:
       immich:
     restart: unless-stopped
 
+
   immich_redis:
     container_name: immich_redis
     image: redis:6.2
-    user: 4009:4009
+    user: 4011:4011
     restart: unless-stopped
     networks:
       immich:
 
+    volumes:
+      - "{{ app_root}}/immich/redis:/data"
+
 
   immich_postgres:
     container_name: immich_postgres
-    user: 4009:4009
+    user: 4011:4011
     image: tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
 
     env_file:

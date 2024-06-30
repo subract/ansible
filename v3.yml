@@ -74,6 +74,9 @@
   roles:
     - geerlingguy.ntp
     - zigbee_udev
+    - syncoid_sanoid
+    - apprise
+    - zfs
     - role: artis3n.tailscale
       tags: tailscale
       vars:
@@ -105,7 +108,7 @@
   roles:
     - role: geerlingguy.docker
       vars:
-        docker_compose_version: "v2.27.2"
+        docker_compose_version: v2.27.2
     - docker
     - dotfiles_copy
 

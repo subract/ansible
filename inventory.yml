@@ -42,7 +42,7 @@ all:
         web02:
         ixion:
         cepheus:
-          app_root: /opt
+          app_root: /nvme01/app
   vars:
     ansible_python_interpreter: auto_silent
     ansible_user: ansible

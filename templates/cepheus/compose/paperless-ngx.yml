@@ -14,8 +14,8 @@ services:
       - paperless_tika
 
     networks:
-      - web
-      - paperless
+      web:
+      paperless:
 
     env_file: paperless.env
     environment:
@@ -67,7 +67,10 @@ services:
     restart: unless-stopped
 
     networks:
-      - paperless
+      paperless:
+
+    volumes:
+      - "{{ app_root}}/paperless/redis:/data"
 
 
   paperless_gotenberg:
@@ -81,7 +84,7 @@ services:
       - "--chromium-allow-list=file:///tmp/.*"
 
     networks:
-      - paperless
+      paperless:
 
 
   paperless_tika:
@@ -91,4 +94,4 @@ services:
     restart: unless-stopped
 
     networks:
-      - paperless
+      paperless:

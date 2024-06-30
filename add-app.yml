@@ -17,7 +17,7 @@
       private: false
 
     - name: user_data_access
-      prompt: "Grant user data access? (y/N)"
+      prompt: Grant user data access? (y/N)
       private: false
       default: "n"
 
@@ -25,7 +25,7 @@
     - name: Create ZFS filesystem
       tags: config, zfs
       community.general.zfs:
-        name: "{{ zpool_name }}{{ app_root }}/{{ app }}"
+        name: "{{ app_root | regex_replace('^/', '') }}/{{ app }}"
         state: present
 
     - name: Grant user permission to app
@@ -42,7 +42,7 @@
     - name: Run this on lyra
       tags: todo
       debug:
-        msg: "rsync -avh --progress /nvme/enc/app/{{ app }}/ cepheus:/opt/{{ app }}/"
+        msg: rsync -avh --progress /hdd/enc/app/{{ app }}/ /nvme01/app/{{ app }}/
 
     - name: Wait to confirm
       pause:
@@ -56,8 +56,7 @@
         group: "{{ uid }}"
         recurse: true
 
-
     - name: Add DNS entries
       tags: todo
       debug:
-        msg: "I should do this eventually..."
+        msg: I should do this eventually...
