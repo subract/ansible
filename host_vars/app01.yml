@@ -1,8 +1,0 @@
----
-
-# NFS directories mounted on file server
-nfs_dirs:
-  - server: lyra.{{ tailscale_magic_dns }}
-    path: "{{ app_root }}"
-    user: root
-    group: root

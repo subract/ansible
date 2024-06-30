@@ -4,10 +4,7 @@ roles:
   - name: robertdebock.bootstrap
   - name: robertdebock.rsyslog
   - name: geerlingguy.ntp
-  - name: lae.proxmox
-  - name: simoncaron.pve_addons
   - name: artis3n.tailscale
-  - name: konstruktoid.docker_rootless
 
 collections:
   - name: kewlfft.aur
