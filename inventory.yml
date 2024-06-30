@@ -1,46 +1,22 @@
 ---
 all:
+  hosts:
+    web01:
+      app_root: /opt
+    offsite01:
+    # ixion:
+    cepheus:
+      app_root: /nvme01/app
   children:
-    vm:
-      hosts:
-        apps:
-        dmz-apps:
-        jj:
-        app01:
     docker:
       hosts:
-        apps:
-        dmz-apps:
+        cepheus:
         web01:
           ansible_host: "{{ tertiary_domain }}"
-        web02:
-          ansible_host: "dashy-demo.{{ quaternary_domain }}"
-        app01:
-    nfs_clients:
-      hosts:
-        apps:
-        dmz-apps:
-        app01:
     workstations:
       hosts:
-        titania:
-        ixion:
-    hypervisors:
-      hosts:
-        cepheus:
-        lyra:
-    v3:
-      hosts:
-        lyra:
-          app_root: /nvme/enc/app
-        app01:
-          app_root: /nvme/enc/app
-        web01:
-          app_root: /opt
-        offsite01:
-        web02:
-        ixion:
-        cepheus:
+        # ixion:
+
   vars:
     ansible_python_interpreter: auto_silent
     ansible_user: ansible

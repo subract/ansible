@@ -2,12 +2,11 @@
 Stores Ansible config for `subract`'s homelab, to simplify management and enable easier service deployment.
 Currently managing the following:
 
-- A Proxmox VE server providing VM hosting
+- A primary application server
 	- Using [ZFS](https://openzfs.org/wiki/Main_Page) and [automated snapshots](roles/syncoid_sanoid/tasks/main.yml) with Sanoid for [functional immortality](https://github.com/jimsalterjrs/sanoid)
 	- [Automated backups](roles/backblaze/tasks/main.yml) to Backblaze B2 for disaster recovery
 	- ZFS-based full-disk encryption
-- A flotilla of applications deployed with Docker, split across a handful of VMs
-	- A primary application server [hosting the following](templates/app01)
+	- Docker [hosting the following](templates/app01)
 		- [Traefik](https://traefik.io/traefik/) - a reverse proxy managing access to all web services. 
 			- Providing SSL termination and automated certificates with [Let's Encrypt](https://letsencrypt.org/)
 		- [Authelia](https://www.authelia.com/) - an authentication and authorization server providing SSO
@@ -21,12 +20,12 @@ Currently managing the following:
 		- [Miniflux](https://miniflux.app/) - a minimalist RSS feed reader
 		- [Paperless-ngx](https://docs.paperless-ngx.com/) - a document management system to digitize documents
 		- [Changedetection.io](https://changedetection.io/) - monitor web pages for changes
-	- A cloud VPS hosting [public services](templates/web01) to the Internet
-		- [Minecraft servers](https://github.com/itzg/docker-minecraft-server) - a few different worlds for friends and family
-		- [Peertube](https://joinpeertube.org/en_US) - a YouTube alternative platform that supports ActivityPub federation
-		- A personal blog
+- A cloud VPS hosting [public services](templates/web01) to the Internet
+	- [Minecraft servers](https://github.com/itzg/docker-minecraft-server) - a few different worlds for friends and family
+	- [Peertube](https://joinpeertube.org/en_US) - a YouTube alternative platform that supports ActivityPub federation
+	- A personal blog
 - A couple of Arch workstations
 	- Managing [packages](roles/arch_workstation/tasks/packages.yaml), services, and [sundry other configuration](roles/arch_workstation/tasks/main.yml)
 	- Using [secure boot](roles/arch_secureboot/tasks/main.yml) for boot integrity with full-disk encryption
 
-This is a living repo, evolving as I add and manage additional services. There's a few ancillary services in my homelab that I'm not yet managing with Ansible, like my [OPNsense](https://opnsense.org/) router hosting a [Wireguard](https://www.wireguard.com/) VPN for remote access. As I tackle the challenges of managing additional systems, I'll expand this repo to include them.
+This is a living repo, evolving as I add and manage additional services. As I tackle the challenges of managing additional systems, I'll expand this repo to include them.

@@ -1,7 +1,8 @@
 ---
 # Do update pre-tasks before anything else...
 
-- hosts: all
+- name: Run upgrades
+  hosts: all
   become: true
   gather_facts: true
   ignore_unreachable: true
@@ -32,117 +33,85 @@
 
 # ...then run base config on all machines...
 
-- hosts: all
+- name: Base config
+  hosts: all
   become: true
+  gather_facts: false
   ignore_unreachable: true
   roles:
     - base
 
 # ...and finally, do role-specific tasks
 
-- hosts: draco
+- name: Docker roles
+  hosts: docker
+  become: true
+  gather_facts: false
+  ignore_unreachable: true
+  roles:
+    - role: geerlingguy.docker
+      vars:
+        docker_compose_version: v2.27.2
+    - docker
+    - dotfiles_copy
+
+- name: cepheus
+  hosts: cepheus
   become: true
   gather_facts: false
   ignore_unreachable: false
   roles:
-    - zfs
-    - role: lae.proxmox
-      vars:
-        pve_reboot_on_kernel_update: false
-        pve_zfs_enabled: true
-        pve_zfs_options: |-
-          options zfs zfs_arc_max=8589934592
-          options zfs zfs_arc_min=2147483648
-    - pve_networking
-    - nfs_server
+    - geerlingguy.ntp
+    - zigbee_udev
     - syncoid_sanoid
-    - backblaze
-    - more_users
-    - remote_decrypt
-
-- hosts: vm
-  become: true
-  gather_facts: false
-  ignore_unreachable: true
-  roles:
-    - xterm_js
-
-- hosts: nfs_clients
-  become: true
-  gather_facts: false
-  ignore_unreachable: true
-  roles:
-    - more_users
-    - nfs_client
-
-- hosts: docker
-  become: true
-  gather_facts: false
-  ignore_unreachable: true
-  roles:
-    - geerlingguy.docker
-    - docker
-    - dotfiles_copy
-
-- hosts: workstations
-  become: true
-  gather_facts: false
-  ignore_unreachable: true
-  roles:
-    - arch_workstation
-    - ssh_agent
-    - dotfiles_clone
-    - artis3n.tailscale
-
-- hosts: apps
-  become: true
-  gather_facts: false
-  ignore_unreachable: true
-  roles:
-    - mariadb_backup
-
-- hosts: dmz-apps
-  become: true
-  gather_facts: false
-  ignore_unreachable: true
-  roles:
-    - role: remote_logs
-      vars:
-        gelf_docker: true
-
-- hosts: jj
-  become: true
-  gather_facts: false
-  ignore_unreachable: true
-  roles:
-    - dotfiles_copy
-    - more_users
-    - role: remote_logs
-      vars:
-        rsyslog_auth: true
-
-- hosts: titania
-  become: true
-  gather_facts: false
-  ignore_unreachable: true
-  roles:
-    - arch_desktop
-    - arch_secureboot
-
-- hosts: fornax
-  become: true
-  gather_facts: false
-  ignore_unreachable: true
-  roles:
-    - arch_laptop
-
-- hosts: web01
-  become: true
-  gather_facts: false
-  ignore_unreachable: true
-  roles:
-    - backblaze
+    - apprise
+    - zfs
     - role: artis3n.tailscale
       tags: tailscale
       vars:
-        tailscale_args: --advertise-exit-node --advertise-tags=tag:vps
+        tailscale_args: --advertise-tags=tag:docker --snat-subnet-routes=false --accept-routes
+
+- name: web01
+  hosts: web01
+  become: true
+  gather_facts: false
+  ignore_unreachable: true
+  roles:
+    - backblaze
+
+- name: offsite01
+  hosts: offsite01
+  become: true
+  gather_facts: false
+  ignore_unreachable: true
+  roles:
+    - role: artis3n.tailscale
+      tags: tailscale
+      vars:
+        tailscale_args: --advertise-tags=tag:offsite
+    - dotfiles_copy
+
+# - name: ixion
+#   hosts: ixion
+#   become: true
+#   gather_facts: false
+#   ignore_unreachable: true
+#   roles:
+#     - arch_workstation
+#     - arch_laptop
+#     - arch_secureboot
+#     - dotfiles_clone
+#     - role: artis3n.tailscale
+#       tags: tailscale
+
+- name: Host-specific tasks
+  hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Run host-specific tasks
+      include_tasks:
+        file: "{{ item }}"
+      with_first_found:
+        - files: host_tasks/{{ ansible_hostname }}.yml
+          skip: true

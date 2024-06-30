@@ -1,0 +1,62 @@
+---
+- hosts: "{{ hostname }}"
+  become: true
+
+  vars_prompt:
+    - name: hostname
+      prompt: Hostname
+      private: false
+      default: cepheus
+
+    - name: app
+      prompt: App
+      private: false
+
+    - name: uid
+      prompt: UID/GID
+      private: false
+
+    - name: user_data_access
+      prompt: Grant user data access? (y/N)
+      private: false
+      default: "n"
+
+  tasks:
+    - name: Create ZFS filesystem
+      tags: config, zfs
+      community.general.zfs:
+        name: "{{ app_root | regex_replace('^/', '') }}/{{ app }}"
+        state: present
+
+    - name: Grant user permission to app
+      tags: config, acl
+      acl:
+        path: "{{ app_root }}/{{ app }}"
+        entity: "{{ user }}"
+        etype: user
+        permissions: rwX
+        recurse: true
+        state: present
+      when: user_data_access | lower == 'y'
+
+    - name: Run this on lyra
+      tags: todo
+      debug:
+        msg: rsync -avh --progress /hdd/enc/app/{{ app }}/ /nvme01/app/{{ app }}/
+
+    - name: Wait to confirm
+      pause:
+
+    - name: Set permissions
+      tags: config, zfs
+      file:
+        path: "{{ app_root }}/{{ app }}"
+        state: directory
+        owner: "{{ uid }}"
+        group: "{{ uid }}"
+        recurse: true
+
+    - name: Add DNS entries
+      tags: todo
+      debug:
+        msg: I should do this eventually...
