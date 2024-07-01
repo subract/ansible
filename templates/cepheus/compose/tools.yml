@@ -1,0 +1,60 @@
+networks:
+  web:
+
+services:
+  cyberchef:
+    container_name: cyberchef
+    image: mpepping/cyberchef
+    user: 4000:4000
+    restart: unless-stopped
+
+    networks:
+      - web
+
+    environment:
+      TZ: {{ timezone }}
+
+    healthcheck:
+      start_interval: 5s
+
+    labels:
+      traefik.enable: true
+      traefik.http.routers.chef.rule: Host(`chef.{{ tertiary_domain }}`)
+      traefik.http.routers.chef.entrypoints: https
+      traefik.http.routers.chef.tls.certresolver: default
+      traefik.http.services.chef.loadbalancer.server.port: 8000
+      homepage.group: Apps
+      homepage.name: Swiss army knife
+      homepage.icon: cyberchef.png
+      homepage.href: https://chef.{{ tertiary_domain }}/
+      homepage.description: CyberChef
+      homepage.siteMonitor: http://cyberchef:8000
+      homepage.weight: 60
+
+  it-tools:
+    container_name: it-tools
+    image: ghcr.io/corentinth/it-tools:latest
+    # Running as alternative user unsupported,
+    # but it's just nginx
+    # user: 4000:4000
+    restart: unless-stopped
+
+    networks:
+      - web
+
+    healthcheck:
+      start_interval: 5s
+
+    labels:
+      traefik.enable: true
+      traefik.http.routers.tools.rule: Host(`tools.{{ tertiary_domain }}`)
+      traefik.http.routers.tools.entrypoints: https
+      traefik.http.routers.tools.tls.certresolver: default
+      traefik.http.services.tools.loadbalancer.server.port: 80
+      homepage.group: Apps
+      homepage.name: Toolbox
+      homepage.icon: it-tools.png
+      homepage.href: https://tools.{{ tertiary_domain }}/
+      homepage.description: it-tools
+      homepage.siteMonitor: http://it-tools:8080
+      homepage.weight: 61
