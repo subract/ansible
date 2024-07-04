@@ -47,7 +47,7 @@ services:
       traefik.http.routers.paper.entrypoints: https
       traefik.http.routers.paper.tls.certresolver: default
       traefik.http.services.paper.loadbalancer.server.port: 8000
-      traefik.http.routers.paper.middlewares: authelia
+      # traefik.http.routers.paper.middlewares: authelia
       homepage.group: Apps
       homepage.name: Document management
       homepage.icon: paperless-ngx.png

@@ -34,7 +34,7 @@ services:
       traefik.http.routers.git.entrypoints: https
       traefik.http.routers.git.tls.certresolver: default
       traefik.http.services.git.loadbalancer.server.port: 80
-      traefik.http.routers.git.middlewares: authelia
+      # traefik.http.routers.git.middlewares: authelia
       homepage.group: Apps
       homepage.name: Git hosting
       homepage.icon: gitea.png
