@@ -1,0 +1,42 @@
+networks:
+  web:
+
+services:
+  webtop:
+    container_name: webtop
+    image: lscr.io/linuxserver/webtop:arch-xfce
+    restart: unless-stopped
+
+    networks:
+      - web
+
+    environment:
+      PUID: 4012
+      PGID: 4012
+      TZ: {{ timezone }}
+      DRINODE: /dev/dri/renderD128
+      # SUBFOLDER: / #optional
+      TITLE: Webtop
+
+    volumes:
+      - "{{ app_root }}/webtop:/config"
+
+    devices:
+      - /dev/dri:/dev/dri 
+
+    shm_size: "1gb" 
+
+    labels:
+      traefik.enable: true
+      traefik.http.routers.desktop.rule: Host(`desktop.{{ tertiary_domain }}`)
+      traefik.http.routers.desktop.entrypoints: https
+      traefik.http.routers.desktop.tls.certresolver: default
+      traefik.http.services.desktop.loadbalancer.server.port: 3000
+      traefik.http.routers.desktop.middlewares: authelia
+      homepage.group: Apps
+      homepage.name: Desktops
+      homepage.icon: webtop.png
+      homepage.href: https://desktop.{{ tertiary_domain }}/
+      homepage.siteMonitor: http://webtop:3000
+      homepage.weight: 26
+      homepage.description: Webtop
