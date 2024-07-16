@@ -56,5 +56,5 @@ services:
       homepage.icon: it-tools.png
       homepage.href: https://tools.{{ tertiary_domain }}/
       homepage.description: it-tools
-      homepage.siteMonitor: http://it-tools:8080
+      homepage.siteMonitor: http://it-tools:80
       homepage.weight: 61
