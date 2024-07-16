@@ -1,0 +1,27 @@
+---
+- name: Ensure /etc/systemd/logind.conf disables suspend
+  tags: config, suspend
+  blockinfile:
+    path: /etc/systemd/logind.conf.d/10-inhibit-suspend.conf
+    create: true
+    mode: "0444"
+    block: |
+      [Login]
+      HandleSuspendKey=ignore
+      HandleHibernateKey=ignore
+      HandleLidSwitch=ignore
+      HandleLidSwitchExternalPower=ignore
+      HandleLidSwitchDocked=ignore
+  notify: Restart systemd-logind
+
+- name: Mask sleep, suspend, hibernate, and hybrid-sleep services
+  tags: config, suspend
+  systemd:
+    name: "{{ item }}"
+    masked: true
+  loop:
+    - sleep.target
+    - suspend.target
+    - hibernate.target
+    - hybrid-sleep.target
+  notify: Reload systemd daemon

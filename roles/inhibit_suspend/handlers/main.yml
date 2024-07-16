@@ -1,0 +1,9 @@
+---
+- name: Restart systemd-logind
+  service:
+    name: systemd-logind
+    state: restarted
+
+- name: Reload systemd daemon
+  systemd:
+    daemon_reload: true
