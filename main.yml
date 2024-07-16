@@ -62,10 +62,12 @@
   ignore_unreachable: false
   roles:
     - geerlingguy.ntp
+    - inhibit_suspend
     - zigbee_udev
-    - syncoid_sanoid
-    - apprise
     - zfs
+    - syncoid_sanoid
+    - backblaze
+    - apprise
     - role: artis3n.tailscale
       tags: tailscale
       vars:
