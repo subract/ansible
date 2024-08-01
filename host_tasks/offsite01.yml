@@ -1,9 +1,11 @@
 ---
-- name: Install zfs prereqs
+- name: Install zfs prereqs and syncoid helpers
   tags: pkg, zfs
   package:
     name:
       - raspberrypi-kernel-headers
+      - lzop
+      - mbuffer
 
 - name: Install zfs
   tags: pkg, zfs
@@ -11,3 +13,12 @@
     name:
       - zfs-dkms
       - zfsutils-linux
+
+- name: Grant receive permission to zfs_receiver_cepheus
+  tags: zfs, config
+  command: zfs allow -u zfs_receiver_cepheus receive,create,mount hdd/cepheus-nvme01
+  args:
+    creates: /tmp/zfs_allow_zfs_receiver_cepheus_receive_hdd_cepheus-nvme01
+  register: zfs_allow_result
+  changed_when: "'set' in zfs_allow_result.stdout"
+    
