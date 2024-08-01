@@ -65,7 +65,7 @@ services:
       traefik.http.routers.auth.entrypoints: https
       traefik.http.routers.auth.tls.certresolver: default
       traefik.http.services.auth.loadbalancer.server.port: 9091
-      traefik.http.middlewares.authelia.forwardAuth.address: http://authelia:9091/api/verify?rd=https%3A%2F%2Fauth.{{ tertiary_domain }}%2F
+      traefik.http.middlewares.authelia.forwardAuth.address: http://authelia:9091/api/verify?rd=https%3A%2F%2Flogin.{{ tertiary_domain }}%2F
       traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader: true
       traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders: Remote-User,Remote-Groups,Remote-Name,Remote-Email
 
