@@ -23,6 +23,8 @@ services:
       BASE_URL: https://rss.{{ tertiary_domain }}
       CLEANUP_ARCHIVE_UNREAD_DAYS: -1
       CLEANUP_ARCHIVE_READ_DAYS: -1
+      POLLING_FREQUENCY: 5
+      SCHEDULER_ROUND_ROBIN_MIN_INTERVAL: 60
       OAUTH2_PROVIDER: oidc
       OAUTH2_CLIENT_ID: miniflux
       OAUTH2_REDIRECT_URL: https://rss.{{ tertiary_domain }}/oauth2/oidc/callback
