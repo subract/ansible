@@ -1,0 +1,58 @@
+networks:
+  web:
+  docker-socket:
+
+services:
+  docker-socket-proxy:
+    container_name: docker-socket-proxy
+    image: ghcr.io/tecnativa/docker-socket-proxy:0.2.0
+    restart: unless-stopped
+
+    environment:
+      CONTAINERS: 1
+      NETWORKS: 1
+      SERVICES: 1
+      TASKS: 1
+      POST: 0 # default, prevents making changes
+
+    networks:
+      - docker-socket
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  traefik:
+    container_name: traefik
+    image: traefik:3.1.1
+    restart: on-failure:3
+
+    depends_on:
+      - docker-socket-proxy
+
+    ports:
+      - 80:80
+      - 443:443
+
+    env_file: 
+      - traefik.env
+
+    networks:
+      - web
+      - docker-socket
+
+    volumes:
+      - "{{ app_root }}/traefik/traefik.yml:/traefik.yml"
+      - "{{ app_root }}/traefik/dynamic_conf.yml:/dynamic_conf.yml"
+      - "{{ app_root }}/traefik/acme.json:/acme.json"
+      - /etc/localtime:/etc/localtime:ro
+
+    labels:
+      traefik.enable: true
+      traefik.http.routers.api.rule: Host(`proxy.{{ quinary_domain }}`)
+      traefik.http.routers.api.entrypoints: https
+      traefik.http.routers.api.tls.certresolver: default
+      traefik.http.routers.api.service: api@internal
+      traefik.http.routers.api.middlewares: auth
+      traefik.http.middlewares.auth.basicauth.users: ${TRAEFIK_USERS}
+      # Below will cause Traefik to request a wildcard cert
+      # traefik.http.routers.api.tls.domains[0].main: "*.{{ quinary_domain }}"

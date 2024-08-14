@@ -1,0 +1,8 @@
+---
+- name: Configure wpa_supplicant
+  tags: config, wifi
+  copy:
+    src: "{{ inventory_hostname }}/wpa_supplicant.conf"
+    dest: /etc/wpa_supplicant.conf
+    mode: "0600"
+  notify: Restart wpa_supplicant

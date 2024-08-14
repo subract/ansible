@@ -94,6 +94,20 @@
         tailscale_args: --advertise-tags=tag:offsite
     - dotfiles_copy
 
+- name: offsite02
+  hosts: offsite02
+  become: true
+  gather_facts: false
+  ignore_unreachable: true
+  roles:
+    - zigbee_udev
+    - wpa_supplicant
+    - role: artis3n.tailscale
+      tags: tailscale
+      vars:
+        tailscale_args: --advertise-tags=tag:offsite
+    - dotfiles_copy
+
 # - name: ixion
 #   hosts: ixion
 #   become: true
@@ -113,6 +127,7 @@
   become: true
   tasks:
     - name: Run host-specific tasks
+      tags: zfs
       include_tasks:
         file: "{{ item }}"
       with_first_found:

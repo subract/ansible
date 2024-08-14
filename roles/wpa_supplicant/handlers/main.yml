@@ -1,0 +1,6 @@
+---
+- name: Restart wpa_supplicant
+  tags: config, wifi
+  systemd:
+    service: wpa_supplicant
+    state: restarted

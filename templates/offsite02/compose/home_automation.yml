@@ -1,0 +1,97 @@
+networks:
+  web:
+  mqtt:
+  db:
+
+services:
+  # home_assistant:
+  #   container_name: home_assistant
+  #   image: linuxserver/homeassistant:2024.7.4
+  #   restart: unless-stopped
+
+  #   networks:
+  #     - web
+  #     - mqtt
+  #     - db
+
+  #   environment:
+  #     TZ: {{ timezone }}
+
+  #   volumes:
+  #     - "{{ app_root }}/home_assistant:/config"
+
+  #   # ports:
+  #   #   - 1400:1400
+  #   #   - 21064:21064 # HomeKit
+
+  #   labels:
+  #     traefik.enable: true
+  #     traefik.http.routers.home.rule: Host(`home.{{ quinary_domain }}`)
+  #     traefik.http.routers.home.entrypoints: https
+  #     traefik.http.routers.home.tls.certresolver: default
+  #     traefik.http.services.home.loadbalancer.server.port: 8123
+  
+  node_red:
+    container_name: node_red
+    image: nodered/node-red:4.0.2-22
+    restart: unless-stopped
+
+    volumes:
+      - "{{ app_root }}/node_red:/data"
+      - /etc/localtime:/etc/localtime:ro
+
+    networks:
+      - web
+      - mqtt
+
+    environment:
+      TZ: "{{ timezone }}"
+
+    labels:
+      traefik.enable: true
+      traefik.http.routers.auto.rule: Host(`auto.{{ quinary_domain }}`)
+      traefik.http.routers.auto.entrypoints: https
+      traefik.http.routers.auto.tls.certresolver: default
+      traefik.http.services.auto.loadbalancer.server.port: 1880
+
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto:2.0.18
+    restart: unless-stopped
+
+    networks:
+      - mqtt
+
+    volumes:
+      - "{{ app_root }}/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf"
+
+    labels:
+      - traefik.enable=false
+
+  zigbee2mqtt:
+    container_name: zigbee2mqtt
+    image: koenkk/zigbee2mqtt:1.39.1
+    restart: unless-stopped
+
+    depends_on:
+      - mosquitto
+
+    volumes:
+      - "{{ app_root }}/zigbee2mqtt:/app/data"
+
+    devices:
+      - /dev/zigbee_stick
+
+    networks:
+      - web
+      - mqtt
+
+    environment:
+      TZ: {{ timezone }}
+
+    labels:
+      traefik.enable: true
+      traefik.http.routers.zigbee.rule: Host(`zigbee.{{ quinary_domain }}`)
+      traefik.http.routers.zigbee.entrypoints: https
+      traefik.http.routers.zigbee.tls.certresolver: default
+      traefik.http.services.zigbee.loadbalancer.server.port: 8080
