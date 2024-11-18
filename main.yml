@@ -107,6 +107,7 @@
       vars:
         tailscale_args: --advertise-tags=tag:offsite
     - dotfiles_copy
+    - liveness_monitor
 
 # - name: ixion
 #   hosts: ixion

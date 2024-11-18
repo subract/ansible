@@ -1,0 +1,9 @@
+---
+- name: Create liveness check cron job
+  tags: config, cron, liveness
+  cron:
+    name: Kick liveness check
+    minute: 0
+    hour: "*/4"
+    job: /usr/bin/curl -fsS --retry 3 https://hc-ping.com/{{ healthcheck_id_liveness }} > /dev/null
+    user: root
