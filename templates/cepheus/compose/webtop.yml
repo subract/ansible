@@ -4,7 +4,7 @@ networks:
 services:
   webtop:
     container_name: webtop
-    image: lscr.io/linuxserver/webtop:arch-xfce
+    image: lscr.io/linuxserver/webtop:arch-xfce-version-2024-08-09
     restart: unless-stopped
 
     networks:
