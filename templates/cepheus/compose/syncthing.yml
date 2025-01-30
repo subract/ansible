@@ -1,0 +1,34 @@
+# networks:
+#   web:
+  
+# services:
+#   syncthing:
+#     container_name: syncthing
+#     image: lscr.io/linuxserver/syncthing:latest
+#     hostname: cepheus
+#     restart: unless-stopped
+
+#     environment:
+#       PUID: 4011
+#       PGID: 4011
+#       TZ: {{ timezone }}
+
+#     networks:
+#       web:
+
+#     volumes:
+#       - "{{ app_root }}/syncthing/config:/config"
+#       - "{{ app_root }}/syncthing/data:/data"
+
+#     ports:
+#       # - 8384:8384
+#       - 22000:22000/tcp
+#       - 22000:22000/udp
+#       - 21027:21027/udp
+      
+#     labels:
+#       traefik.enable: true
+#       traefik.http.routers.sync.rule: Host(`sync.{{ tertiary_domain }}`)
+#       traefik.http.routers.sync.entrypoints: https
+#       traefik.http.routers.sync.tls.certresolver: default
+#       traefik.http.services.sync.loadbalancer.server.port: 8384
