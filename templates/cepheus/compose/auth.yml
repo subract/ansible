@@ -39,7 +39,7 @@ services:
 
   authelia:
     container_name: authelia
-    image: ghcr.io/authelia/authelia:master
+    image: ghcr.io/authelia/authelia:latest
     user: 4003:4003
     restart: unless-stopped
 
