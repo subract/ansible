@@ -1,0 +1,51 @@
+networks:
+  web:
+  ai:
+
+services:
+  open_webui:
+    container_name: open_webui
+    image: ghcr.io/open-webui/open-webui:main
+    restart: unless-stopped
+
+    networks:
+      web:
+      ai:
+
+    volumes:
+      - "{{ app_root }}/open_webui:/app/backend/data"
+    
+    labels:
+      traefik.enable: true
+      traefik.http.routers.chat.rule: Host(`chat.{{ tertiary_domain }}`)
+      traefik.http.routers.chat.entrypoints: https
+      traefik.http.routers.chat.tls.certresolver: default
+      traefik.http.services.chat.loadbalancer.server.port: 8080
+      homepage.group: Admin
+      homepage.name: AI chat
+      homepage.icon: open-webui.png
+      homepage.href: https://chat.{{ tertiary_domain }}/
+      homepage.description: Open WebUI
+      homepage.siteMonitor: http://chat:8080
+      homepage.weight: 21
+
+  ollama:
+    container_name: ollama
+    image: ollama/ollama:latest
+    restart: unless-stopped
+
+    networks:
+      web:
+      ai:
+    
+    volumes:
+      - "{{ app_root }}/ollama:/root/.ollama"
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities:
+                - gpu
