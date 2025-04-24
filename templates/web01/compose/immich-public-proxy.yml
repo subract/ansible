@@ -1,0 +1,25 @@
+networks:
+  web:
+
+services:
+  immich-public-proxy:
+    image: alangrainger/immich-public-proxy:latest
+    container_name: immich-public-proxy
+    restart: unless-stopped
+    
+    networks:
+      web:
+
+    environment:
+      IMMICH_URL: https://pic.{{ tertiary_domain }}
+    healthcheck:
+      test: wget -q --spider http://localhost:3000/share/healthcheck || exit 1
+      start_period: 10s
+      timeout: 5s
+
+    labels:
+      traefik.enable: true
+      traefik.http.routers.improxy.rule: Host(`photos.{{ tertiary_domain }}`)
+      traefik.http.routers.improxy.entrypoints: https
+      traefik.http.routers.improxy.tls.certresolver: default
+      traefik.http.services.improxy.loadbalancer.server.port: 3000
