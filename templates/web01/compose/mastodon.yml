@@ -7,7 +7,7 @@ networks:
 services:
   mastodon:
     # Version locked bc nightly builds from glitch
-    image: linuxserver/mastodon:4.2.10
+    image: linuxserver/mastodon:latest
     container_name: mastodon
     restart: unless-stopped
 
