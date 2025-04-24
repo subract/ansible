@@ -22,8 +22,8 @@ services:
     volumes:
       - "{{ app_root }}/home_assistant:/config"
 
-    # ports:
-    #   - 1400:1400
+    ports:
+      - 1400:1400 # Sonos
     #   - 21064:21064 # HomeKit
 
     labels:
