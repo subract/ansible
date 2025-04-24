@@ -31,7 +31,7 @@ services:
 
   bar_assistant:
     container_name: bar_assistant
-    image: barassistant/server:v4
+    image: barassistant/server:v5
     # Incompatible with running as specified user, only uses 33
     networks: 
       - bar_assistant
