@@ -16,7 +16,8 @@ services:
     environment:
       PUID: 4005
       PGID: 4005
-      LOG_LEVEL: debug
+      LOG_LEVEL: warning
+      HOMEPAGE_ALLOWED_HOSTS: dash.{{ tertiary_domain }}
 
     volumes:
       - "{{ app_root }}/homepage/config:/app/config"
