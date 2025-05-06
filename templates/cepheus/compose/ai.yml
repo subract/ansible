@@ -18,7 +18,6 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.chat.rule: Host(`chat.{{ tertiary_domain }}`)
-      traefik.http.routers.chat.entrypoints: https
       traefik.http.routers.chat.tls.certresolver: default
       traefik.http.services.chat.loadbalancer.server.port: 8080
       homepage.group: Admin

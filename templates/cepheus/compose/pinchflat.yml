@@ -23,7 +23,6 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.yt.rule: Host(`yt.{{ tertiary_domain }}`)
-      traefik.http.routers.yt.entrypoints: https
       traefik.http.routers.yt.tls.certresolver: default
       traefik.http.services.yt.loadbalancer.server.port: 8945
       homepage.group: Apps

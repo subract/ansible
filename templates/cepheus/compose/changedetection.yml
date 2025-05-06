@@ -31,7 +31,6 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.change.rule: Host(`change.{{ tertiary_domain }}`)
-      traefik.http.routers.change.entrypoints: https
       traefik.http.routers.change.tls.certresolver: default
       traefik.http.services.change.loadbalancer.server.port: 5000
       traefik.http.routers.change.middlewares: authelia

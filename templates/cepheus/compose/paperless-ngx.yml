@@ -44,7 +44,6 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.paper.rule: Host(`paper.{{ tertiary_domain }}`)
-      traefik.http.routers.paper.entrypoints: https
       traefik.http.routers.paper.tls.certresolver: default
       traefik.http.services.paper.loadbalancer.server.port: 8000
       # traefik.http.routers.paper.middlewares: authelia

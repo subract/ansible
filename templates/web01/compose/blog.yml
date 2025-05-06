@@ -55,7 +55,6 @@ services:
   #     # No Keycloak needed for general APi access
   #     traefik.http.routers.dr.rule: Host(`dr.{{ secondary_domain }}`)
   #     traefik.http.routers.dr.service: dr-service
-  #     traefik.http.routers.dr.entrypoints: https
   #     traefik.http.routers.dr.tls.certresolver: default
 
   ghost:
@@ -89,7 +88,6 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.gh.rule: Host(`{{ secondary_domain }}`)
-      traefik.http.routers.gh.entrypoints: https
       traefik.http.routers.gh.tls.certresolver: default
 
   nginx:
@@ -110,5 +108,4 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.ng.rule: (Host(`{{ secondary_domain }}`) && PathPrefix(`/static`))
-      traefik.http.routers.ng.entrypoints: https
       traefik.http.routers.ng.tls.certresolver: default

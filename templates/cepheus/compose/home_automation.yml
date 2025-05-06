@@ -29,7 +29,6 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.home.rule: Host(`home.{{ tertiary_domain }}`)
-      traefik.http.routers.home.entrypoints: https
       traefik.http.routers.home.tls.certresolver: default
       traefik.http.services.home.loadbalancer.server.port: 8123
 #      traefik.http.routers.home.middlewares: authelia
@@ -65,7 +64,6 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.auto.rule: Host(`auto.{{ tertiary_domain }}`)
-      traefik.http.routers.auto.entrypoints: https
       traefik.http.routers.auto.tls.certresolver: default
       traefik.http.services.auto.loadbalancer.server.port: 1880
       traefik.http.routers.auto.middlewares: authelia
@@ -117,7 +115,6 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.zigbee.rule: Host(`zigbee.{{ tertiary_domain }}`)
-      traefik.http.routers.zigbee.entrypoints: https
       traefik.http.routers.zigbee.tls.certresolver: default
       traefik.http.services.zigbee.loadbalancer.server.port: 8080
       traefik.http.routers.zigbee.middlewares: authelia

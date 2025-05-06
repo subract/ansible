@@ -44,7 +44,6 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.karakeep.rule: Host(`bookmarks.{{ tertiary_domain }}`)
-      traefik.http.routers.karakeep.entrypoints: https
       traefik.http.routers.karakeep.tls.certresolver: default
       traefik.http.services.karakeep.loadbalancer.server.port: 3000
       homepage.group: Apps

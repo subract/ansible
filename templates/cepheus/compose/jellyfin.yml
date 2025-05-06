@@ -42,7 +42,6 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.media.rule: Host(`media.{{ tertiary_domain }}`)
-      traefik.http.routers.media.entrypoints: https
       traefik.http.routers.media.tls.certresolver: default
       traefik.http.services.media.loadbalancer.server.port: 8096
       homepage.group: Apps

@@ -23,6 +23,5 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.tasks.rule: Host(`tasks.{{ tertiary_domain }}`)
-      traefik.http.routers.tasks.entrypoints: https
       traefik.http.routers.tasks.tls.certresolver: default
       traefik.http.services.tasks.loadbalancer.server.port: 3456

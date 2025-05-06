@@ -29,7 +29,6 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.dash.rule: Host(`dash.{{ tertiary_domain }}`)
-      traefik.http.routers.dash.entrypoints: https
       traefik.http.routers.dash.tls.certresolver: default
       traefik.http.services.dash.loadbalancer.server.port: 3000
       traefik.http.routers.dash.middlewares: authelia

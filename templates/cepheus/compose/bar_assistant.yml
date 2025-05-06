@@ -85,7 +85,6 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.bar.rule: Host(`bar.{{ tertiary_domain }}`)
-      traefik.http.routers.bar.entrypoints: https
       traefik.http.routers.bar.tls.certresolver: default
       traefik.http.services.bar.loadbalancer.server.port: 3000
       # TODO

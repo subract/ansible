@@ -22,7 +22,6 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.vid.rule: Host(`v.{{ tertiary_domain }}`)
-      traefik.http.routers.vid.entrypoints: https
       traefik.http.routers.vid.tls.certresolver: default
       traefik.http.services.vid.loadbalancer.server.port: 9000
 

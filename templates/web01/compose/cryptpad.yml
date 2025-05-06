@@ -39,6 +39,5 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.docs.rule: Host(`docs.{{ tertiary_domain }}`) ||  Host(`docs-ui.{{ tertiary_domain }}`)
-      traefik.http.routers.docs.entrypoints: https
       traefik.http.routers.docs.tls.certresolver: default
       traefik.http.services.docs.loadbalancer.server.port: 3000

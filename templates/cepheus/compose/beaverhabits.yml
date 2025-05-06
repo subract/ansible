@@ -23,7 +23,6 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.habits.rule: Host(`habits.{{ tertiary_domain }}`)
-      traefik.http.routers.habits.entrypoints: https
       traefik.http.routers.habits.tls.certresolver: default
       traefik.http.services.habits.loadbalancer.server.port: 8080
       homepage.group: Apps

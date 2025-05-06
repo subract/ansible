@@ -20,7 +20,6 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.chef.rule: Host(`chef.{{ tertiary_domain }}`)
-      traefik.http.routers.chef.entrypoints: https
       traefik.http.routers.chef.tls.certresolver: default
       traefik.http.services.chef.loadbalancer.server.port: 8000
       homepage.group: Apps
@@ -48,7 +47,6 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.tools.rule: Host(`tools.{{ tertiary_domain }}`)
-      traefik.http.routers.tools.entrypoints: https
       traefik.http.routers.tools.tls.certresolver: default
       traefik.http.services.tools.loadbalancer.server.port: 80
       homepage.group: Apps

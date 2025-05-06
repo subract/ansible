@@ -34,7 +34,6 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.rss.rule: Host(`rss.{{ tertiary_domain }}`)
-      traefik.http.routers.rss.entrypoints: https
       traefik.http.routers.rss.tls.certresolver: default
       traefik.http.services.rss.loadbalancer.server.port: 8080
       traefik.http.routers.rss.middlewares: authelia

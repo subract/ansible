@@ -25,7 +25,6 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.ldap.rule: Host(`ldap.{{ tertiary_domain }}`)
-      traefik.http.routers.ldap.entrypoints: https
       traefik.http.routers.ldap.tls.certresolver: default
       traefik.http.services.ldap.loadbalancer.server.port: 17170
       homepage.group: Admin
@@ -73,7 +72,7 @@ services:
       traefik.enable: true
       traefik.docker.network: doc_web
       traefik.http.routers.auth.rule: Host(`auth.{{ tertiary_domain }}`)
-      traefik.http.routers.auth.entrypoints: https
+      traefik.http.routers.auth.observability.accessLogs: true
       traefik.http.routers.auth.tls.certresolver: default
       traefik.http.services.auth.loadbalancer.server.port: 9091
       traefik.http.middlewares.authelia.forwardAuth.address: http://authelia:9091/api/verify?rd=https%3A%2F%2Fauth.{{ tertiary_domain }}%2F
