@@ -1,2 +1,4 @@
 roles/dotfiles_copy/files
 .vscode/
+.DS_STORE
+.vale.ini
