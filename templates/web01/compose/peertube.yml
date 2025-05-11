@@ -19,6 +19,12 @@ services:
     depends_on:
       - peertube_postgres
       - peertube_redis
+
+    # Tends to take over during encodes
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
     labels:
       traefik.enable: true
       traefik.http.routers.vid.rule: Host(`v.{{ tertiary_domain }}`)
