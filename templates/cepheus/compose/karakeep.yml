@@ -33,7 +33,7 @@ services:
       INFERENCE_TEXT_MODEL: llama3.2:latest
       INFERENCE_IMAGE_MODEL: llava:latest
       EMBEDDING_TEXT_MODEL: nomic-embed-text
-      INFERENCE_CONTEXT_LENGTH: 131072
+      INFERENCE_CONTEXT_LENGTH: 16384
 
       DISABLE_PASSWORD_AUTH: true
       OAUTH_WELLKNOWN_URL: https://auth.{{ tertiary_domain }}

@@ -36,6 +36,9 @@ services:
     networks:
       web:
       ai:
+
+    # environment:
+    #   OLLAMA_DEBUG: "1"
     
     volumes:
       - "{{ app_root }}/ollama:/root/.ollama"
