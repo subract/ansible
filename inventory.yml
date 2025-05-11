@@ -12,6 +12,7 @@ all:
     docker:
       hosts:
         cepheus:
+          backup_disk_serial: WDC_WD120EMFZ-11A6JA0_9JGKZ32T
         web01:
           ansible_host: "{{ tertiary_domain }}"
         offsite02:

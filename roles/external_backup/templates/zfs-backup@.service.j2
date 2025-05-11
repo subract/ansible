@@ -1,0 +1,7 @@
+[Unit]
+Description=ZFS Backup Job for Drive ID %i
+
+[Service]   
+Type=oneshot
+ExecStartPre=/usr/bin/test -e /dev/disk/by-id/ata-%i
+ExecStart=/usr/local/bin/zfs-backup.sh %i

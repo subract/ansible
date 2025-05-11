@@ -1,0 +1,32 @@
+---
+- name: Deploy udev rule for ZFS backup
+  tags: backup
+  copy:
+    dest: /etc/udev/rules.d/99-zfs-backup.rules
+    content: |
+      ACTION=="add", ENV{ID_SERIAL}=="{{ backup_disk_serial }}", TAG+="systemd", ENV{SYSTEMD_WANTS}="zfs-backup@{{ backup_disk_serial }}.service"
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload udev
+    - Trigger udev
+
+- name: Deploy systemd unit for ZFS backup (template)
+  tags: backup
+  template:
+    src: zfs-backup@.service.j2
+    dest: /etc/systemd/system/zfs-backup@.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload systemd
+
+- name: Deploy backup script
+  tags: backup
+  copy:
+    src: zfs-backup.sh
+    dest: /usr/local/bin/zfs-backup.sh
+    owner: root
+    group: root
+    mode: "0755"

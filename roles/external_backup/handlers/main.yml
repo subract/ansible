@@ -1,0 +1,9 @@
+---
+- name: Reload udev
+  command: udevadm control --reload
+
+- name: Trigger udev
+  command: udevadm trigger
+
+- name: Reload systemd
+  command: systemctl daemon-reload

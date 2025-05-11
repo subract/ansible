@@ -68,6 +68,7 @@
     - syncoid_sanoid
     - backblaze
     - apprise
+    - external_backup
     - role: artis3n.tailscale
       tags: tailscale
       vars:
