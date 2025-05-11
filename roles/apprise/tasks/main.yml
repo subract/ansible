@@ -24,7 +24,7 @@
   tags: pkg, config
   copy:
     src: /home/{{ user }}/.apprise.yml
-    dest: /root/apprise.yml
+    dest: /root/.apprise.yml
     remote_src: true
     mode: "0644"
     owner: root
