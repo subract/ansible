@@ -2,19 +2,23 @@
 all:
   hosts:
     web01:
-      app_root: /opt
+      ansible_host: "{{ tertiary_domain }}"
     offsite01:
     offsite02:
     # ixion:
     cepheus:
-      app_root: /nvme01/app
+      backup_disk_serial: WDC_WD120EMFZ-11A6JA0_9JGKZ32T
+    web03:
+      ansible_host: "rather.{{ tertiary_domain }}"
   children:
     docker:
       hosts:
         cepheus:
-          backup_disk_serial: WDC_WD120EMFZ-11A6JA0_9JGKZ32T
+          app_root: /nvme01/app
         web01:
-          ansible_host: "{{ tertiary_domain }}"
+          app_root: /opt
+        web03:
+          app_root: /opt
         offsite02:
           app_root: /opt
     workstations:
