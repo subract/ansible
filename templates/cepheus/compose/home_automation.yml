@@ -20,8 +20,8 @@ services:
       TZ: {{ timezone }}
 
     volumes:
-      - "{{ app_root }}/home_assistant:/config"
-
+      - "{{ app_root }}/home_assistant/config:/config"
+      - "{{ app_root }}/home_assistant/media:/media"
     ports:
       - 1400:1400 # Sonos
     #   - 21064:21064 # HomeKit
