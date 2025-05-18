@@ -43,7 +43,7 @@ services:
 
   nextcloud_mariadb:
     container_name: nextcloud_mariadb
-    image: mariadb:latest
+    image: mariadb:11.7
     user: 4011:4011
 
     restart: unless-stopped
