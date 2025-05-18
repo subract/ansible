@@ -50,8 +50,17 @@
   ignore_unreachable: true
   roles:
     - role: geerlingguy.docker
+      tags: docker
       vars:
-        docker_compose_version: v2.27.2
+        docker_compose_version: v2.36.0
+        docker_daemon_options:
+          default-address-pools:
+            - base: 172.19.0.0/16
+              size: 24
+          runtimes:
+            nvidia:
+              args: []
+              path: nvidia-container-runtime
     - docker
     - dotfiles_copy
 
