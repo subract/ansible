@@ -15,6 +15,7 @@ services:
       TZ: {{ timezone }}
 
     healthcheck:
+      start_period: 30s
       start_interval: 5s
 
     labels:
@@ -42,6 +43,7 @@ services:
       - web
 
     healthcheck:
+      start_period: 30s
       start_interval: 5s
 
     labels:

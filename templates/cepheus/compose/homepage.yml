@@ -24,6 +24,7 @@ services:
       - "{{ app_root }}/homepage/icons:/app/public/icons"
 
     healthcheck:
+      start_period: 30s
       start_interval: 5s
 
     labels:
