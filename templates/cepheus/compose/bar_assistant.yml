@@ -13,6 +13,7 @@ services:
       - bar_assistant.env
     environment:
       - MEILI_ENV=production
+      - MEILI_NO_ANALYTICS=true
     restart: unless-stopped
     volumes:
       - /{{ app_root }}/bar_assistant/meilisearch:/meili_data
@@ -53,7 +54,7 @@ services:
 
   salt_rim:
     container_name: salt_rim
-    image: barassistant/salt-rim:v3
+    image: barassistant/salt-rim:v4
     # Incompatible with running as specified user
     networks: 
       - bar_assistant
