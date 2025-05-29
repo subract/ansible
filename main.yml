@@ -5,6 +5,7 @@
   hosts: all
   become: true
   gather_facts: true
+  tags: upgrade
   ignore_unreachable: true
   pre_tasks:
     - name: Update apt index

@@ -16,7 +16,7 @@
       alias dcsh='f() { docker exec -it "$1" bash || docker exec -it "$1" sh; }; f'
 
 - name: Create compose directory
-  tags: docker, compose
+  tags: docker
   file:
     path: "{{ compose_dir }}"
     state: directory
