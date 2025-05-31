@@ -55,27 +55,58 @@
         mode: "0644"
       notify: Reload systemd
 
-- name: Copy docker-compose.yml files
-  tags: docker, compose
-  template:
-    src: "{{ item }}"
-    dest: "{{ compose_dir }}/{{ item | basename }}"
-    mode: "0660"
-    owner: root
-    group: docker
-  with_fileglob:
-    - ../templates/{{ inventory_hostname }}/compose/*.yml
+# If an app name was specified, only copy its files
+# Otherwise, copy all files
 
-- name: Copy .env files
-  tags: docker, compose, env
-  copy:
-    src: "{{ item }}"
-    dest: "{{ compose_dir }}/{{ item | basename }}"
-    mode: "0440"
-    owner: root
-    group: docker
-  with_fileglob:
-    - ../files/{{ inventory_hostname }}/docker_env/*.env
+- name: Update all compose files
+  tags: docker, compose
+  when: app is undefined
+  block:
+    - name: Copy all compose files
+      tags: docker, compose
+      template:
+        src: "{{ item }}"
+        dest: "{{ compose_dir }}/{{ item | basename }}"
+        mode: "0660"
+        owner: root
+        group: docker
+      with_fileglob:
+        - ../templates/{{ inventory_hostname }}/compose/*.yml
+
+    - name: Copy all .env files
+      tags: docker, compose, env
+      copy:
+        src: "{{ item }}"
+        dest: "{{ compose_dir }}/{{ item | basename }}"
+        mode: "0440"
+        owner: root
+        group: docker
+      with_fileglob:
+        - ../files/{{ inventory_hostname }}/docker_env/*.env
+
+- name: Update one compose files
+  tags: docker, compose
+  when: app is defined
+  block:
+    - name: Copy one compose file
+      tags: docker, compose
+      template:
+        src: "templates/{{ inventory_hostname }}/compose/{{ app }}.yml"
+        dest: "{{ compose_dir }}/{{ app }}.yml"
+        mode: "0660"
+        owner: root
+        group: docker
+      when: app is defined
+
+    - name: Copy one env file
+      tags: docker, compose
+      template:
+        src: "files/{{ inventory_hostname }}/docker_env/{{ app }}.env"
+        dest: "{{ compose_dir }}/{{ app }}.env"
+        mode: "0440"
+        owner: root
+        group: docker
+      when: app is defined
 
 - name: Copy compose .env
   tags: docker, compose, env
@@ -86,6 +117,7 @@
     owner: root
     group: docker
   ignore_errors: true # file may not exist if not needed
+  when: app is undefined
 
 - name: Pull docker services
   tags: docker, compose, pull
