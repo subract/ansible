@@ -96,7 +96,6 @@
         mode: "0660"
         owner: root
         group: docker
-      when: app is defined
 
     - name: Copy one env file
       tags: docker, compose
@@ -106,7 +105,7 @@
         mode: "0440"
         owner: root
         group: docker
-      when: app is defined
+      ignore_errors: true # file may not exist if not needed
 
 - name: Copy compose .env
   tags: docker, compose, env
