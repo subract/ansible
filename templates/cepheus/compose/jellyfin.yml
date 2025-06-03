@@ -25,19 +25,16 @@ services:
     volumes:
       - "{{ app_root }}/jellyfin/config:/config"
       - "{{ app_root }}/jellyfin/cache:/cache"
+      # Read-only breaks trickplay
       - type: bind
         source: "{{ app_root }}/pinchflat/downloads"
         target: /media/pinchflat
-        read_only: true
-      # - type: bind
-      #   source: /path/to/media2
-      #   target: /media2
-      #   read_only: true
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
 
-    # Optional - alternative address used for autodiscovery
     environment:
       JELLYFIN_PublishedServerUrl: media.{{ tertiary_domain }}
-
+      
     labels:
       traefik.enable: true
       traefik.http.routers.media.rule: Host(`media.{{ tertiary_domain }}`)
